@@ -1,9 +1,10 @@
-from kanjis import Kanjis
+from vocabulary_manager import VocabularyManager
+from sentence_retriever import SentenceRetriever
 
 class App:
     def __init__(self):
-        print("bite")
+        pass
 
 if (__name__ == '__main__'):
-    kanjitest = Kanjis()
-    kanjitest.start()
+    vocabularytest = VocabularyManager()
+    vocabularytest.start()
