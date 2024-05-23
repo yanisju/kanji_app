@@ -1,0 +1,1 @@
+A simple project to create Anki cards, based on simple vocabulary.
