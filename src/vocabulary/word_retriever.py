@@ -1,16 +1,8 @@
-class VocabularyRetriever:
+class VocabularyWordRetriever:
     """ Used to retrieve the vocabulary, inserted by the user using different methods."""
 
     def __init__(self):
-        self._vocabularys_list = []  
-
-    def start(self, input_method):
-        vocabularys_console = []
-    
-        if input_method == 1:
-            self._vocabularys_list = self.get_vocabulary_from_console()
-        elif input_method == 1:
-            self._vocabularys_list = self.get_vocabulary_from_file()
+        pass
                 
     def get_vocabulary_from_console(self):
         vocabulary_input = 'O'
@@ -31,12 +23,14 @@ class VocabularyRetriever:
                         vocabularys_console.append(vocabulary_input)
         return vocabularys_console
 
-    def get_vocabulary_from_file(self, filename, file_location):
-        vocabularys_file = []
-        file = open(file_location + filename)
-        for vocabulary in file:
-             vocabularys_file.append(vocabulary)
-        return vocabularys_file
+    def get_vocabulary_from_file(self, file_location, filename):
+        vocabularies_word = []
+        with open(file_location + "/" + filename, encoding="utf8") as file:
+            for vocabulary in file:
+                vocabulary = vocabulary.strip() # Remove uselesse characters
+                if vocabulary:  # if not empty
+                    vocabularies_word.append(vocabulary)
+        return vocabularies_word
 
     @property
     def vocabularys_list(self):
