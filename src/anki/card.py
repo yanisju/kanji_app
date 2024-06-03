@@ -43,7 +43,7 @@ class AnkiCard():
             model=self._model,
             fields=[card_count, 
                     japanese_transcription, 
-                    vocabulary.lang_to,
+                    vocabulary.lang_to_sentence,
                     
                     ],)
         

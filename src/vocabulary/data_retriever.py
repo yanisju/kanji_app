@@ -55,26 +55,39 @@ class VocabularyDataRetriever():
             sentence_transcription.append(json_sentences['results'][i]["transcriptions"][0]["text"])
         return [lang_from_sentence, lang_to_sentence, sentence_transcription]
     
-    def deserialize_json_meaning(Self, json_meaning):
-        meanings = []
+    def deserialize_json_meaning(self, json_meaning, word):
+        meanings = [] # Every differents meanings of the word
+        one_meaning = [] # One meaning containing all synonyms of that meaning
         parts_of_speech = []
+        one_part_of_speech = []
         
         status_code = json_meaning.get("meta").get("status") # Get HTML status code
         if status_code != 200:
-            raise ValueError
-            return None
+            raise ValueError # TODO: Modify exception
         else:
             for i in range(len(json_meaning.get("data"))):
-                meanings.append(json_meaning.get("data")[0].get("senses")[0].get("english_definitions"))
-                parts_of_speech.append(json_meaning.get("data")[0].get("senses")[0].get("english_definitions"))
-            return [meanings, parts_of_speech]
+                if(json_meaning.get("data")[i].get("japanese")[0].get("word") == word): # Check if the word in dictionnary is the same
+                    for j in range(len(json_meaning.get("data")[i].get("senses"))):
+                        for k in range(len(json_meaning.get("data")[i].get("senses")[j].get("english_definitions"))):
+                            one_meaning.append(json_meaning.get("data")[i].get("senses")[j].get("english_definitions")[k])
+                        for k in range(len(json_meaning.get("data")[i].get("senses")[j].get("parts_of_speech"))):
+                            one_part_of_speech.append(json_meaning.get("data")[0].get("senses")[j].get("parts_of_speech")[k])
+                        meanings.append(one_meaning)
+                        parts_of_speech.append(one_part_of_speech)
+                        one_meaning= []
+                        one_part_of_speech = []
+                        
+            if(len(meanings) != 0):
+                return [meanings, parts_of_speech]
+            else: 
+                raise ValueError #TODO: Modify exception
             
     def start(self, vocabulary):
         json_sentences = self.retrieve_sentences(vocabulary)
         sentences = self.deserialize_json_sentence(json_sentences)
         
         json_meaning = self.retrieve_meaning(vocabulary)
-        both_meanings_part_of_speech = self.deserialize_json_meaning(json_meaning)
+        both_meanings_part_of_speech = self.deserialize_json_meaning(json_meaning, vocabulary)
         meanings = both_meanings_part_of_speech[0]
         part_of_speech = both_meanings_part_of_speech[1]
         

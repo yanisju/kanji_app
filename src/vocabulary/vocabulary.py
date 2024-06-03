@@ -8,9 +8,12 @@ class Vocabulary:
         self.lang_from_sentence = [] # Example sentences in the original language
         self.lang_to_sentence = [] # Example sentences in the desired language
         self.sentence_transcription = []
-        self.meaning = []
-        self.part_of_speech = []
         self.sentence_count = 0  # Number of sentences
+        self.meaning = []
+        self.meaning_count = 0 # Number of meanings
+        self.part_of_speech = []
+        
+        
 
     def compute_sentence_count(self):
         """ Compute the number of sentences retrieved. (from, to and transcription)
@@ -18,6 +21,10 @@ class Vocabulary:
         if (len(self.lang_from_sentence) != len(self.lang_to_sentence) and len(self.lang_from_sentence) != len(self.sentence_transcription)):
             raise ValueError
         self.sentence_count = len(self.lang_from_sentence)
+    
+    def compute_meaning_count(self):
+        """ Compute the number of meanings retrieved. """
+        self.meaning_count = len(self.meaning)
 
     def get_data(self):
         """ Retrieve data with the vocabulary. """
