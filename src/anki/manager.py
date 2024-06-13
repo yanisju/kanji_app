@@ -37,30 +37,16 @@ class AnkiManager:
             ])
         
 
-        my_deck = genanki.Deck(
+        self.my_deck = genanki.Deck(
             1301981488,
             'Test_Kanjis')
-        
-        
-        my_note = genanki.Note(
-            model=self.my_model,
-            fields=['1', 
-                    '電車[でんしゃ;h,a] は たった今[たったいま;n4] 出[で,でる;k1]た 所[ところ;h] です ', 
-                    'The train just left.',
-                    'たった今[たったいま;n4]',
-                    'just now',
-                    "test",
-                    "test",
-                    " ",
-                    ])
-        my_deck.add_note(my_note)
-        
-        genanki.Package(my_deck).write_to_file('data/output/output.apkg')
-
-    
+         
     def turn_vocabulary_to_card(self, vocabulary):
         new_card = AnkiCard(self.my_model)
         new_card.fill_fields_jap_sentence(vocabulary, self.card_count)
+        
+        self.my_deck.add_note(new_card.note)
+        genanki.Package(self.my_deck).write_to_file('data/output/output.apkg')
         
         
         

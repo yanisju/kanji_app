@@ -9,7 +9,7 @@ class VocabularyManager:
 
     def start(self):
         # vocabularies_retrieved = self.vocabulary_retriever.get_vocabulary_from_console()
-        vocabularies_retrieved = self.vocabulary_retriever.get_vocabulary_from_file("data/input", "kanjis.txt")
+        vocabularies_retrieved = self.vocabulary_retriever.get_vocabulary_from_file("data/input", "kanjis_simple.txt")
         
         sentence_retriever = VocabularyDataRetriever(3, "jpn", "eng") 
         for vocabulary in vocabularies_retrieved: # For each vocabulary, create a new Vocabulary class

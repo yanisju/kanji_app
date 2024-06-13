@@ -10,8 +10,11 @@ class VocabularyDataRetriever():
         self.session = HTMLSession()
         
     def create_sentences_html_request(self, vocabulary):
+        """ Create HTML request: fetch through Tatoeba website."""
+        
         http_request = "https://tatoeba.org/en/api_v0/search?from=" + self.lang_from + "&to=" + self.lang_to + "&query=" + vocabulary
         params = "&orphans=no&sort=relevance&trans_filter=limit&trans_orphan=no&trans_unapproved=no&unapproved=no&word_count_min=1"
+        print(http_request + params)
         return http_request + params    
           
     def retrieve_sentences(self, vocabulary):
@@ -19,6 +22,8 @@ class VocabularyDataRetriever():
         return json_sentences.json()
     
     def retrieve_meaning(self, vocabulary):
+        """ Retrieve meaning through Jisho website. """
+        
         http_request = "https://jisho.org/api/v1/search/words?keyword=" + vocabulary
         json_meaning = self.session.get(http_request)
         return json_meaning.json()
