@@ -16,7 +16,7 @@ class AnkiManager:
         template_back = file_template_back.read()
         
         self.my_model = genanki.Model(
-            1422169360,
+            1422169361,
             'Sentence_test',
             fields=[
                 {'name': 'Sort'},
@@ -27,20 +27,19 @@ class AnkiManager:
                 {'name': 'Vocab2'},
                 {'name': 'Vocab2 Meaning'},
                 {'name': 'Audio'},
-                {'name': 'Audio on Front'},
             ],
             templates=[
                 {
                     'name': 'Sentence',
                     'qfmt': template_front,
                     'afmt': template_back,
-                },
+                }, # TODO: Add "style" field / else won't display card correctly
             ])
         
 
         my_deck = genanki.Deck(
             1301981488,
-            'Test')
+            'Test_Kanjis')
         
         
         my_note = genanki.Note(
@@ -52,8 +51,7 @@ class AnkiManager:
                     'just now',
                     "test",
                     "test",
-                    "test",
-                    "test",
+                    " ",
                     ])
         my_deck.add_note(my_note)
         
