@@ -1,4 +1,4 @@
-from .vocabulary.manager import VocabularyManager
+from .vocabulary.manager import Manager
 from .vocabulary.data_retriever import VocabularyDataRetriever
 from .anki.manager import AnkiManager
 
@@ -7,7 +7,7 @@ class App:
         pass
 
 if (__name__ == '__main__'):
-    vocabularytest = VocabularyManager()
+    vocabularytest = Manager()
     vocabularytest.start()
     vocabulary_list = vocabularytest.vocabularys_list
     anki_manager = AnkiManager(vocabulary_list[0])
