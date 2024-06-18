@@ -1,15 +1,18 @@
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, QFileDialog, QWidget
 from ..vocabulary.manager import Manager
 
-class UpRightLayout(QVBoxLayout):
+class UpRightWidget(QWidget):
     def __init__(self, central_widget: QWidget, vocabulary_manager: Manager):
-        super().__init__() # Init this widget as a child of central widget
+        super().__init__(central_widget) # Init this widget as a child of central widget
+        
+        self.layout = QVBoxLayout(self) # Init the main layout of the widget as a child of the widget
+        self.setLayout(self.layout)
         
         self.central_widget = central_widget
         self.vocabulary_manager = vocabulary_manager
         
-        self.addLayout(self._create_one_word_button_layout(vocabulary_manager))
-        self.addWidget(self._create_choose_kanji_button_widget())
+        self.layout.addLayout(self._create_one_word_button_layout(vocabulary_manager))
+        self.layout.addWidget(self._create_choose_kanji_button_widget())
         
     def _create_one_word_button_layout(self, vocabulary_manager):
         layout = QHBoxLayout()  

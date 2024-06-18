@@ -1,8 +1,8 @@
 import sys
 from PyQt6.QtWidgets import QMainWindow, QApplication, QWidget, QGridLayout
 
-from .up_right_layout import UpRightLayout
-from .up_left_layout import UpLeftLayout
+from .up_right_widget import UpRightWidget
+from .up_left_widget import UpLeftWidget
 
 from ..vocabulary.manager import Manager
 
@@ -27,16 +27,14 @@ class MainWindow(QMainWindow):
     
     def _create_window_skeleton(self):
         self.central_grid_layout = QGridLayout(self.centralWidget)
+        self.centralWidget.setLayout(self.central_grid_layout)
         
         
-        self.up_right_vertical_layout = UpRightLayout(self.centralWidget, self.vocabulary_manager)
-        self.up_left_vertical_layout = UpLeftLayout(self.centralWidget, self.vocabulary_manager)
+        self.up_right_vertical_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager)
+        self.up_left_vertical_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager)
         
-        self.central_grid_layout.addLayout(self.up_left_vertical_layout, 0, 0)
-        self.central_grid_layout.addLayout(self.up_right_vertical_layout, 0, 1)
-        pass
-        
-        pass
+        self.central_grid_layout.addWidget(self.up_left_vertical_widget, 0, 0)
+        self.central_grid_layout.addWidget(self.up_right_vertical_widget, 0, 1)
         # self._add_words_to_list_model(["test1", "test2"], self.up_left_vertical_layout.itemAt(0).model())
         
     
