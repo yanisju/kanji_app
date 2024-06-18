@@ -30,11 +30,11 @@ class MainWindow(QMainWindow):
         self.centralWidget.setLayout(self.central_grid_layout)
         
         
-        self.up_right_vertical_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager)
-        self.up_left_vertical_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager)
+        self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager)
+        self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget)
         
-        self.central_grid_layout.addWidget(self.up_left_vertical_widget, 0, 0)
-        self.central_grid_layout.addWidget(self.up_right_vertical_widget, 0, 1)
+        self.central_grid_layout.addWidget(self.up_left_widget, 0, 0)
+        self.central_grid_layout.addWidget(self.up_right_widget, 0, 1)
         # self._add_words_to_list_model(["test1", "test2"], self.up_left_vertical_layout.itemAt(0).model())
         
     
