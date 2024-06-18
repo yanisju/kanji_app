@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QHBoxLayout, QWidget
-from PyQt6.QtWidgets import QListView
+from PyQt6.QtWidgets import QListView, QTableView
 
 from ..vocabulary.manager import Manager
 
@@ -11,14 +11,16 @@ class UpLeftWidget(QWidget):
         self.setLayout(self.layout)
         self.vocabulary_manager = vocabulary_manager
         
-        self.word_table = QListView() # View for retrieved words / Use vocabulary.manager.vocabulary_model as model
-        self.word_table.setModel(self.vocabulary_manager.vocabulary_model)
+        self.vocabulary_list_view = QListView() # View for retrieved words / Use vocabulary.manager.vocabulary_model as model
+        self.vocabulary_list_view.setModel(self.vocabulary_manager.vocabulary_model)
+        self.layout.addWidget(self.vocabulary_list_view)
         
-        self.layout.addWidget(self.word_table)
-        
-        right_table = QListView() # TODO modify
-        self.layout.addWidget(right_table)
-        
-        
+        self.sentence_table_view = QTableView() 
+        self.sentence_table_view.setModel(self.vocabulary_manager.sentence_model)
+        self.layout.addWidget(self.sentence_table_view)
+    
+    def refresh_sentence_view(self, word):
+        self.vocabulary_manager.refresh_sentence_model(word)
+        self.sentence_table_view.setModel(self.vocabulary_manager.sentence_model)
         
         

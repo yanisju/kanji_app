@@ -35,7 +35,7 @@ class MainWindow(QMainWindow):
         
         self.central_grid_layout.addWidget(self.up_left_widget, 0, 0)
         self.central_grid_layout.addWidget(self.up_right_widget, 0, 1)
-        # self._add_words_to_list_model(["test1", "test2"], self.up_left_vertical_layout.itemAt(0).model())
+        
         
     
     # def _createMenu(self):

@@ -1,3 +1,5 @@
+from PyQt6.QtGui import QStandardItemModel, QStandardItem
+
 class Vocabulary:
     """ A class used to represent a single vocabulary.
     """
@@ -13,6 +15,10 @@ class Vocabulary:
         self.meaning_count = 0 # Number of meanings
         self.part_of_speech = []
         
+        self._get_data()
+        
+        self.sentence_model = self.get_sentence_model()
+        
         
 
     def compute_sentence_count(self):
@@ -26,7 +32,7 @@ class Vocabulary:
         """ Compute the number of meanings retrieved. """
         self.meaning_count = len(self.meaning)
 
-    def get_data(self):
+    def _get_data(self):
         """ Retrieve data with the vocabulary. """
         
         data = self.data_retriever.start(self.word) # Retrieve data from DataRetriever
@@ -36,3 +42,13 @@ class Vocabulary:
         self.meaning = data[3]
         self.part_of_speech = data[4]
         self.compute_sentence_count()
+        
+    def get_sentence_model(self):
+        model = QStandardItemModel(0, 3)
+        for i in range(self.sentence_count):
+            lang_from_sentence_item = QStandardItem(self.lang_from_sentence[i])
+            lang_to_sentence_item = QStandardItem(self.lang_to_sentence[i])
+            sentence_transcription_item = QStandardItem(self.sentence_transcription[i])
+            item_list = [lang_from_sentence_item, lang_to_sentence_item, sentence_transcription_item]
+            model.insertRow(i, item_list)        
+        return model
