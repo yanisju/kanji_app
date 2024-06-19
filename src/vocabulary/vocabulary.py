@@ -16,8 +16,7 @@ class Vocabulary:
         self.part_of_speech = []
         
         self._get_data()
-        
-        self.sentence_model = self.get_sentence_model()
+    
         
         
 
@@ -43,12 +42,11 @@ class Vocabulary:
         self.part_of_speech = data[4]
         self.compute_sentence_count()
         
-    def get_sentence_model(self):
-        model = QStandardItemModel(0, 3)
+    def set_sentence_model(self, model):
+        model.clear() # TODO optimize
         for i in range(self.sentence_count):
             lang_from_sentence_item = QStandardItem(self.lang_from_sentence[i])
             lang_to_sentence_item = QStandardItem(self.lang_to_sentence[i])
             sentence_transcription_item = QStandardItem(self.sentence_transcription[i])
             item_list = [lang_from_sentence_item, lang_to_sentence_item, sentence_transcription_item]
             model.insertRow(i, item_list)        
-        return model

@@ -18,13 +18,16 @@ class Manager:
         
         self.sentence_model = QStandardItemModel(0, 0)
     
-    def refresh_sentence_model(self, word = None):
+    def refresh_sentence_model(self, word):
         if len(self.vocabularies_list) == 0:
             self.sentence_model = QStandardItemModel(0, 0)
         else:
-            self.sentence_model = self.vocabularies_list[0].get_sentence_model()
+            index_word = next((index for index, vocab_instance in enumerate(self.vocabularies_list) if vocab_instance.word == word), None)
+            print(self.vocabularies_list[index_word].word)
+            self.vocabularies_list[index_word].set_sentence_model(self.sentence_model)
               
     def refresh_vocabulary_model(self):
+        """ Refresh view for the word view."""
         vocabularies_name = self.get_all_vocabulary_name_from_vocabulary_list()
         self.vocabulary_model_item_count = len(vocabularies_name)
         
