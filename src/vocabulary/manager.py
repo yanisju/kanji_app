@@ -9,7 +9,6 @@ class Manager:
     def __init__(self):
         self.word_retriever = WordRetriever()
         self.data_retriever = DataRetriever(3, "jpn", "eng")
-        self.file_location = ""
         
         self.vocabularies_list = [] # List of vocabularies instance
         
@@ -43,10 +42,10 @@ class Manager:
         new_vocabulary = Vocabulary(word, self.data_retriever)
         self.vocabularies_list.append(new_vocabulary)
     
-    def _get_word_from_text(self):
-        words_retrieved = self.word_retriever.get_word_from_file(self.file_location)
+    def _get_word_from_text(self, file_location):
+        words_retrieved = self.word_retriever.get_word_from_file(file_location)
         for word in words_retrieved:
-            self.vocabularys_list.append(Vocabulary(word, self.data_retriever))
+            self.vocabularies_list.append(Vocabulary(word, self.data_retriever))
         
             
             

@@ -13,7 +13,7 @@ class UpRightWidget(QWidget):
         self.up_left_widget = up_left_widget
         
         self.layout.addLayout(self._create_one_word_button_layout())
-        self.layout.addWidget(self._create_choose_kanji_button_widget())   
+        self.layout.addWidget(self._create_choose_kanji_file_button_widget())   
     
     def _create_one_word_button_layout(self):
         layout = QHBoxLayout()  
@@ -36,11 +36,13 @@ class UpRightWidget(QWidget):
     def _choose_kanji_file_action(self):
         file_selecter = QFileDialog(parent=self.central_widget)
         file = file_selecter.getOpenFileName(filter = "*.txt")
-        self.vocabulary_manager.file_location = file[0]
         
-        print(self.vocabulary_manager.file_location)
+        self.vocabulary_manager._get_word_from_text(file[0])
+        self.vocabulary_manager.refresh_vocabulary_model()
+        
+        print(file[0])
     
-    def _create_choose_kanji_button_widget(self):
+    def _create_choose_kanji_file_button_widget(self):
         choose_kanji_file_button = QPushButton("Choose File")
         choose_kanji_file_button.clicked.connect(self._choose_kanji_file_action)
         

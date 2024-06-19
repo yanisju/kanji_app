@@ -23,9 +23,9 @@ class WordRetriever:
                         vocabularys_console.append(vocabulary_input)
         return vocabularys_console
 
-    def get_word_from_file(self, file_location, filename):
+    def get_word_from_file(self, file_location):
         words = []
-        with open(file_location + "/" + filename, encoding="utf8") as file:
+        with open(file_location, encoding="utf8") as file:
             for vocabulary in file:
                 vocabulary = vocabulary.strip() # Remove uselesse characters
                 if vocabulary:  # if not empty
