@@ -18,14 +18,14 @@ class Manager:
         self.dictionnary = VocabularyDictionnary() # Dictionnary of vocabularies instance
         
         self.vocabulary_model = VocabularyModel() # Model for retrieved words / How words data is set
-        self.sentence_model = QStandardItemModel(0, 0)
+        self.sentence_model = SentenceModel()
     
     def refresh_sentence_model(self, word):
         if self.dictionnary.len() == 0:
-            self.sentence_model = QStandardItemModel(0, 0)
+            self.sentence_model.clean()
         else:
             vocabulary = self.dictionnary.find_vocabulary_by_word(word)
-            vocabulary.set_sentence_model(self.sentence_model)
+            self.sentence_model.set_sentence_model(vocabulary)
             
     def refresh_vocabulary_model(self):
         words = self.dictionnary.get_words()
