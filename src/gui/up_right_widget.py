@@ -28,7 +28,7 @@ class UpRightWidget(QWidget):
         enter_button.clicked.connect(lambda x: self.vocabulary_manager.add_vocabulary_from_qt_line(line_edit.text()))
         enter_button.clicked.connect(self.vocabulary_manager.refresh_vocabulary_model) # Refresh list
         enter_button.clicked.connect(self.up_left_widget.vocabulary_list_view.scrollToBottom) # Scroll to bottom
-        enter_button.clicked.connect(lambda x: self.up_left_widget.refresh_sentence_view(line_edit.text())) # 
+        enter_button.clicked.connect(lambda x: self.up_left_widget.refresh_sentence_view(line_edit.text())) # TODO create thread
         
         
         return layout

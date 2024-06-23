@@ -2,6 +2,8 @@ from .word_retriever import WordRetriever
 from .vocabulary import Vocabulary
 from .data_retriever import DataRetriever
 
+from .vocabulary_model import VocabularyModel
+
 from PyQt6.QtCore import QStringListModel
 from PyQt6.QtGui import QStandardItemModel
 
@@ -12,8 +14,7 @@ class Manager:
         
         self.vocabularies_list = [] # List of vocabularies instance
         
-        self.vocabulary_model = QStringListModel() # Model for retrieved words / How words data is set
-        self.vocabulary_model_item_count = 0
+        self.vocabulary_model = VocabularyModel() # Model for retrieved words / How words data is set
         
         self.sentence_model = QStandardItemModel(0, 0)
     
@@ -24,15 +25,13 @@ class Manager:
             index_word = next((index for index, vocab_instance in enumerate(self.vocabularies_list) if vocab_instance.word == word), None)
             print(self.vocabularies_list[index_word].word)
             self.vocabularies_list[index_word].set_sentence_model(self.sentence_model)
-              
+            
     def refresh_vocabulary_model(self):
-        """ Refresh view for the word view."""
-        vocabularies_name = self.get_all_vocabulary_name_from_vocabulary_list()
-        self.vocabulary_model_item_count = len(vocabularies_name)
-        
-        self.vocabulary_model.setStringList(vocabularies_name)
+        words = self.get_words_from_vocabulary_list()
+        self.vocabulary_model.refresh_model(words)
 
-    def get_all_vocabulary_name_from_vocabulary_list(self):
+    def get_words_from_vocabulary_list(self):
+        """ Retrieve every single word from vocabulary list."""
         vocabularies_name = []
         for vocabulary in self.vocabularies_list:
             vocabularies_name.append(vocabulary.word)
