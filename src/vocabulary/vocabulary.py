@@ -11,15 +11,12 @@ class Vocabulary:
         self.lang_to_sentence = [] # Example sentences in the desired language
         self.sentence_transcription = []
         self.sentence_count = 0  # Number of sentences
-        self.meaning = []
+        self.meaning = []   
         self.meaning_count = 0 # Number of meanings
         self.part_of_speech = []
         
         self._get_data()
     
-        
-        
-
     def compute_sentence_count(self):
         """ Compute the number of sentences retrieved. (from, to and transcription)
         Raise a value error if each length is different."""

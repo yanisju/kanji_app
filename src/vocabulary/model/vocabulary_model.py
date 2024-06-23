@@ -1,8 +1,9 @@
 from PyQt6.QtCore import QStringListModel  
 
 class VocabularyModel(QStringListModel):
-    """ A model for retrieved word from the user. 
+    """ Model for retrieved word from the user. 
     Since it will be used with a QListView, it inherits from QStringListModel"""
+    
     def __init__(self):
         super().__init__()
         self.count = 0

@@ -1,9 +1,11 @@
-from .word_retriever import WordRetriever
-from .vocabulary import Vocabulary
-from .data_retriever import DataRetriever
+from .retriever.word_retriever import WordRetriever
+from .retriever.data_retriever import DataRetriever
 
-from .vocabulary_model import VocabularyModel
+from .vocabulary import Vocabulary
 from .dictionnary import VocabularyDictionnary
+
+from .model.vocabulary_model import VocabularyModel
+from .model.sentence_model import SentenceModel
 
 from PyQt6.QtCore import QStringListModel
 from PyQt6.QtGui import QStandardItemModel
