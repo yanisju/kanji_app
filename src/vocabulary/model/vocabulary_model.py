@@ -1,13 +1,16 @@
-from PyQt6.QtCore import QStringListModel  
+from PyQt6.QtGui import QStandardItemModel, QStandardItem
 
-class VocabularyModel(QStringListModel):
+class VocabularyModel(QStandardItemModel):
     """ Model for retrieved word from the user. 
-    Since it will be used with a QListView, it inherits from QStringListModel"""
+    Since it will be used with a QListView, it inherits from QStandardItemModel"""
     
     def __init__(self):
-        super().__init__()
-        self.count = 0
+        super().__init__(0,0)
     
-    def refresh_model(self, words):
-        """ Refresh view for the word view."""
-        self.setStringList(words)
+    def add_vocabulary(self, vocabulary):
+        """ Add a vocabulary to the model."""
+        word_item = QStandardItem(vocabulary.word)
+        meaning_item = QStandardItem(vocabulary.meaning_str)        
+        item_list = [word_item, meaning_item]
+        self.appendRow(item_list)  
+        

@@ -11,13 +11,14 @@ class Vocabulary:
         self.lang_to_sentence = [] # Example sentences in the desired language
         self.sentence_transcription = []
         self.sentence_count = 0  # Number of sentences
-        self.meaning = []   
+        self.meaning = []
+        self.meaning_str = ""
         self.meaning_count = 0 # Number of meanings
         self.part_of_speech = []
         
-        self._get_data()
+        self.get_data()
     
-    def compute_sentence_count(self):
+    def _compute_sentence_count(self):
         """ Compute the number of sentences retrieved. (from, to and transcription)
         Raise a value error if each length is different."""
         if (len(self.lang_from_sentence) != len(self.lang_to_sentence) and len(self.lang_from_sentence) != len(self.sentence_transcription)):
@@ -28,7 +29,16 @@ class Vocabulary:
         """ Compute the number of meanings retrieved. """
         self.meaning_count = len(self.meaning)
 
-    def _get_data(self):
+    def _set_meaning_str(self):
+        meaning_str = ""
+        for meaning in self.meaning:
+            if len(meaning_str) == 0:
+                meaning_str = meaning
+            else:
+                meaning_str = meaning_str + ", " + meaning
+        self.meaning_str = meaning_str
+    
+    def get_data(self):
         """ Retrieve data with the vocabulary. """
         
         data = self.data_retriever.start(self.word) # Retrieve data from DataRetriever
@@ -37,13 +47,6 @@ class Vocabulary:
         self.sentence_transcription = data[2]
         self.meaning = data[3]
         self.part_of_speech = data[4]
-        self.compute_sentence_count()
+        self._compute_sentence_count()
+        self._set_meaning_str()    
         
-    def set_sentence_model(self, model):
-        model.clear() # TODO optimize
-        for i in range(self.sentence_count):
-            lang_from_sentence_item = QStandardItem(self.lang_from_sentence[i])
-            lang_to_sentence_item = QStandardItem(self.lang_to_sentence[i])
-            sentence_transcription_item = QStandardItem(self.sentence_transcription[i])
-            item_list = [lang_from_sentence_item, lang_to_sentence_item, sentence_transcription_item]
-            model.insertRow(i, item_list)        

@@ -26,7 +26,6 @@ class UpRightWidget(QWidget):
         layout.addWidget(enter_button)
         
         enter_button.clicked.connect(lambda x: self.vocabulary_manager.add_to_dictionnary(line_edit.text()))
-        enter_button.clicked.connect(self.vocabulary_manager.refresh_vocabulary_model) # Refresh list
         enter_button.clicked.connect(self.up_left_widget.vocabulary_list_view.scrollToBottom) # Scroll to bottom
         enter_button.clicked.connect(lambda x: self.up_left_widget.refresh_sentence_view(line_edit.text())) # TODO create thread
         
@@ -38,7 +37,6 @@ class UpRightWidget(QWidget):
         file = file_selecter.getOpenFileName(filter = "*.txt")
         
         self.vocabulary_manager._get_word_from_text(file[0])
-        self.vocabulary_manager.refresh_vocabulary_model()
         
         print(file[0])
     

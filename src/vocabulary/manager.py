@@ -29,12 +29,14 @@ class Manager:
             
     def refresh_vocabulary_model(self):
         words = self.dictionnary.get_words()
-        self.vocabulary_model.refresh_model(words)
-
+        vocabularies = self.dictionnary.get_vocabularies()
+        self.vocabulary_model.refresh_model(words, vocabularies)    
+            
     def add_to_dictionnary(self, word):
-        """ Add word to dictionnary."""
+        """ Add word to dictionnary and refresh model. """
         vocabulary = Vocabulary(word, self.data_retriever)
-        self.dictionnary.add(word, vocabulary)    
+        self.dictionnary.add(word, vocabulary)
+        self.vocabulary_model.add_vocabulary(vocabulary)
     
     def _get_word_from_text(self, file_location):
         words_retrieved = self.word_retriever.get_word_from_file(file_location)

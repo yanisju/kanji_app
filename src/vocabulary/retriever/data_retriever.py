@@ -60,6 +60,8 @@ class DataRetriever():
             sentence_transcription.append(json_sentences['results'][i]["transcriptions"][0]["text"])
         return [lang_from_sentence, lang_to_sentence, sentence_transcription]
     
+    # TODO: can get mutliple meanings, the first one is often the most precise one. (senses[0])
+    # However. sometimes a word can have a lot of meaning: in that case, the program must open a new tab 
     def deserialize_json_meaning(self, json_meaning, word):
         meanings = [] # Every differents meanings of the word
         one_meaning = [] # One meaning containing all synonyms of that meaning
@@ -73,11 +75,13 @@ class DataRetriever():
             for i in range(len(json_meaning.get("data"))):
                 if(json_meaning.get("data")[i].get("japanese")[0].get("word") == word): # Check if the word in dictionnary is the same
                     for j in range(len(json_meaning.get("data")[i].get("senses"))):
-                        for k in range(len(json_meaning.get("data")[i].get("senses")[j].get("english_definitions"))):
-                            one_meaning.append(json_meaning.get("data")[i].get("senses")[j].get("english_definitions")[k])
+                        # TODO: modify
+                        for k in range(len(json_meaning.get("data")[i].get("senses")[0].get("english_definitions"))): # senses[0] / senses[j]
+                            one_meaning.append(json_meaning.get("data")[i].get("senses")[0].get("english_definitions")[k])
                         for k in range(len(json_meaning.get("data")[i].get("senses")[j].get("parts_of_speech"))):
                             one_part_of_speech.append(json_meaning.get("data")[0].get("senses")[j].get("parts_of_speech")[k])
-                        meanings.append(one_meaning)
+                        #  meanings.append(one_meaning)
+                        meanings = one_meaning
                         parts_of_speech.append(one_part_of_speech)
                         one_meaning= []
                         one_part_of_speech = []

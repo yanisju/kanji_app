@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QMainWindow, QApplication, QWidget, QGridLayout
 
 from .up_right_widget import UpRightWidget
 from .up_left_widget import UpLeftWidget
+from .down_left_widget import DownLeftWidget
 
 from ..vocabulary.manager import Manager
 
@@ -32,10 +33,11 @@ class MainWindow(QMainWindow):
         
         self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager)
         self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget)
+        self.down_left_widget = DownLeftWidget(self.centralWidget)
         
         self.central_grid_layout.addWidget(self.up_left_widget, 0, 0)
         self.central_grid_layout.addWidget(self.up_right_widget, 0, 1)
-        
+        self.central_grid_layout.addWidget(self.down_left_widget, 1, 0)
         
     
     # def _createMenu(self):
