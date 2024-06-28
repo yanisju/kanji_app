@@ -17,15 +17,13 @@ class UpLeftWidget(QWidget):
         self.sentence_table_view = self._configure_sentence_table_view()
         self.layout.addWidget(self.sentence_table_view)
     
-    def refresh_sentence_view(self, word):
-        self.sentence_table_view.setModel(self.vocabulary_manager.sentence_model)
-
     def _configure_vocabulary_list_view(self):
         """ Initialize word view and set up signals. """
         view = QTableView()
         view.setModel(self.vocabulary_manager.vocabulary_model) # Use vocabulary.manager.vocabulary_model as model
         view_item_selection = view.selectionModel()
-        view_item_selection.selectionChanged.connect(lambda x: self.vocabulary_manager.refresh_sentence_model(view.currentIndex().data())) # Change sentences view to current word
+    
+        view_item_selection.selectionChanged.connect(lambda x: self.vocabulary_manager.refresh_sentence_model(view.currentIndex().row())) # Change sentences view to current word
         return view
             
     

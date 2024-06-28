@@ -20,10 +20,11 @@ class Manager:
         self.vocabulary_model = VocabularyModel() # Model for retrieved words / How words data is set
         self.sentence_model = SentenceModel()
     
-    def refresh_sentence_model(self, word):
+    def refresh_sentence_model(self, row):
         if self.dictionnary.len() == 0:
             self.sentence_model.clean()
         else:
+            word = self.vocabulary_model.item(row, 0).text()
             vocabulary = self.dictionnary.find_vocabulary_by_word(word)
             self.sentence_model.set_sentence_model(vocabulary)
             
