@@ -11,8 +11,11 @@ class App:
         pass
 
 if __name__ == "__main__":
+    vocabulary_manager = VocabularyManager()
+    anki_manager = AnkiManager()
+
     app = QApplication(sys.argv)
-    main_window = MainWindow()
+    main_window = MainWindow(vocabulary_manager, anki_manager)
     
     main_window.show()
     

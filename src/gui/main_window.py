@@ -5,17 +5,15 @@ from .up_right_widget import UpRightWidget
 from .up_left_widget import UpLeftWidget
 from .down_left_widget import DownLeftWidget
 
-from ..vocabulary.manager import VocabularyManager
-
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, vocabulary_manager, anki_manager):
         super().__init__(parent=None)
         self.setWindowTitle("Vocanki")
         
         self.centralWidget = QWidget(self)  # Central widget
         self.setCentralWidget(self.centralWidget)
         
-        self.vocabulary_manager = VocabularyManager()
+        self.vocabulary_manager = vocabulary_manager
     
         self._create_window_skeleton()
     

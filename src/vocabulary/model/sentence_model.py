@@ -7,15 +7,13 @@ class SentenceModel(QStandardItemModel):
         
     def set_sentence_model(self, vocabulary):
         """Modify sentence model based on vocabulary data."""
-        
-        
         self.clear()
         self.all_item_list = []
         
         for i in range(vocabulary.sentence_count):
             lang_from_sentence_item = QStandardItem(vocabulary.lang_from_sentence[i])
             lang_to_sentence_item = QStandardItem(vocabulary.lang_to_sentence[i])
-            sentence_transcription_item = QStandardItem(vocabulary.sentence_transcription[i])
+            sentence_transcription_item = QStandardItem(vocabulary.sentence_anki_format[i])
             word1 = QStandardItem(vocabulary.word)
             word1_meaning = QStandardItem(vocabulary.meaning_str)
             item_list = [lang_from_sentence_item, lang_to_sentence_item, sentence_transcription_item, word1, word1_meaning]

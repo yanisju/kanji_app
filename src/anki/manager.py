@@ -1,14 +1,14 @@
 from .card import AnkiCard
-from ..vocabulary.vocabulary import Vocabulary
 import genanki 
 import re
 
 class AnkiManager:
-    def __init__(self, vocabulary):
-        self.vocabulary = vocabulary
+    def __init__(self):
+        self.vocabulary = "vocabulary"
         self.card_count = 0 # Number of cards in the deck, used to sort deck
         _anki_cards = []
         
+        """
         # TODO: Modify and set as parameters
         file_template_front = open("C:/Workspace/kanji-app/kanji_app/data/parameters/template_front.txt", "r", encoding='utf-8')
         file_template_back = open("C:/Workspace/kanji-app/kanji_app/data/parameters/template_back.txt", "r", encoding='utf-8')
@@ -40,6 +40,7 @@ class AnkiManager:
         self.my_deck = genanki.Deck(
             1301981488,
             'Test_Kanjis')
+        """
          
     def turn_vocabulary_to_card(self, vocabulary):
         new_card = AnkiCard(self.my_model)

@@ -7,9 +7,6 @@ from .dictionnary import VocabularyDictionnary
 from .model.vocabulary_model import VocabularyModel
 from .model.sentence_model import SentenceModel
 
-from PyQt6.QtCore import QStringListModel
-from PyQt6.QtGui import QStandardItemModel
-
 class VocabularyManager:
     def __init__(self):
         self.word_retriever = WordRetriever()
