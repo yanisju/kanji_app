@@ -1,8 +1,8 @@
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, QFileDialog, QWidget
-from ..vocabulary.manager import Manager
+from ..vocabulary.manager import VocabularyManager
 
 class UpRightWidget(QWidget):
-    def __init__(self, central_widget: QWidget, vocabulary_manager: Manager, up_left_widget):
+    def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager, up_left_widget):
         super().__init__(central_widget) # Init this widget as a child of central widget
         
         self.layout = QVBoxLayout(self) # Init the main layout of the widget as a child of the widget
@@ -16,6 +16,7 @@ class UpRightWidget(QWidget):
         self.layout.addWidget(self._create_choose_kanji_file_button_widget())   
     
     def _create_one_word_button_layout(self):
+        """Create and configure button to add a single word."""
         layout = QHBoxLayout()  
         formLayout = QFormLayout()
         line_edit = QLineEdit()
@@ -25,14 +26,13 @@ class UpRightWidget(QWidget):
         layout.addLayout(formLayout)
         layout.addWidget(enter_button)
         
-        enter_button.clicked.connect(lambda x: self.vocabulary_manager.add_to_dictionnary(line_edit.text()))
-        enter_button.clicked.connect(self.up_left_widget.vocabulary_list_view.scrollToBottom) # Scroll to bottom
-        enter_button.clicked.connect(lambda x: self.up_left_widget.refresh_sentence_view(line_edit.text())) # TODO create thread
-        
+        enter_button.clicked.connect(lambda x: self.vocabulary_manager.add_to_dictionnary(line_edit.text())) # Add word to model and refresh view
+        enter_button.clicked.connect(self.up_left_widget.vocabulary_list_view.scrollToBottom) # Scroll to bottom 
         
         return layout
     
     def _choose_kanji_file_action(self):
+        """Create and configure button to add a multiple words from a single file."""
         file_selecter = QFileDialog(parent=self.central_widget)
         file = file_selecter.getOpenFileName(filter = "*.txt")
         

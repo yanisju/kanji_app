@@ -1,11 +1,11 @@
-import sys
-from PyQt6.QtWidgets import QMainWindow, QApplication, QWidget, QGridLayout
+
+from PyQt6.QtWidgets import QMainWindow, QWidget, QGridLayout
 
 from .up_right_widget import UpRightWidget
 from .up_left_widget import UpLeftWidget
 from .down_left_widget import DownLeftWidget
 
-from ..vocabulary.manager import Manager
+from ..vocabulary.manager import VocabularyManager
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -15,7 +15,7 @@ class MainWindow(QMainWindow):
         self.centralWidget = QWidget(self)  # Central widget
         self.setCentralWidget(self.centralWidget)
         
-        self.vocabulary_manager = Manager()
+        self.vocabulary_manager = VocabularyManager()
     
         self._create_window_skeleton()
     
@@ -57,10 +57,4 @@ class MainWindow(QMainWindow):
     #     status.showMessage("I'm the Status Bar")
     #     self.setStatusBar(status)
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    main_window = MainWindow()
-    
-    main_window.show()
-    
-    sys.exit(app.exec())
+

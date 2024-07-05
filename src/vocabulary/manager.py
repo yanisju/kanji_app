@@ -10,7 +10,7 @@ from .model.sentence_model import SentenceModel
 from PyQt6.QtCore import QStringListModel
 from PyQt6.QtGui import QStandardItemModel
 
-class Manager:
+class VocabularyManager:
     def __init__(self):
         self.word_retriever = WordRetriever()
         self.data_retriever = DataRetriever(3, "jpn", "eng")
@@ -40,6 +40,7 @@ class Manager:
         self.vocabulary_model.add_vocabulary(vocabulary)
     
     def _get_word_from_text(self, file_location):
+        """Read words from text file and add them to model."""
         words_retrieved = self.word_retriever.get_word_from_file(file_location)
         for word in words_retrieved:
             self.add_to_dictionnary(word)

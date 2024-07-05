@@ -1,11 +1,11 @@
 from PyQt6.QtWidgets import QHBoxLayout, QWidget
-from PyQt6.QtWidgets import QListView, QTableView
+from PyQt6.QtWidgets import QTableView
 
-from ..vocabulary.manager import Manager
+from ..vocabulary.manager import VocabularyManager
 from .card_dialog import CardDialog
 
 class UpLeftWidget(QWidget):
-    def __init__(self, central_widget: QWidget, vocabulary_manager: Manager):
+    def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager):
         super().__init__(central_widget) # Init this widget as a child of central widget
         self.central_widget = central_widget
         

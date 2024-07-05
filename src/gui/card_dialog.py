@@ -7,7 +7,9 @@ class CardDialog(QDialog):
         layout.addWidget(text_widget)
         
         text = "<hr id=answer> <div style='font-size: 25px;'>test</div>"
-        text_widget.setHtml(text)
+
+        redText = "<span style=\" font-size:8pt; font-weight:600; color:#ff0000;\"> I want this text red </span>"
+        text_widget.setHtml(redText)
         
         infos_layout = QVBoxLayout()
         layout.addLayout(infos_layout)
