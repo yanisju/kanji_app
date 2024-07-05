@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QWidget
 from PyQt6.QtWidgets import QTableView
 
 from ..vocabulary.manager import VocabularyManager
-from .card_dialog import CardDialog
+from .card.dialog import CardDialog
 
 class UpLeftWidget(QWidget):
     def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager):

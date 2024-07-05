@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QFormLayout, QLineEdit 
 
-class CardDialogForm(QFormLayout):
+class CardDialogFields(QFormLayout):
     def __init__(self, card_dialog):
         super().__init__()
         self.field_line_edit_list = [] # All QLineEdit for each fields of the vocabulary.
