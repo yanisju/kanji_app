@@ -1,2 +1,4 @@
 genanki
 requests_html
+lxml_html_clean
+PyQt6
