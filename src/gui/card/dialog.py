@@ -22,12 +22,12 @@ class CardDialog(QDialog):
         card_layout = QHBoxLayout() # Layout for card view and fields 
         self.layout.addLayout(card_layout)
 
-        card_view = CardView() # TextEdit to view current card in Anki
-        card_layout.addWidget(card_view)
+        self.card_view = CardView() # TextEdit to view current card in Anki
+        card_layout.addWidget(self.card_view)
         self.fields_layout = CardDialogFields(self) # Layout to modify card fields / Modify card view
         card_layout.addLayout(self.fields_layout)
         self.fields_layout.init_fields()
-        card_view.set_card_view(self.fields_layout.field_line_edit_list) # Init card view with card fields
+        
         
         buttons_layout = QHBoxLayout() # Layout for bottom buttons
         self.layout.addLayout(buttons_layout)
@@ -37,5 +37,6 @@ class CardDialog(QDialog):
     
     def open_card_dialog(self, items_list):
         self.fields_layout.fill_fields(items_list)
+        self.card_view = self.card_view.set_card_view(self.fields_layout.field_line_edit_list) # Init card view with card fields
         self.open()
         

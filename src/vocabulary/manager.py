@@ -14,7 +14,7 @@ class VocabularyManager:
         
         self.dictionnary = VocabularyDictionnary() # Dictionnary of vocabularies instance
         
-        self.vocabulary_model = VocabularyModel() # Model for retrieved words / How words data is set
+        self.vocabulary_model = VocabularyModel() # Model for retrieved words
         self.sentence_model = SentenceModel()
     
     def refresh_sentence_model(self, row):
