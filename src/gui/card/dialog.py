@@ -24,7 +24,7 @@ class CardDialog(QDialog):
 
         self.card_view = CardView() # TextEdit to view current card in Anki
         card_layout.addWidget(self.card_view)
-        self.fields_layout = CardDialogFields(self) # Layout to modify card fields / Modify card view
+        self.fields_layout = CardDialogFields(self, self.card_view) # Layout to modify card fields / Modify card view
         card_layout.addLayout(self.fields_layout)
         self.fields_layout.init_fields()
         
@@ -36,6 +36,7 @@ class CardDialog(QDialog):
   
     
     def open_card_dialog(self, items_list):
+        """Open a new dialog menu for a card. """
         self.fields_layout.fill_fields(items_list)
         self.card_view = self.card_view.set_card_view(self.fields_layout.field_line_edit_list) # Init card view with card fields
         self.open()
