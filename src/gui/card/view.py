@@ -12,9 +12,8 @@ class CardView(QTextEdit):
                 'n4': 'blue',
                 'a': 'green',
                 'n5': 'purple'
-                # Ajoutez d'autres couleurs selon les besoins
             }
-            return colors.get(tag, 'black')  # Noir par défaut si le tag n'est pas trouvé
+            return colors.get(tag, 'black')  # Default black if tag not found
 
     def colorize_transcription(self, match):
         kanji = match.group(1)
@@ -45,9 +44,9 @@ class CardView(QTextEdit):
 
 
     def set_card_view(self, vocabulary_fields):
-        card_text = self.get_sentence_original(vocabulary_fields[2].text())
+        card_text = self.get_sentence_original(vocabulary_fields[2])
         card_text += "<hr>" 
-        card_text += self.get_sentence_translated(vocabulary_fields[1].text())
-        card_text += self.get_sentence_meaning(vocabulary_fields[3].text(), vocabulary_fields[4].text(), vocabulary_fields[5].text(), vocabulary_fields[6].text())
+        card_text += self.get_sentence_translated(vocabulary_fields[1])
+        card_text += self.get_sentence_meaning(vocabulary_fields[3], vocabulary_fields[4], vocabulary_fields[5], vocabulary_fields[6])
 
         self.setHtml(card_text)

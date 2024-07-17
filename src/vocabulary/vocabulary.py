@@ -1,6 +1,7 @@
 import re
-from .item.sentence import SentenceItem
 from .item.vocabulary import VocabularyItem
+
+from .sentence import Sentence
 
 class Vocabulary:
     """ A class used to represent a single vocabulary, and its example sentence.
@@ -12,14 +13,11 @@ class Vocabulary:
         self.sentence_count = 0  # Number of sentences
 
         self.data_retriever = data_retriever
-        self.sentences_item = []
+        self.sentences = [] # Each example sentences 
         self.get_data()
 
         self.item = VocabularyItem(self.word, self.meaning)
-        # self.lang_from_sentence = [] # Example sentences in the original language
-        # self.lang_to_sentence = [] # Example sentences in the desired language
-        # self.sentences_transcription = [] # Example sentences in the original languages with word transcription (for japanese)
-        # self.sentence_anki_format = [] # Example sentences in the original languages, applied to Anki format (for japanese)
+
         
         # self.meaning = []
         # 
@@ -89,9 +87,9 @@ class Vocabulary:
         self.sentence_count = len(data[0])
         self.meaning = self._get_meaning_str(data[3])
 
+        transcriptions = self.get_anki_format(data[2])
         for i in range(0, self.sentence_count):
-            transcriptions = self.get_anki_format(data[2])
-            self.sentences_item.append(SentenceItem(data[0][i], data[1][i], transcriptions[i], self.word, self.meaning))
+            self.sentences.append(Sentence(data[0][i], data[1][i], transcriptions[i], self.word, self.meaning))
 
         # self.lang_from_sentence = data[0]
         # self.lang_to_sentence = data[1]

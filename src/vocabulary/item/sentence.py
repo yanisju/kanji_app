@@ -9,4 +9,10 @@ class SentenceItem():
         transcription_item = QStandardItem(transcription)
         word1 = QStandardItem(word)
         word1_meaning = QStandardItem(meaning)
-        self.list = [lang_from_item, lang_to_item, transcription_item, word1, word1_meaning]
+        word2 = QStandardItem("")
+        word2_meaning = QStandardItem("")
+        self.list = [lang_from_item, lang_to_item, transcription_item, word1, word1_meaning, word2, word2_meaning]
+
+    def set_list(self, new_list):
+        self.list = new_list
+        pass

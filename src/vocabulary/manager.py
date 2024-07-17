@@ -23,7 +23,7 @@ class VocabularyManager:
         else:
             word = self.vocabulary_model.item(row, 0).text()
             vocabulary = self.dictionnary.find_vocabulary_by_word(word)
-            self.sentence_model.set_sentence_model(vocabulary)
+            self.sentence_model.refresh(vocabulary.sentences)
             
     def refresh_vocabulary_model(self):
         words = self.dictionnary.get_words()
