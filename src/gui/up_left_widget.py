@@ -35,7 +35,7 @@ class UpLeftWidget(QWidget):
         card_dialog = CardDialog(self.central_widget, self.vocabulary_manager)
 
         
-        view.doubleClicked.connect(lambda x: card_dialog.open_card_dialog(self.vocabulary_manager.sentence_model.get_sentence_item_by_row(view.currentIndex().row()), 
+        view.doubleClicked.connect(lambda x: card_dialog.open_card_dialog(self.vocabulary_manager.sentence_model.get_sentence_by_row(view.currentIndex().row()), 
                                                                           self.vocabulary_manager.dictionnary.find_vocabulary_by_word(self.vocabulary_manager.sentence_model.item(view.currentIndex().row(), 3).text()),
                                                                           view.currentIndex().row())) # 
         

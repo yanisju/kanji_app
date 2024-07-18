@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import QMainWindow, QWidget, QGridLayout
 from .up_right_widget import UpRightWidget
 from .up_left_widget import UpLeftWidget
 from .down_left_widget import DownLeftWidget
+from .down_right_widget import DownRightWidget
 
 class MainWindow(QMainWindow):
     def __init__(self, vocabulary_manager, anki_manager):
@@ -32,10 +33,13 @@ class MainWindow(QMainWindow):
         self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager)
         self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget)
         self.down_left_widget = DownLeftWidget(self.centralWidget)
+        self.down_right_widget = DownRightWidget(self.centralWidget, self.vocabulary_manager)
         
         self.central_grid_layout.addWidget(self.up_left_widget, 0, 0)
         self.central_grid_layout.addWidget(self.up_right_widget, 0, 1)
         self.central_grid_layout.addWidget(self.down_left_widget, 1, 0)
+        self.central_grid_layout.addWidget(self.down_right_widget, 1, 1)
+
         
     
     # def _createMenu(self):

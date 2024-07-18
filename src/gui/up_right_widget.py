@@ -14,6 +14,7 @@ class UpRightWidget(QWidget):
         
         self.layout.addLayout(self._create_one_word_button_layout())
         self.layout.addWidget(self._create_choose_kanji_file_button_widget())   
+        self.layout.addWidget(self._get_add_to_anki_list_button())
     
     def _create_one_word_button_layout(self):
         """Create and configure button to add a single word."""
@@ -36,15 +37,25 @@ class UpRightWidget(QWidget):
         file_selecter = QFileDialog(parent=self.central_widget)
         file = file_selecter.getOpenFileName(filter = "*.txt")
         
-        self.vocabulary_manager._get_word_from_text(file[0])
-        
-        print(file[0])
+        if(file[0] != ""):
+            self.vocabulary_manager._get_word_from_text(file[0])
     
     def _create_choose_kanji_file_button_widget(self):
-        choose_kanji_file_button = QPushButton("Choose File")
-        choose_kanji_file_button.clicked.connect(self._choose_kanji_file_action)
+        button = QPushButton("Choose File")
+        button.clicked.connect(self._choose_kanji_file_action)
         
-        return choose_kanji_file_button
+        return button
+    
+    def _add_to_anki_list_action(self):
+        row_number = self.up_left_widget.sentence_table_view.currentIndex().row()
+        sentence_to_add = self.vocabulary_manager.sentence_model.get_sentence_by_row(row_number)
+        self.vocabulary_manager.sentence_added_model.append_sentence(sentence_to_add)
+
+    def _get_add_to_anki_list_button(self):
+        button = QPushButton("Add to Anki List")
+        button.clicked.connect(self._add_to_anki_list_action)
+
+        return button
     
         
 

@@ -16,6 +16,7 @@ class VocabularyManager:
         
         self.vocabulary_model = VocabularyModel() # Model for retrieved words
         self.sentence_model = SentenceModel()
+        self.sentence_added_model = SentenceModel()
     
     def refresh_sentence_model(self, row):
         if self.dictionnary.len() == 0:

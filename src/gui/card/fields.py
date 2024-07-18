@@ -21,13 +21,13 @@ class CardDialogFields(QFormLayout):
         for i in range(len(self.fields_name)):
             self.field_line_edit_list[i].textEdited.connect(self.refresh_fields_value) # Modify view when one of the field is modified
 
-    def fill_fields(self, items_list):
+    def fill_fields(self, sentence):
         """Fill each fields for the card with the current items. """
 
         self.fields_value.clear()
-        for i in range(len(items_list)):
-            self.fields_value.append(items_list[i].text())
-            self.field_line_edit_list[i].setText(items_list[i].text())
+        for i in range(len(sentence.fields)):
+            self.fields_value.append(sentence.fields[i])
+            self.field_line_edit_list[i].setText(sentence.fields[i])
 
     def refresh_fields_value(self):
         self.fields_value.clear()
