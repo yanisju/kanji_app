@@ -15,7 +15,7 @@ if __name__ == "__main__":
     anki_manager = AnkiManager()
 
     app = QApplication(sys.argv)
-    main_window = MainWindow(vocabulary_manager, anki_manager)
+    main_window = MainWindow(vocabulary_manager)
     
     main_window.show()
     

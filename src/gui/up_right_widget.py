@@ -47,7 +47,7 @@ class UpRightWidget(QWidget):
         return button
     
     def _add_to_anki_list_action(self):
-        row_number = self.up_left_widget.sentence_table_view.currentIndex().row()
+        row_number = self.up_left_widget.sentence_view.currentIndex().row()
         sentence_to_add = self.vocabulary_manager.sentence_model.get_sentence_by_row(row_number)
         self.vocabulary_manager.sentence_added_model.append_sentence(sentence_to_add)
 

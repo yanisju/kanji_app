@@ -28,5 +28,5 @@ class SentenceModel(QStandardItemModel):
                 self.setItem(i, j, sentences[i].standard_item[j])
             
     def get_sentence_by_row(self, row):
-        return self.sentences[row - 1]
+        return self.sentences[row]
     

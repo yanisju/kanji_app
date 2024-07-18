@@ -4,10 +4,13 @@ from PyQt6.QtWidgets import QMainWindow, QWidget, QGridLayout
 from .up_right_widget import UpRightWidget
 from .up_left_widget import UpLeftWidget
 from .down_left_widget import DownLeftWidget
-from .down_right_widget import DownRightWidget
+
+from .card.dialog import CardDialog
+
+from .sentence_view import SentenceView
 
 class MainWindow(QMainWindow):
-    def __init__(self, vocabulary_manager, anki_manager):
+    def __init__(self, vocabulary_manager):
         super().__init__(parent=None)
         self.setWindowTitle("Vocanki")
         
@@ -28,12 +31,13 @@ class MainWindow(QMainWindow):
     def _create_window_skeleton(self):
         self.central_grid_layout = QGridLayout(self.centralWidget)
         self.centralWidget.setLayout(self.central_grid_layout)
+
+        self.card_dialog = CardDialog(self.centralWidget)
         
-        
-        self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager)
+        self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager, self.card_dialog)
         self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget)
         self.down_left_widget = DownLeftWidget(self.centralWidget)
-        self.down_right_widget = DownRightWidget(self.centralWidget, self.vocabulary_manager)
+        self.down_right_widget = SentenceView(self.vocabulary_manager.sentence_added_model, self.card_dialog, self.vocabulary_manager)
         
         self.central_grid_layout.addWidget(self.up_left_widget, 0, 0)
         self.central_grid_layout.addWidget(self.up_right_widget, 0, 1)

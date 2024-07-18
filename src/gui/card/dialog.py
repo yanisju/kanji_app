@@ -14,9 +14,8 @@ class CardDialog(QDialog):
         
         cancel_button.clicked.connect(self.reject)
     
-    def __init__(self, central_widget, vocabulary_manager):
+    def __init__(self, central_widget):
         super().__init__(central_widget) # Init this widget as a child of central widget
-        self.vocabulary_manager = vocabulary_manager
         
         self.layout = QVBoxLayout(self) # Main layout of Dialog
         self.setLayout(self.layout)
@@ -45,7 +44,7 @@ class CardDialog(QDialog):
         word2_meaning = self.fields_layout.fields_value[6]
         vocabulary.sentences[sentence_row].update_attributes(lang_from, lang_to, transcription, word1, word1_meaning, word2, word2_meaning)
 
-    def open_card_dialog(self, sentence, vocabulary, sentence_row):
+    def open_card_dialog(self, model, sentence, vocabulary, sentence_row):
         """Open a new dialog menu for a card. """
 
         self.sentence = sentence
@@ -55,7 +54,7 @@ class CardDialog(QDialog):
         self.fields_layout.fill_fields(sentence)
 
         self.confirm_button.clicked.connect(lambda x: self.modify_sentence(self.vocabulary, self.sentence_row))
-        self.confirm_button.clicked.connect(lambda x: self.vocabulary_manager.sentence_model.modify_row(self.vocabulary.sentences[sentence_row], self.sentence_row))
+        self.confirm_button.clicked.connect(lambda x: model.modify_row(self.vocabulary.sentences[sentence_row], self.sentence_row))
 
         self.card_view.set_card_view(self.fields_layout.fields_value) # Init card view with card fields
         self.open()
