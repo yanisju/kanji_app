@@ -1,5 +1,4 @@
 import re
-from .item.vocabulary import VocabularyItem
 
 from .sentence import Sentence
 
@@ -16,9 +15,6 @@ class Vocabulary:
         self.sentences = [] # Each example sentences 
         self.get_data()
 
-        self.item = VocabularyItem(self.word, self.meaning)
-
-        
         # self.meaning = []
         # 
         # self.meaning_count = 0 # Number of meanings

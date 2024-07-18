@@ -7,7 +7,7 @@ from .card.view import CardView
 
 from .card.dialog import CardDialog
 
-from .sentence_view import SentenceView
+from .sentence_view import SentenceTableView
 
 class MainWindow(QMainWindow):
     def __init__(self, vocabulary_manager):
@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
 
         self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager, self.card_dialog)
         self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget)
-        self.down_right_widget = SentenceView(self.vocabulary_manager.sentence_added_model, self.card_dialog, self.vocabulary_manager)
+        self.down_right_widget = SentenceTableView(self.vocabulary_manager.sentence_added_model, self.card_dialog, self.vocabulary_manager)
         self.down_left_widget = CardView()
 
         self.down_left_widget.refresh_when_double_clicked(self.up_left_widget.sentence_view)

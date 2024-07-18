@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QTableView
 
 from ..vocabulary.manager import VocabularyManager
 
-from .sentence_view import SentenceView
+from .sentence_view import SentenceTableView
 
 class UpLeftWidget(QWidget):
     def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager, card_dialog):
@@ -17,7 +17,7 @@ class UpLeftWidget(QWidget):
         self.vocabulary_list_view = self._configure_vocabulary_list_view() # View for retrieved words
         self.layout.addWidget(self.vocabulary_list_view)
         
-        self.sentence_view = SentenceView(self.vocabulary_manager.sentence_model, card_dialog, vocabulary_manager) 
+        self.sentence_view = SentenceTableView(self.vocabulary_manager.sentence_model, card_dialog, vocabulary_manager) 
         self.layout.addWidget(self.sentence_view)
 
     def _configure_vocabulary_list_view(self):
