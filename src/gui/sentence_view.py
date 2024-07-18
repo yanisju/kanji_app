@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QTableView
 
 class SentenceView(QTableView):
+    """List """
     def __init__(self, model, card_dialog, vocabulary_manager):
         super().__init__()
         self.model_on = model

@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QMainWindow, QWidget, QGridLayout
 
 from .up_right_widget import UpRightWidget
 from .up_left_widget import UpLeftWidget
-from .down_left_widget import DownLeftWidget
+from .card.view import CardView
 
 from .card.dialog import CardDialog
 
@@ -34,11 +34,15 @@ class MainWindow(QMainWindow):
 
         self.card_dialog = CardDialog(self.centralWidget)
         
+
         self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager, self.card_dialog)
         self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget)
-        self.down_left_widget = DownLeftWidget(self.centralWidget)
         self.down_right_widget = SentenceView(self.vocabulary_manager.sentence_added_model, self.card_dialog, self.vocabulary_manager)
-        
+        self.down_left_widget = CardView()
+
+        self.down_left_widget.refresh_when_double_clicked(self.up_left_widget.sentence_view)
+        self.down_left_widget.refresh_when_double_clicked(self.down_right_widget)
+
         self.central_grid_layout.addWidget(self.up_left_widget, 0, 0)
         self.central_grid_layout.addWidget(self.up_right_widget, 0, 1)
         self.central_grid_layout.addWidget(self.down_left_widget, 1, 0)

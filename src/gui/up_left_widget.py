@@ -19,7 +19,7 @@ class UpLeftWidget(QWidget):
         
         self.sentence_view = SentenceView(self.vocabulary_manager.sentence_model, card_dialog, vocabulary_manager) 
         self.layout.addWidget(self.sentence_view)
-    
+
     def _configure_vocabulary_list_view(self):
         """ Initialize word view and set up signals. """
         view = QTableView()
@@ -27,5 +27,7 @@ class UpLeftWidget(QWidget):
         view_item_selection = view.selectionModel()
     
         view_item_selection.selectionChanged.connect(lambda x: self.vocabulary_manager.refresh_sentence_model(view.currentIndex().row())) # Change sentences view to current word
+        view_item_selection.selectionChanged.connect(lambda x: self.vocabulary_manager.refresh_sentence_model(view.currentIndex().row()))
+
         return view
     

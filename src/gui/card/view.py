@@ -1,7 +1,10 @@
 from PyQt6.QtWidgets import QTextEdit
+from ...vocabulary.sentence import Sentence
+
 import re
 
 class CardView(QTextEdit):
+    """View of the card in Anki. """
     def __init__(self) -> None:
         super().__init__()
         self.setReadOnly(True)
@@ -42,11 +45,16 @@ class CardView(QTextEdit):
         result += "</span>"
         return result
 
-
     def set_card_view(self, vocabulary_fields):
+        if isinstance(vocabulary_fields, Sentence):
+            vocabulary_fields = vocabulary_fields.fields
+
         card_text = self.get_sentence_original(vocabulary_fields[2])
         card_text += "<hr>" 
         card_text += self.get_sentence_translated(vocabulary_fields[1])
         card_text += self.get_sentence_meaning(vocabulary_fields[3], vocabulary_fields[4], vocabulary_fields[5], vocabulary_fields[6])
 
         self.setHtml(card_text)
+
+    def refresh_when_double_clicked(self, table_view):
+        table_view.clicked.connect(lambda x: self.set_card_view(table_view.model_on.get_sentence_by_row(table_view.currentIndex().row())))
