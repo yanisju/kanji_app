@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QFormLayout, QLineEdit, QP
 from ..vocabulary.manager import VocabularyManager
 
 class UpRightWidget(QWidget):
-    def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager, up_left_widget):
+    def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager, up_left_widget, anki_manager):
         super().__init__(central_widget) # Init this widget as a child of central widget
         
         self.layout = QVBoxLayout(self) # Init the main layout of the widget as a child of the widget
@@ -11,10 +11,12 @@ class UpRightWidget(QWidget):
         self.central_widget = central_widget
         self.vocabulary_manager = vocabulary_manager
         self.up_left_widget = up_left_widget
+        self._anki_manager = anki_manager
         
         self.layout.addLayout(self._create_one_word_button_layout())
         self.layout.addWidget(self._create_choose_kanji_file_button_widget())   
         self.layout.addWidget(self._get_add_to_anki_list_button())
+        self.layout.addWidget(self._get_create_package_button())
     
     def _create_one_word_button_layout(self):
         """Create and configure button to add a single word."""
@@ -57,6 +59,8 @@ class UpRightWidget(QWidget):
 
         return button
     
-        
+    def _get_create_package_button(self):
+        button = QPushButton("Create Package")
+        button.clicked.connect(self._anki_manager.generate_deck)
 
-    
+        return button

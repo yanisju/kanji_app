@@ -10,7 +10,7 @@ from .card.dialog import CardDialog
 from .sentence_view import SentenceTableView
 
 class MainWindow(QMainWindow):
-    def __init__(self, vocabulary_manager):
+    def __init__(self, vocabulary_manager, anki_manager):
         super().__init__(parent=None)
         self.setWindowTitle("Vocanki")
         
@@ -18,6 +18,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.centralWidget)
         
         self.vocabulary_manager = vocabulary_manager
+        self._anki_manager = anki_manager
     
         self._create_window_skeleton()
     
@@ -36,7 +37,7 @@ class MainWindow(QMainWindow):
         
 
         self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager, self.card_dialog)
-        self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget)
+        self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget, self._anki_manager)
         self.down_right_widget = SentenceTableView(self.vocabulary_manager.sentence_added_model, self.card_dialog, self.vocabulary_manager)
         self.down_left_widget = CardView()
 

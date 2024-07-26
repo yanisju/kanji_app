@@ -8,7 +8,7 @@ from .model.vocabulary_model import VocabularyModel
 from .model.sentence_model import SentenceModel
 
 class VocabularyManager:
-    def __init__(self):
+    def __init__(self, anki_deck):
         self.word_retriever = WordRetriever()
         self.data_retriever = DataRetriever(3, "jpn", "eng")
         
@@ -16,7 +16,8 @@ class VocabularyManager:
         
         self.vocabulary_model = VocabularyModel() # Model for retrieved words
         self.sentence_model = SentenceModel()
-        self.sentence_added_model = SentenceModel()
+
+        self.sentence_added_model = SentenceModel(anki_deck)
     
     def refresh_sentence_model(self, row):
         if self.dictionnary.len() == 0:
