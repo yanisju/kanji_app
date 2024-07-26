@@ -1,9 +1,7 @@
 import genanki
-import re
 
 class Notes():
-    """ A class representing the Anki Deck containing single cards / note inside the deck.
-    #TODO: correct """
+    """A class representing notes within an Anki deck, containing individual cards."""
 
     def __init__(self, model):
         self.model = model
@@ -19,8 +17,9 @@ class Notes():
             
     def add(self, card):
         """Add a single note to the deck. """
-        note_field = card
+        note_field = list(card) # list() is used to have two different references
         note_field[0] = str(self._sort_number)
+        self._sort_number += 1
         note_field[1], note_field[2] = note_field[2], note_field[1]
         note_field.append('')
 

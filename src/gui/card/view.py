@@ -26,6 +26,7 @@ class CardView(QTextEdit):
         return f'{kanji}<span style="color:{color}">{transcription}</span>'
     
     def get_sentence_original(self, text):
+        pass
         pattern = r'(\w+)\[(.*?)\;(.*?)\]'
 
         result = "<span style=\"font-size:22px\">"
@@ -55,6 +56,7 @@ class CardView(QTextEdit):
         card_text += self.get_sentence_meaning(vocabulary_fields[3], vocabulary_fields[4], vocabulary_fields[5], vocabulary_fields[6])
 
         self.setHtml(card_text)
+        pass
 
     def refresh_when_double_clicked(self, table_view):
         table_view.clicked.connect(lambda x: self.set_card_view(table_view.model_on.get_sentence_by_row(table_view.currentIndex().row())))

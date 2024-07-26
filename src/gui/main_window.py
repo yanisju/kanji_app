@@ -1,5 +1,5 @@
 
-from PyQt6.QtWidgets import QMainWindow, QWidget, QGridLayout
+from PyQt6.QtWidgets import QMainWindow, QWidget, QGridLayout, QToolBar, QFormLayout, QLineEdit, QStatusBar
 
 from .up_right_widget import UpRightWidget
 from .up_left_widget import UpLeftWidget
@@ -21,6 +21,9 @@ class MainWindow(QMainWindow):
         self._anki_manager = anki_manager
     
         self._create_window_skeleton()
+        self._createMenu()
+        # self._createToolBar()
+        self._createStatusBar()
     
     def _add_words_to_list_model(self, words, list_model):
         words_to_add = []
@@ -48,24 +51,22 @@ class MainWindow(QMainWindow):
         self.central_grid_layout.addWidget(self.up_right_widget, 0, 1)
         self.central_grid_layout.addWidget(self.down_left_widget, 1, 0)
         self.central_grid_layout.addWidget(self.down_right_widget, 1, 1)
-
-        
     
-    # def _createMenu(self):
-    #     menu = self.menuBar().addMenu("&Menu")
-    #     menu.addAction("&Exit", self.close)
+    def _createMenu(self):
+        menu = self.menuBar().addMenu("&Menu")
+        menu.addAction("&Exit", self.close)
 
-    # def _createToolBar(self):
-    #     tools = QToolBar(parent=self)
-    #     layout = QFormLayout()
-    #     layout.addRow("Name:", QLineEdit())
+    def _createToolBar(self):
+        tools = QToolBar(parent=self)
+        layout = QFormLayout()
+        layout.addRow("Name:", QLineEdit())
         
-    #     tools.addWidget(layout)
-    #     self.addToolBar(tools)
+        tools.addWidget(layout)
+        self.addToolBar(tools)
 
-    # def _createStatusBar(self):
-    #     status = QStatusBar()
-    #     status.showMessage("I'm the Status Bar")
-    #     self.setStatusBar(status)
+    def _createStatusBar(self):
+        status = QStatusBar()
+        status.showMessage("I'm the Status Bar")
+        self.setStatusBar(status)
 
 
