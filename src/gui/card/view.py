@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QTextEdit
+from PyQt6.QtWidgets import QTextEdit, QToolTip
+from PyQt6.QtGui import QTextCursor
 from ...vocabulary.sentence import Sentence
 
 import re
@@ -7,7 +8,32 @@ class CardView(QTextEdit):
     """View of the card in Anki. """
     def __init__(self) -> None:
         super().__init__()
+        self.kana_transcript = dict() # Dictionnary containing kanji and its transcription in kana, updated each time vocabulary field is modified
+
         self.setReadOnly(True)
+        self.setMouseTracking(True)
+
+    def get_kana_transcription(self, kanji):
+        try:
+            return self.kana_transcript[kanji]
+        except:
+            pass # TODO: Add ExceptionDialog window
+
+    def is_kanji(self, text):
+        return any('\u4e00' <= char <= '\u9faf' for char in text)
+
+    def mouseMoveEvent(self, event):
+        cursor = self.cursorForPosition(event.pos())
+        cursor.select(QTextCursor.SelectionType.WordUnderCursor)
+        selected_text = cursor.selectedText()
+
+        if self.is_kanji(selected_text):
+            kana_transcription = self.get_kana_transcription(selected_text)
+            QToolTip.showText(event.globalPosition().toPoint(), kana_transcription, self)
+        else:
+            QToolTip.hideText()
+
+        super().mouseMoveEvent(event)    
 
     def get_color(self, tag):
             colors = {
@@ -20,13 +46,11 @@ class CardView(QTextEdit):
 
     def colorize_transcription(self, match):
         kanji = match.group(1)
-        transcription = match.group(2)
         tag = match.group(3)
         color = self.get_color(tag)
-        return f'{kanji}<span style="color:{color}">{transcription}</span>'
+        return f'<span style="color:{color}">{kanji}</span>'
     
     def get_sentence_original(self, text):
-        pass
         pattern = r'(\w+)\[(.*?)\;(.*?)\]'
 
         result = "<span style=\"font-size:22px\">"
@@ -45,10 +69,19 @@ class CardView(QTextEdit):
              result += "<br>" + text3 + " - " + text4
         result += "</span>"
         return result
+    
+    def get_kanji_transcription(self, sentence):
+        pattern = re.compile(r'(\w+)\[(.*?)\;(.*?)\]')
+        for match in pattern.finditer(sentence):
+            self.kana_transcript.update({match.group(1) : match.group(2)})
 
     def set_card_view(self, vocabulary_fields):
+        self.kana_transcript.clear()
+
         if isinstance(vocabulary_fields, Sentence):
             vocabulary_fields = vocabulary_fields.fields
+
+        self.get_kanji_transcription(vocabulary_fields[2])
 
         card_text = self.get_sentence_original(vocabulary_fields[2])
         card_text += "<hr>" 
