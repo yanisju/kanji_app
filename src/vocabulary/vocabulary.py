@@ -1,6 +1,7 @@
 import re
 
 from .sentence import Sentence
+from .item.vocabulary import VocabularyItem
 
 class Vocabulary:
     """ A class used to represent a single vocabulary, and its example sentence.
@@ -15,6 +16,9 @@ class Vocabulary:
         self.sentences = [] # Each example sentences 
         self.get_data()
 
+        self.item = VocabularyItem(self.word, self.meaning)
+
+        
         # self.meaning = []
         # 
         # self.meaning_count = 0 # Number of meanings
