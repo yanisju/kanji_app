@@ -20,7 +20,7 @@ def is_kanji(text):
     return any("\u4e00" <= char <= "\u9faf" for char in text)
 
 def show_transcription(view, event, sentence):
-    """Show a QToolTip containing furigana"""
+    """Show a QToolTip containing furigana of the howered kanji. """
 
     cursor = view.cursorForPosition(event.pos()) # Get cursor for position
     char_position = cursor.position() # Get the position of the character under the cursor

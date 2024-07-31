@@ -4,7 +4,7 @@ from ....vocabulary.sentence.sentence import Sentence
 from .sentences import *
 
 class CardView(QTextEdit):
-    """View of the card in Anki. """
+    """Text view of the card in Anki. """
 
     def __init__(self) -> None:
         super().__init__()
@@ -24,19 +24,24 @@ class CardView(QTextEdit):
         except:
             pass # TODO: Add ExceptionDialog window
 
-    def set_card_view(self, sentence_fields):
+    def set_card_view(self, sentence: Sentence):
         """Set card view, based on vocabulary fields. """
-        
-        if isinstance(sentence_fields, Sentence): # TODO: change this
-            self.furiganas = sentence_fields.kanji_readings
-            self.sentence = sentence_fields
-            sentence_fields = sentence_fields.fields
-            
 
+        self.furiganas = sentence.kanji_readings
+        self.sentence = sentence
+        sentence_fields = sentence.fields
+            
         card_text = get_text(self.furiganas, sentence_fields)
         self.setHtml(card_text)
 
+    def refresh_view(self, fields_values):
+        """Refresh view, based on card fields values. """
+        card_text = get_text(self.furiganas, fields_values)
+        self.setHtml(card_text)
+
     def refresh_when_double_clicked(self, table_view):
+        """When Sentence TableView is double clicked, open the card editor. """
+
         table_view.clicked.connect(lambda x: self.set_card_view(table_view.model_on.get_sentence_by_row(table_view.currentIndex().row())))
 
     def mouseMoveEvent(self, event): 

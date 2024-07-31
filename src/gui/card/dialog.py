@@ -44,11 +44,11 @@ class CardDialog(QDialog):
         self.sentence_row = sentence_row # Row number in the view
 
         self.fields_layout.fill_fields(sentence)
-        self.fields_layout.kanji_table_view
+        self.fields_layout.kanji_table_view # Contains each kanji, theirs readings and meanings of the sentence.
 
         self.confirm_button.clicked.connect(lambda x: self.modify_sentence(self.vocabulary, self.sentence_row))
         self.confirm_button.clicked.connect(lambda x: model.modify_row(self.vocabulary.sentences[sentence_row], self.sentence_row))
 
-        self.card_view.set_card_view(self.fields_layout.fields_value) # Init card view with card fields
+        self.card_view.set_card_view(sentence) # Init card view with card fields
         self.open()
         

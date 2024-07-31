@@ -43,5 +43,5 @@ class CardDialogFields(QVBoxLayout):
         self.fields_value.clear()
         for i in range(len(self.field_line_edit_list)):
             self.fields_value.append(self.field_line_edit_list[i].text())
-        self.card_view.set_card_view(self.fields_value)        
+        self.card_view.refresh_view(self.fields_value)        
             
