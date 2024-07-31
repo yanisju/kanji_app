@@ -10,7 +10,7 @@ from .model.sentence_model import SentenceModel
 class VocabularyManager:
     def __init__(self, anki_deck):
         self.word_retriever = WordRetriever()
-        self.data_retriever = DataRetriever(3, "jpn", "eng")
+        self.data_retriever = DataRetriever(5, "jpn", "eng")
         
         self.dictionnary = VocabularyDictionnary() # Dictionnary of vocabularies instance
         
@@ -38,7 +38,7 @@ class VocabularyManager:
         self.dictionnary.add(word, vocabulary)
         self.vocabulary_model.add_vocabulary(vocabulary)
     
-    def _get_word_from_text(self, file_location):
+    def get_word_from_text(self, file_location):
         """Read words from text file and add them to model."""
         words_retrieved = self.word_retriever.get_word_from_file(file_location)
         for word in words_retrieved:

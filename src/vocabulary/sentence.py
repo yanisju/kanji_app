@@ -1,23 +1,42 @@
 from PyQt6.QtGui import QStandardItem
+import re
 
 class Sentence():
-    def __init__(self, lang_from, lang_to, transcription, word, meaning):
-        self.update_attributes(lang_from, lang_to, transcription, word, meaning)
+    def __init__(self, lang_from, translation, transcription, word1, meaning1):
+        self.update_attributes([lang_from, translation, word1, meaning1])
+        self.kanji_readings = self._get_kanji_readings(transcription) # Dictionnary containing kanji and theirs readings.
 
-    def update_attributes(self, lang_from, lang_to, transcription, word, meaning, word2 = "", word2_meaning = ""):
-        self.lang_from = lang_from
-        self.lang_to = lang_to
-        self.transcription = transcription
-        self.word1 = word
-        self.word1_meaning = meaning
-        self.word2 = word2
-        self.word2_meaning = word2_meaning
-        self.fields = [lang_from, lang_to, transcription, word, meaning, self.word2, self.word2_meaning]
+    def update_attributes(self, fields: list):
+        """Update sentence attributes."""
+        self.lang_from = fields[0]
+        self.translation = fields[1]
+        self.word1 = fields[2]
+        self.word1_meaning = fields[3]
+
+        match fields:
+            case [lang_from, translation, word1, meaning1]:
+                self.word2, self.word2_meaning = "", ""
+                self.fields = [lang_from, translation, word1, meaning1, self.word2, self.word2_meaning]
+            case [lang_from, translation, word1, meaning1, word2, meaning2]:
+                self.word2, self.word2_meaning = word2, meaning2
+                self.fields = fields
+            case _:
+                raise Exception # TODO: Add DialogError
+        
         self.standard_item = None # QStandardItem in order to be inserted in the model
         self.compute_standard_item()
 
     def compute_standard_item(self):
-        item_list = []
-        for i in range(len(self.fields)):
-            item_list.append(QStandardItem(self.fields[i]))
-        self.standard_item = item_list 
+        """Update standard item, based on current sentences attributes. """
+        self.standard_item = [QStandardItem(field) for field in self.fields] 
+
+    def _get_kanji_readings(self, sentence):
+        """Return a dictionnary containg kanji and its reading in kana."""
+        pattern = r'\[([^\|\[\]]+)\|([^\[\]]+)\]'
+        result = re.findall(pattern, sentence) 
+        dict = {}
+        for match in result:
+                kanji, reading = match
+                reading = reading.replace('|', '')
+                dict[kanji] = reading
+        return dict

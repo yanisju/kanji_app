@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import QMainWindow, QWidget, QGridLayout, QToolBar, QFormLa
 
 from .up_right_widget import UpRightWidget
 from .up_left_widget import UpLeftWidget
-from .card.view import CardView
+from .card.view.view import CardView
 
 from .card.dialog import CardDialog
 

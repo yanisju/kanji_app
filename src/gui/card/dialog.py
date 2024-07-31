@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton
-from .view import CardView
+from .view.view import CardView
 from .fields import CardDialogFields
 
 class CardDialog(QDialog):
@@ -35,14 +35,8 @@ class CardDialog(QDialog):
         self.init_buttons_layout(buttons_layout)
     
     def modify_sentence(self, vocabulary, sentence_row):
-        lang_from = self.fields_layout.fields_value[0]
-        lang_to = self.fields_layout.fields_value[1]
-        transcription = self.fields_layout.fields_value[2] 
-        word1 = self.fields_layout.fields_value[3] 
-        word1_meaning = self.fields_layout.fields_value[4]
-        word2 = self.fields_layout.fields_value[5] 
-        word2_meaning = self.fields_layout.fields_value[6]
-        vocabulary.sentences[sentence_row].update_attributes(lang_from, lang_to, transcription, word1, word1_meaning, word2, word2_meaning)
+        new_sentence_fields = [field for field in self.fields_layout.fields_value]
+        vocabulary.sentences[sentence_row].update_attributes(new_sentence_fields)
 
     def open_card_dialog(self, model, sentence, vocabulary, sentence_row):
         """Open a new dialog menu for a card. """

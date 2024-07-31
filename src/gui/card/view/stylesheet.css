@@ -1,0 +1,8 @@
+QToolTip {
+    background-color: black;
+    font-size:18px;
+}
+
+QTextEdit{
+    font-size:22px;
+}

@@ -40,7 +40,7 @@ class UpRightWidget(QWidget):
         file = file_selecter.getOpenFileName(filter = "*.txt")
         
         if(file[0] != ""):
-            self.vocabulary_manager._get_word_from_text(file[0])
+            self.vocabulary_manager.get_word_from_text(file[0])
     
     def _create_choose_kanji_file_button_widget(self):
         button = QPushButton("Choose File")

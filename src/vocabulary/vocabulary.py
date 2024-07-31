@@ -18,12 +18,6 @@ class Vocabulary:
 
         self.item = VocabularyItem(self.word, self.meaning)
 
-        
-        # self.meaning = []
-        # 
-        # self.meaning_count = 0 # Number of meanings
-        # self.part_of_speech = []
-
     def _get_meaning_str(self, meaning_list):
         meaning_str = ""
         for meaning in meaning_list:
@@ -33,7 +27,7 @@ class Vocabulary:
                 meaning_str = meaning_str + ", " + meaning
         return meaning_str
     
-    def transform_transcription_to_anki_format(self, sentence):
+    def _transform_transcription_to_anki_format(self, sentence):
         """ Transform sentences in order to get furiganas and highlighting in Anki."""
         # Define the regex pattern for the initial format
         pattern = r'\[([^\|\[\]]+)\|([^\[\]]+)\]'
@@ -77,7 +71,7 @@ class Vocabulary:
         """Transform original transcription to Anki cards supported transcription. """
         sentences_anki_format = []
         for transcription in original_transcriptions:
-            sentences_anki_format.append(self.transform_transcription_to_anki_format(transcription))
+            sentences_anki_format.append(self._transform_transcription_to_anki_format(transcription))
         return sentences_anki_format
     
     def get_data(self):
@@ -89,7 +83,7 @@ class Vocabulary:
 
         transcriptions = self.get_anki_format(data[2])
         for i in range(0, self.sentence_count):
-            self.sentences.append(Sentence(data[0][i], data[1][i], transcriptions[i], self.word, self.meaning))
+            self.sentences.append(Sentence(data[0][i], data[1][i], data[2][i], self.word, self.meaning))
 
         # self.lang_from_sentence = data[0]
         # self.lang_to_sentence = data[1]

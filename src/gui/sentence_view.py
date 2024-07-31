@@ -18,5 +18,5 @@ class SentenceTableView(QTableView):
 
         self.card_dialog.open_card_dialog(self.model_on,
             self.vocabulary_manager.sentence_model.get_sentence_by_row(self.currentIndex().row()), 
-                                            self.vocabulary_manager.dictionnary.find_vocabulary_by_word(self.vocabulary_manager.sentence_model.item(self.currentIndex().row(), 3).text()),
+                                            self.vocabulary_manager.dictionnary.find_vocabulary_by_word(self.vocabulary_manager.sentence_model.item(self.currentIndex().row(), 2).text()),
                                             self.currentIndex().row())

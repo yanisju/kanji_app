@@ -6,7 +6,7 @@ class CardDialogFields(QFormLayout):
         self.card_view = card_view
 
         self.field_line_edit_list = [] # All QLineEdit for each fields of the vocabulary.
-        self.fields_name = ["Sentence:", "Meaning:", "Anki format:", "Word 1: ", "Word 1 meaning:", "Word 2: ", "Word 2 meaning:"]
+        self.fields_name = ["Sentence:", "Meaning:", "Word 1: ", "Word 1 meaning:", "Word 2: ", "Word 2 meaning:"]
         self.fields_value = []
 
     
