@@ -19,20 +19,39 @@ def colorize_transcription(match):
 def is_kanji(text):
     return any("\u4e00" <= char <= "\u9faf" for char in text)
 
-def show_transcription(view, event):
+def show_transcription(view, event, sentence):
     """Show a QToolTip containing furigana"""
-    cursor = view.cursorForPosition(event.pos())
-    cursor.select(QTextCursor.SelectionType.WordUnderCursor)
-    selected_text = cursor.selectedText()
-    
-    if is_kanji(selected_text):
-        kana_transcription = view.get_furigana(selected_text)
 
-        # cursor.movePosition(cursor.MoveOperation.PreviousCharacter, cursor.MoveMode.KeepAnchor)
-        cursor_rect = view.cursorRect(cursor)
-        text_position = cursor_rect.center()
-        global_position = view.mapToGlobal(text_position)
+    cursor = view.cursorForPosition(event.pos()) # Get cursor for position
+    char_position = cursor.position() # Get the position of the character under the cursor
 
-        QToolTip.showText(global_position, kana_transcription, view)
+    if char_position <= len(sentence.lang_from):
+        cursor.setPosition(char_position) # Place the cursor at this position and select the character
+        cursor.movePosition(QTextCursor.MoveOperation.Right, QTextCursor.MoveMode.KeepAnchor, 1)
+        char = cursor.selectedText()
+        
+        if is_kanji(char):
+            kanji = sentence.position_kanji[cursor.position() - 1]
+            kana_transcription = sentence.kanji_readings[kanji]
+
+            print_furigana(view, cursor, kana_transcription)
+        else:
+            QToolTip.hideText()
     else:
-        QToolTip.hideText()
+        cursor.select(QTextCursor.SelectionType.WordUnderCursor)
+        word = cursor.selectedText()
+
+        if is_kanji(word):
+            try:
+                kana_transcription = sentence.kanji_readings[word]
+                print_furigana(view, cursor, kana_transcription)
+            except:
+                QToolTip.hideText()
+        else:
+            QToolTip.hideText()
+
+def print_furigana(view, cursor, kana_transcription):
+    cursor_rect = view.cursorRect(cursor)
+    text_position = cursor_rect.center()
+    global_position = view.mapToGlobal(text_position)
+    QToolTip.showText(global_position, kana_transcription, view)

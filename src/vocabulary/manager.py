@@ -1,5 +1,5 @@
-from .retriever.word_retriever import WordRetriever
-from .retriever.data_retriever import DataRetriever
+from .retriever.word import WordRetriever
+from .retriever.sentence import SentenceRetriever
 
 from .vocabulary import Vocabulary
 from .dictionnary import VocabularyDictionnary
@@ -10,7 +10,7 @@ from .model.sentence_model import SentenceModel
 class VocabularyManager:
     def __init__(self, anki_deck):
         self.word_retriever = WordRetriever()
-        self.data_retriever = DataRetriever(5, "jpn", "eng")
+        self.data_retriever = SentenceRetriever(5, "jpn", "eng")
         
         self.dictionnary = VocabularyDictionnary() # Dictionnary of vocabularies instance
         

@@ -1,6 +1,6 @@
 import re
 
-from .sentence import Sentence
+from .sentence.sentence import Sentence
 from .item.vocabulary import VocabularyItem
 
 class Vocabulary:

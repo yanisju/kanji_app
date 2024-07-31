@@ -1,5 +1,6 @@
 from requests_html import HTMLSession
-class DataRetriever():
+
+class SentenceRetriever():
     """ Used to retrieve examples sentences through Internet. Here sentences are fetched through "Tatoeba" website.
     """
     def __init__(self, sentence_desired_count, lang_from, lang_to):

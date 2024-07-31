@@ -1,7 +1,6 @@
 from PyQt6.QtWidgets import QTextEdit
-from PyQt6.QtGui import QFont
 
-from ....vocabulary.sentence import Sentence
+from ....vocabulary.sentence.sentence import Sentence
 from .sentences import *
 
 class CardView(QTextEdit):
@@ -25,19 +24,22 @@ class CardView(QTextEdit):
         except:
             pass # TODO: Add ExceptionDialog window
 
-    def mouseMoveEvent(self, event): 
-        """Show transcription when mouse howers a kanji. """
-        show_transcription(self, event)
-
     def set_card_view(self, sentence_fields):
         """Set card view, based on vocabulary fields. """
-        self.furiganas.clear()
-
-        if isinstance(sentence_fields, Sentence):
+        
+        if isinstance(sentence_fields, Sentence): # TODO: change this
+            self.furiganas = sentence_fields.kanji_readings
+            self.sentence = sentence_fields
             sentence_fields = sentence_fields.fields
+            
 
         card_text = get_text(self.furiganas, sentence_fields)
         self.setHtml(card_text)
 
     def refresh_when_double_clicked(self, table_view):
         table_view.clicked.connect(lambda x: self.set_card_view(table_view.model_on.get_sentence_by_row(table_view.currentIndex().row())))
+
+    def mouseMoveEvent(self, event): 
+        """Show transcription when mouse howers a kanji. """
+        if hasattr(self, 'sentence'):
+            show_transcription(self, event, self.sentence)
