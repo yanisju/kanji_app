@@ -27,16 +27,15 @@ class CardView(QTextEdit):
     def set_card_view(self, sentence: Sentence):
         """Set card view, based on vocabulary fields. """
 
-        self.furiganas = sentence.kanji_readings
         self.sentence = sentence
         sentence_fields = sentence.fields
             
-        card_text = get_text(self.furiganas, sentence_fields)
+        card_text = get_text(sentence_fields)
         self.setHtml(card_text)
 
     def refresh_view(self, fields_values):
         """Refresh view, based on card fields values. """
-        card_text = get_text(self.furiganas, fields_values)
+        card_text = get_text(fields_values)
         self.setHtml(card_text)
 
     def refresh_when_double_clicked(self, table_view):

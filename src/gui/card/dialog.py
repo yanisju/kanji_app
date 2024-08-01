@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton, QTableView
 from .view.view import CardView
 from .fields import CardDialogFields
+from ...vocabulary.sentence.sentence import Sentence
 
 class CardDialog(QDialog):
     """Pop-up window for creating and editing a Anki card and its field. """
@@ -39,16 +40,17 @@ class CardDialog(QDialog):
     def open_card_dialog(self, model, sentence, vocabulary, sentence_row):
         """Open a new dialog menu for a card. """
 
-        self.sentence = sentence
+        self.sentence = sentence # Reference to the original sentence
+        # self.sentence = copy.deepcopy(sentence) # Copy of sentence to work on / possible to edit
         self.vocabulary = vocabulary
         self.sentence_row = sentence_row # Row number in the view
 
-        self.fields_layout.fill_fields(sentence)
+        self.fields_layout.fill_fields(self.sentence)
         self.fields_layout.kanji_table_view # Contains each kanji, theirs readings and meanings of the sentence.
 
         self.confirm_button.clicked.connect(lambda x: self.modify_sentence(self.vocabulary, self.sentence_row))
         self.confirm_button.clicked.connect(lambda x: model.modify_row(self.vocabulary.sentences[sentence_row], self.sentence_row))
 
-        self.card_view.set_card_view(sentence) # Init card view with card fields
+        self.card_view.set_card_view(self.sentence) # Init card view with card fields
         self.open()
         

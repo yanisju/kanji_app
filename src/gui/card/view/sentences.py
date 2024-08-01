@@ -28,16 +28,8 @@ def get_sentence_meaning(text1, text2, text3, text4):
     if text3 and text4:
         result += "<br>" + text3 + " - " + text4
     return result
-
-def set_furiganas(furiganas, sentence):
-    """Set furiganas dictionnary thanks to sentence transcription."""
-    pattern = re.compile(r"(\w+)\[(.*?)\;(.*?)\]")
-    for match in pattern.finditer(sentence):
-        furiganas.update({match.group(1): match.group(2)})
         
-def get_text(furiganas, sentence_fields):
-        set_furiganas(furiganas, sentence_fields[2])
-
+def get_text(sentence_fields):
         card_text = get_sentence_from(sentence_fields[0])
         card_text += "<hr>" 
         card_text += sentence_fields[1] + "<br>"

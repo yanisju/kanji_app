@@ -6,7 +6,7 @@ class CardDialogFields(QVBoxLayout):
         self.card_view = card_view
         
         self.field_form_layout = QFormLayout() # Form layout containg fields
-        self.kanji_table_view = QTableView() # View containg kanjis and theirs readings
+        self.kanji_table_view = QTableView() # View containg kanjis and theirs readings + meanings
         self.addLayout(self.field_form_layout)
         self.addWidget(self.kanji_table_view)
 
