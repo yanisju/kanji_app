@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton
-from .view.view import CardView
+from .view.text_view import CardTextView
 from .fields import CardDialogFields
 from ...vocabulary.sentence.sentence import Sentence
 
@@ -16,7 +16,7 @@ class CardDialog(QDialog):
         card_layout = QHBoxLayout() # Layout for card view and fields 
         self.layout.addLayout(card_layout)
 
-        self.card_view = CardView() # TextEdit to view current card in Anki
+        self.card_view = CardTextView() # TextEdit to view current card in Anki
         card_layout.addWidget(self.card_view)
         self.fields_layout = CardDialogFields(self.card_view) # Layout to modify card fields / Modify card view
         card_layout.addLayout(self.fields_layout)

@@ -4,7 +4,7 @@ from ....vocabulary.sentence.sentence import Sentence
 from .sentences import *
 
 
-class CardView(QTextEdit):
+class CardTextView(QTextEdit):
     """Text view of the card in Anki."""
 
     def __init__(self) -> None:
