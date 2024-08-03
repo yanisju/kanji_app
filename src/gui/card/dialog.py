@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton, QTableView
+from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton
 from .view.view import CardView
 from .fields import CardDialogFields
 from ...vocabulary.sentence.sentence import Sentence
@@ -6,8 +6,9 @@ from ...vocabulary.sentence.sentence import Sentence
 class CardDialog(QDialog):
     """Pop-up window for creating and editing a Anki card and its field. """
 
-    def __init__(self, central_widget):
+    def __init__(self, central_widget, main_card_view):
         super().__init__(central_widget) # Init this widget as a child of central widget
+        self.main_card_view = main_card_view
         
         self.layout = QVBoxLayout(self) # Main layout of Dialog
         self.setLayout(self.layout)
@@ -26,31 +27,39 @@ class CardDialog(QDialog):
     
     def init_buttons_layout(self, layout):
         self.confirm_button = QPushButton("Confirm")
-        cancel_button = QPushButton("Cancel")
+        self.cancel_button = QPushButton("Cancel")
         layout.addWidget(self.confirm_button)
-        layout.addWidget(cancel_button)
+        layout.addWidget(self.cancel_button)
+        self.confirm_button.clicked.connect(lambda x: self._update_sentence_attributes(self.main_card_view))
         self.confirm_button.clicked.connect(self.accept)
         
-        cancel_button.clicked.connect(self.reject)
+        self.cancel_button.clicked.connect(self.reject)
 
-    def modify_sentence(self, vocabulary, sentence_row):
-        new_sentence_fields = [field for field in self.fields_layout.fields_value]
-        vocabulary.sentences[sentence_row].update_attributes(new_sentence_fields)
 
-    def open_card_dialog(self, model, sentence, vocabulary, sentence_row):
+    def _update_sentence_attributes(self, card_view):
+        """Update current sentence with modified attributes in view. """
+        self.sentence.update_attributes(self.fields_layout.fields_value, 
+                                        self.fields_layout.kanji_data_model.kanji_data)
+        self.sentences_model.modify_row(self.vocabulary.sentences[self.sentence_row], self.sentence_row)
+        if hasattr(self, "sentence"): # Update CardView from Main Application as well
+            pass
+            card_view.set_card_view(self.sentence, 
+                                    self.sentence.position_kanji_sentence,
+                                    self.sentence.kanji_data)
+
+    def open_card_dialog(self, sentences_model, sentence: Sentence, vocabulary, sentence_row):
         """Open a new dialog menu for a card. """
 
-        self.sentence = sentence # Reference to the original sentence
-        # self.sentence = copy.deepcopy(sentence) # Copy of sentence to work on / possible to edit
+        self.sentence = sentence 
         self.vocabulary = vocabulary
         self.sentence_row = sentence_row # Row number in the view
-
+        self.sentences_model = sentences_model
+        
         self.fields_layout.fill_fields(self.sentence)
         self.fields_layout.kanji_table_view # Contains each kanji, theirs readings and meanings of the sentence.
 
-        self.confirm_button.clicked.connect(lambda x: self.modify_sentence(self.vocabulary, self.sentence_row))
-        self.confirm_button.clicked.connect(lambda x: model.modify_row(self.vocabulary.sentences[sentence_row], self.sentence_row))
-
-        self.card_view.set_card_view(self.sentence) # Init card view with card fields
+        self.card_view.set_card_view(self.sentence, 
+                                     self.fields_layout.kanji_data_model.position_kanji_sentence,
+                                     self.fields_layout.kanji_data_model.kanji_data) # Init card view with card fields
         self.open()
         

@@ -19,20 +19,23 @@ def colorize_transcription(match):
 def is_kanji(text):
     return any("\u4e00" <= char <= "\u9faf" for char in text)
 
-def show_transcription(view, event, sentence):
+def show_transcription(view, event, sentence_len, position_kanji, kanji_data):
     """Show a QToolTip containing furigana of the howered kanji. """
 
     cursor = view.cursorForPosition(event.pos()) # Get cursor for position
     char_position = cursor.position() # Get the position of the character under the cursor
 
-    if char_position <= len(sentence.lang_from):
+    if char_position <= sentence_len:
         cursor.setPosition(char_position) # Place the cursor at this position and select the character
         cursor.movePosition(QTextCursor.MoveOperation.Right, QTextCursor.MoveMode.KeepAnchor, 1)
         char = cursor.selectedText()
+
         
-        if cursor.position() - 1 in sentence.position_kanji_sentence.keys(): # TODO: Add "and is_kanji(char) ?"
-            kanji = sentence.position_kanji_sentence[cursor.position() - 1]
-            kana_transcription, _, _ = sentence.kanji_data[kanji]
+        if cursor.position() - 1 in position_kanji.keys(): # TODO: Add "and is_kanji(char) ?"
+            pass
+            
+            kanji = position_kanji[cursor.position() - 1]
+            kana_transcription, _, _ = kanji_data[kanji]
 
             print_furigana(view, cursor, kana_transcription)
         else:
@@ -43,7 +46,7 @@ def show_transcription(view, event, sentence):
 
         if is_kanji(word):
             try:
-                kana_transcription, _, _ = sentence.kanji_data[word]
+                kana_transcription, _, _ = kanji_data[word]
                 print_furigana(view, cursor, kana_transcription)
             except:
                 QToolTip.hideText()

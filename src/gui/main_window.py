@@ -35,17 +35,18 @@ class MainWindow(QMainWindow):
     def _create_window_skeleton(self):
         self.central_grid_layout = QGridLayout(self.centralWidget)
         self.centralWidget.setLayout(self.central_grid_layout)
-
-        self.card_dialog = CardDialog(self.centralWidget)
         
-
+        self.down_left_widget = CardView()
+        self.card_dialog = CardDialog(self.centralWidget, self.down_left_widget)
         self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager, self.card_dialog)
         self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget, self._anki_manager)
         self.down_right_widget = SentenceTableView(self.vocabulary_manager.sentence_added_model, self.card_dialog, self.vocabulary_manager)
-        self.down_left_widget = CardView()
+        
 
-        self.down_left_widget.refresh_when_double_clicked(self.up_left_widget.sentence_view)
-        self.down_left_widget.refresh_when_double_clicked(self.down_right_widget)
+
+        self.down_left_widget.refresh_when_clicked(self.up_left_widget.sentence_view)
+        self.down_left_widget.refresh_when_clicked(self.down_right_widget)
+        # self.down_left_widget.set_card_view()
 
         self.central_grid_layout.addWidget(self.up_left_widget, 0, 0)
         self.central_grid_layout.addWidget(self.up_right_widget, 0, 1)

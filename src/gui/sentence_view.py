@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QTableView
 
 class SentenceTableView(QTableView):
-    """View for the different sentences of one vocabulary."""
+    """Table view for the different sentences of one vocabulary."""
     
     def __init__(self, model, card_dialog, vocabulary_manager):
         super().__init__()
