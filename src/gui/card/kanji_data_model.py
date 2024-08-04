@@ -1,5 +1,5 @@
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
-from ....vocabulary.str_utils import *
+from ...vocabulary.str_utils import *
 
 class KanjiDataModel(QStandardItemModel):
     """Model containg kanjis, theirs readings and theirs meanings for TableView.

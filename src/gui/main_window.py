@@ -1,13 +1,11 @@
 
 from PyQt6.QtWidgets import QMainWindow, QWidget, QGridLayout, QToolBar, QFormLayout, QLineEdit, QStatusBar
 
-from .up_right_widget import UpRightWidget
-from .up_left_widget import UpLeftWidget
-from .card.view.text_view import CardTextView
+from .widget.up_right_widget import UpRightWidget
+from .widget.up_left_widget import UpLeftWidget
+from .card.text_view import CardTextView
 
-from .card.dialog import CardDialog
-
-from .sentence_view import SentenceTableView
+from .widget.sentence_table_view import SentenceTableView
 
 class MainWindow(QMainWindow):
     def __init__(self, vocabulary_manager, anki_manager):
@@ -31,13 +29,10 @@ class MainWindow(QMainWindow):
         self.centralWidget.setLayout(self.central_grid_layout)
         
         self.down_left_widget = CardTextView()
-        self.card_dialog = CardDialog(self.centralWidget, self.down_left_widget)
-        self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager, self.card_dialog, self.down_left_widget)
+        self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager, self.down_left_widget)
         self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget, self._anki_manager)
-        self.down_right_widget = SentenceTableView(self.vocabulary_manager.sentence_added_model, self.card_dialog, self.vocabulary_manager)
+        self.down_right_widget = SentenceTableView(self.vocabulary_manager.sentence_added_model, self.vocabulary_manager)
         
-
-
         self.down_left_widget.refresh_when_clicked(self.up_left_widget.sentence_view)
         self.down_left_widget.refresh_when_clicked(self.down_right_widget)
 

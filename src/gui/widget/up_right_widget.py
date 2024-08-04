@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QHBoxLayout, QVBoxLayout, QFormLayout, QLineEdit, QPushButton, QFileDialog, QWidget
-from ..vocabulary.manager import VocabularyManager
+from ...vocabulary.manager import VocabularyManager
 
 class UpRightWidget(QWidget):
     def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager, up_left_widget, anki_manager):

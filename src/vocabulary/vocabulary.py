@@ -7,12 +7,12 @@ class Vocabulary:
     """ A class used to represent a single vocabulary, and its example sentence.
     """
 
-    def __init__(self, word, data_retriever):
+    def __init__(self, word, sentence_retriever):
         self.word = word  # Vocabulary itself
         self.meaning = ""
         self.sentence_count = 0  # Number of sentences
 
-        self.data_retriever = data_retriever
+        self.sentence_retriever = sentence_retriever
         self.sentences = [] # Each example sentences 
         self.get_data()
 
@@ -77,7 +77,7 @@ class Vocabulary:
     def get_data(self):
         """ Retrieve data with the vocabulary. """
         
-        data = self.data_retriever.start(self.word) # Retrieve data from DataRetriever
+        data = self.sentence_retriever.start(self.word) # Retrieve sentences from DataRetriever
         self.sentence_count = len(data[0])
         self.meaning = self._get_meaning_str(data[3])
 

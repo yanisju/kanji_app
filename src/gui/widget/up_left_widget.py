@@ -1,13 +1,13 @@
 from PyQt6.QtWidgets import QHBoxLayout, QWidget
 from PyQt6.QtWidgets import QTableView
 
-from ..vocabulary.manager import VocabularyManager
+from ...vocabulary.manager import VocabularyManager
 
-from .sentence_view import SentenceTableView
+from .sentence_table_view import SentenceTableView
 
 class UpLeftWidget(QWidget):
     """Widget containing vocabulary and sentence table view. """
-    def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager, card_dialog, card_text_view):
+    def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager, card_text_view):
         super().__init__(central_widget) # Init this widget as a child of central widget
         self.central_widget = central_widget
         
@@ -18,7 +18,7 @@ class UpLeftWidget(QWidget):
         self.vocabulary_list_view = self._configure_vocabulary_list_view() # View for retrieved words
         self.layout.addWidget(self.vocabulary_list_view)
         
-        self.sentence_view = SentenceTableView(self.vocabulary_manager.sentence_model, card_dialog, vocabulary_manager)
+        self.sentence_view = SentenceTableView(self.vocabulary_manager.sentence_model, vocabulary_manager)
         self._configure_sentence_table_view(card_text_view) 
         self.layout.addWidget(self.sentence_view)
 

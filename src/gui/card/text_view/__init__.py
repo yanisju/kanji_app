@@ -14,7 +14,7 @@ class CardTextView(QTextEdit):
         self.setMouseTracking(True)
 
         stylesheet_location = (
-            "src/gui/card/view/stylesheet.css"  # TODO: Change as parameter
+            "src/gui/card/text_view/stylesheet.css"  # TODO: Change as parameter
         )
         with open(stylesheet_location, "r") as file:
             stylesheet = file.read()
