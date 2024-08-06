@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
         self.down_left_widget = CardTextView()
         self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager, self.down_left_widget)
         self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget, self._anki_manager)
-        self.down_right_widget = SentenceTableView(self.vocabulary_manager.sentence_added_model, self.vocabulary_manager)
+        self.down_right_widget = SentenceTableView(self.centralWidget, self.vocabulary_manager.sentence_added_model, self.vocabulary_manager)
         
         self.down_left_widget.refresh_when_clicked(self.up_left_widget.sentence_view)
         self.down_left_widget.refresh_when_clicked(self.down_right_widget)

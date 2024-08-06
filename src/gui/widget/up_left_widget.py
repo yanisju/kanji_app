@@ -18,8 +18,8 @@ class UpLeftWidget(QWidget):
         self.vocabulary_list_view = self._configure_vocabulary_list_view() # View for retrieved words
         self.layout.addWidget(self.vocabulary_list_view)
         
-        self.sentence_view = SentenceTableView(self.vocabulary_manager.sentence_model, vocabulary_manager)
-        self._configure_sentence_table_view(card_text_view) 
+        self.sentence_view = SentenceTableView(self.central_widget, self.vocabulary_manager.sentence_model, vocabulary_manager)
+        self.sentence_view.configure(card_text_view) 
         self.layout.addWidget(self.sentence_view)
 
     def _configure_vocabulary_list_view(self):
@@ -32,14 +32,3 @@ class UpLeftWidget(QWidget):
         view_item_selection.selectionChanged.connect(lambda x: self.vocabulary_manager.refresh_sentence_model(view.currentIndex().row()))
 
         return view
-    
-    def _configure_sentence_table_view(self, card_text_view):
-        """Configure sentence table view, to display sentence text view when a line is clicked."""
-        view = self.sentence_view
-        view.clicked.connect(
-            lambda x: card_text_view.set_card_view(
-                view.model_on.get_sentence_by_row(view.currentIndex().row()),
-                view.model_on.get_sentence_by_row(view.currentIndex().row()).position_kanji_sentence,
-                view.model_on.get_sentence_by_row(view.currentIndex().row()).kanji_data
-            )
-        )

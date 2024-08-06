@@ -23,7 +23,6 @@ class CardTextView(QTextEdit):
 
     def set_card_view(self, sentence: Sentence, position_kanji: dict, kanji_data: dict):
         """Set card view, based on vocabulary fields."""
-        pass
 
         self.sentence = sentence
         self.position_kanji = position_kanji

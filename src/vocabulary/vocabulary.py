@@ -10,7 +10,6 @@ class Vocabulary:
     def __init__(self, word, sentence_retriever):
         self.word = word  # Vocabulary itself
         self.meaning = ""
-        self.sentence_count = 0  # Number of sentences
 
         self.sentence_retriever = sentence_retriever
         self.sentences = [] # Each example sentences 
@@ -74,16 +73,31 @@ class Vocabulary:
             sentences_anki_format.append(self._transform_transcription_to_anki_format(transcription))
         return sentences_anki_format
     
+    def _get_kanji_data(self, sentence): # TODO: put it in retriever 
+        """Return a dictionnary containg kanji as keys and a tuple (reading, meaning, position) as values."""
+        pattern = r'\[([^\|\[\]]+)\|([^\[\]]+)\]'
+        result = re.findall(pattern, sentence) 
+        dict = {}
+        i = 0
+        for match in result:
+                kanji, reading = match
+                reading = reading.replace('|', '')
+                if kanji == self.word:
+                    dict[kanji] = (reading, self.meaning, i)
+                else:
+                    dict[kanji] = (reading, "", i)
+                i += 1
+        return dict
+    
     def get_data(self):
         """ Retrieve data with the vocabulary. """
         
-        data = self.sentence_retriever.start(self.word) # Retrieve sentences from DataRetriever
-        self.sentence_count = len(data[0])
-        self.meaning = self._get_meaning_str(data[3])
+        sentences, translations, transcriptions, word_meaning, parts_of_speech = self.sentence_retriever.get_data(self.word) # Retrieve sentences from DataRetriever
+        self.meaning = self._get_meaning_str(word_meaning)
 
-        transcriptions = self.get_anki_format(data[2])
-        for i in range(0, self.sentence_count):
-            self.sentences.append(Sentence(data[0][i], data[1][i], data[2][i], self.word, self.meaning))
+        for i in range(0, len(sentences)):
+            kanji_data = self._get_kanji_data(transcriptions[i])
+            self.sentences.append(Sentence(sentences[i], translations[i], kanji_data, self.word))
 
         # self.lang_from_sentence = data[0]
         # self.lang_to_sentence = data[1]

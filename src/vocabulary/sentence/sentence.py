@@ -1,59 +1,34 @@
 from PyQt6.QtGui import QStandardItem
-import re
 from ..str_utils import *
 
 class Sentence():
-    def __init__(self, sentence, translation, transcription, word1, meaning1):
-        self.update_attributes([sentence, translation, word1, meaning1])
-        self.kanji_data = self._get_kanji_data(transcription) # Dictionnary containing kanji and theirs readings.
-        self.position_kanji_sentence = get_position_kanji_sentence(sentence, self.kanji_data.keys()) # Dict containg positions in text as keys and kanjis as values.
+    def __init__(self, sentence, translation, kanji_data, word):
+        self.sentence = sentence
+        self.translation = translation
+        word1_reading, word1_meaning, word1_position  = kanji_data[word]
+        self.word1_data = (word, word1_reading, word1_meaning, word1_position)
+        self.word2_data = None
+        self.fields = (sentence, translation, self.word1_data, self.word2_data)
+
+        self.kanji_data = kanji_data # Dict containing kanji and theirs readings.
+        self.position_kanji_sentence = get_position_kanji_sentence(sentence, kanji_data.keys()) # Dict containg positions in text as keys and kanjis as values.
 
         self.standard_item = None # QStandardItem in order to be inserted in the model
         self.compute_standard_item()
 
     def compute_standard_item(self):
-        """Update standard item, based on current sentences attributes. """
-        self.standard_item = [QStandardItem(field) for field in self.fields] 
+        """Update standard item to insert in Sentence model, based on current sentences attributes. """
+        word1_kanji, word2_kanji = None, None
+        if self.word1_data != None:
+            word1_kanji = self.word1_data[0]
+        if self.word2_data != None:
+            word2_kanji = self.word2_data[0]
+        self.standard_item = [QStandardItem(self.sentence), QStandardItem(self.translation), QStandardItem(word1_kanji), QStandardItem(word2_kanji)] 
 
-    def update_attributes(self, fields: list, kanji_data: dict = None):
+    def update_attributes(self, fields: tuple, kanji_data: dict):
         """Update sentence attributes."""
-
-        self.lang_from = fields[0]
-        self.translation = fields[1]
-        self.word1 = fields[2]
-        self.word1_meaning = fields[3]
-
-        match fields:
-            case [lang_from, translation, word1, meaning1]:
-                self.word2, self.word2_meaning = "", ""
-                self.fields = [lang_from, translation, word1, meaning1, self.word2, self.word2_meaning]
-            case [lang_from, translation, word1, meaning1, word2, meaning2]:
-                self.word2, self.word2_meaning = word2, meaning2
-                self.fields = list(fields)
-            case _:
-                raise Exception # TODO: Add DialogError
+        self.sentence, self.translation, self.word1_data, self.word2_data = fields
+        self.fields = fields
         
-        if  kanji_data != None:
-            self.kanji_data = dict(kanji_data)
-            self.position_kanji_sentence = get_position_kanji_sentence(self.lang_from, self.kanji_data.keys())
-
-    def _get_kanji_data(self, sentence): # TODO: put in sentence retriever
-        """Return a dictionnary containg kanji as keys and a tuple (reading, meaning, position) as values."""
-        pattern = r'\[([^\|\[\]]+)\|([^\[\]]+)\]'
-        result = re.findall(pattern, sentence) 
-        dict = {}
-        i = 0
-        for match in result:
-                kanji, reading = match
-                reading = reading.replace('|', '')
-                if kanji == self.word1:
-                    dict[kanji] = (reading, self.word1_meaning, i)
-                elif kanji == self.word2:
-                    dict[kanji] = (reading, self.word2_meaning, i)
-                else:
-                    dict[kanji] = (reading, "", i)
-                i += 1
-        return dict
-    
-
-# self.position_kanji_sentence = self._get_position_kanji_sentence()
+        self.kanji_data = dict(kanji_data)
+        self.position_kanji_sentence = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())

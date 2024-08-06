@@ -23,17 +23,24 @@ def get_sentence_from(text):
 
     return result
 
-def get_sentence_meaning(text1, text2, text3, text4):
-    result = text1 + " - " + text2
-    if text3 and text4:
-        result += "<br>" + text3 + " - " + text4
+def get_sentence_meaning(word1_data, word2_data):
+    result = ""
+    if word1_data != None:
+        word1, _, word1_meaning, *_ = word1_data
+        result += word1 + " - " + word1_meaning
+    
+    if word2_data != None:
+        word2, _, word2_meaning, *_ = word2_data
+        result += "<br>" + word2 + " - " + word2_meaning
     return result
         
 def get_text(sentence_fields):
-        card_text = get_sentence_from(sentence_fields[0])
-        card_text += "<hr>" 
-        card_text += sentence_fields[1] + "<br>"
-        card_text += get_sentence_meaning(sentence_fields[2], sentence_fields[3], sentence_fields[4], sentence_fields[5])
-        return card_text
+        if(len(sentence_fields) == 0):
+            return ""
+        sentence, translation, word1_data, word2_data = sentence_fields
 
-# lang_from, translation, word, meaning, self.word2, self.word2_meaning
+        card_text = get_sentence_from(sentence)
+        card_text += "<hr>" 
+        card_text += translation + "<br>"
+        card_text += get_sentence_meaning(word1_data, word2_data)
+        return card_text

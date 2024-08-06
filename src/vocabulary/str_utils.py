@@ -1,5 +1,5 @@
 def get_position_kanji_sentence(sentence, kanjis):
-    """Return a dictionnary containing positions in sentence as keys, and kanjis as values."""
+    """Return a dictionnary containing kanjis positions in sentence as keys, and kanjis as values."""
     kanjis_sorted = sorted(kanjis, key=len, reverse=True)
 
     dict = {}

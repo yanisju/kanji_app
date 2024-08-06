@@ -1,5 +1,5 @@
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
-from ...vocabulary.str_utils import *
+from ....vocabulary.str_utils import *
 
 class KanjiDataModel(QStandardItemModel):
     """Model containg kanjis, theirs readings and theirs meanings for TableView.
@@ -30,13 +30,15 @@ class KanjiDataModel(QStandardItemModel):
         self.position_kanji_sentence = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
 
     def is_modified(self, item):
-        """Modify its own kanji_data dictionnary to fit with modifications."""
+        """Modify its own kanji_data dictionnary to fit with modifications.
+        Key: kanji
+        Item: reading, meaning, position"""
 
         index = self.indexFromItem(item)
         if index.column() != 0:  # If reading or meaning is modified
             kanji = self.item(index.row(), 0).text()
 
-            if index.column() == 1:
+            if index.column() == 1: # Modify reading
                 self.kanji_data[kanji] = (
                     item.text(),
                     self.kanji_data[kanji][1],
@@ -57,6 +59,8 @@ class KanjiDataModel(QStandardItemModel):
 
         self.set_position_kanji_sentence(self.sentence, self.kanji_data.keys())
 
+        
+
     def set_position_kanji_sentence(self, sentence, kanjis):
         """Modify dictionnary containing positions in sentence as keys, and kanjis as values."""
         kanjis_sorted = sorted(kanjis, key=len, reverse=True)
@@ -69,11 +73,3 @@ class KanjiDataModel(QStandardItemModel):
                 
                 replacement = "_" * len(word)
                 sentence = sentence.replace(word, replacement, 1)
-
-        pass
-    # def get_kanji_data(self):
-    #     """Return a dictionnary containing kanji as keys, and a list containing theirs readings and meanings. """
-    #     dict = {}
-    #     for i in range(self.rowCount()):
-    #         dict[self.item(i, 0).text()] = (self.item(i, 1).text(), self.item(i, 2).text(), i)
-    #     return dict

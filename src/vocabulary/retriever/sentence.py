@@ -92,7 +92,7 @@ class SentenceRetriever():
             else: 
                 raise ValueError #TODO: Modify exception
             
-    def start(self, vocabulary):
+    def get_data(self, vocabulary):
         json_sentences = self.retrieve_sentences(vocabulary)
         sentences = self.deserialize_json_sentence(json_sentences)
         
@@ -101,5 +101,5 @@ class SentenceRetriever():
         meanings = both_meanings_part_of_speech[0]
         part_of_speech = both_meanings_part_of_speech[1]
         
-        return [sentences[0], sentences[1], sentences[2], meanings, part_of_speech]
+        return (sentences[0], sentences[1], sentences[2], meanings, part_of_speech)
         
