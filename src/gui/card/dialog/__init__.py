@@ -6,11 +6,11 @@ from ....vocabulary.sentence.sentence import Sentence
 class CardDialog(QDialog):
     """Pop-up window for creating and editing a Anki card and its field. """
 
-    def __init__(self, central_widget, main_card_view, sentences_model, sentence: Sentence, vocabulary, sentence_row):
+    def __init__(self, central_widget, main_card_view, sentences_model, sentence: Sentence, sentence_row):
         super().__init__(central_widget) # Init this widget as a child of central widget NOT SURE IF NEEDED
         self.main_card_view = main_card_view
         self._init_layout(sentence)
-        self._init_variables(sentences_model, sentence, vocabulary, sentence_row)
+        self._init_variables(sentences_model, sentence, sentence_row)
         
 
     def _init_layout(self, sentence):
@@ -35,16 +35,15 @@ class CardDialog(QDialog):
         layout.addWidget(self.confirm_button)
         layout.addWidget(self.cancel_button)
         self.confirm_button.clicked.connect(self.fields_layout.refresh_fields_value) # TODO: move this and that
-        self.confirm_button.clicked.connect(lambda x: self._update_sentence_attributes(self.main_card_view)) # TODO: put it somewhere else
+        self.confirm_button.clicked.connect(self._update_sentence_attributes) # TODO: put it somewhere else
         self.confirm_button.clicked.connect(self.accept)
         
         self.cancel_button.clicked.connect(self.reject)
 
-    def _init_variables(self, sentences_model, sentence: Sentence, vocabulary, sentence_row):
+    def _init_variables(self, sentences_model, sentence: Sentence, sentence_row):
         """Initialiaze sentences variables for the CardDialog. """
 
         self.sentence = sentence 
-        self.vocabulary = vocabulary
         self.sentence_row = sentence_row # Row number in the view
         self.sentences_model = sentences_model
         
@@ -55,17 +54,12 @@ class CardDialog(QDialog):
                                     self.fields_layout.kanji_data_model.position_kanji_sentence,
                                     self.fields_layout.kanji_data_model.kanji_data) # Init card view with card fields
         
-
-            
-            
-
-    def _update_sentence_attributes(self, card_view): # TODO: put it in another class
+    def _update_sentence_attributes(self): # TODO: put it in another class
         """Update current sentence with modified attributes in view. """
         self.sentence.update_attributes(tuple(self.fields_layout.fields_value), 
                                         self.fields_layout.kanji_data_model.kanji_data)
-        self.sentences_model.modify_row(self.vocabulary.sentences[self.sentence_row], self.sentence_row)
-        # if hasattr(self, "sentence"): # Update CardView from Main Application as well
-        #     pass
-        #     card_view.set_card_view(self.sentence, 
-        #                             self.sentence.position_kanji_sentence,
-        #                             self.sentence.kanji_data)
+        self.sentences_model.modify_row(self.sentence, self.sentence_row)
+        if hasattr(self, "sentence"): # Update CardView from Main Application as well
+            self.main_card_view.set_card_view(self.sentence, 
+                                    self.sentence.position_kanji_sentence,
+                                    self.sentence.kanji_data)

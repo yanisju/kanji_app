@@ -59,7 +59,10 @@ class FieldsLayout(QVBoxLayout):
             )  # Modify view when one of the line edit field is modified
 
         self.field_widget_list[2].insert_new(sentence.kanji_data)
-        self.field_widget_list[2].setCurrentIndex(sentence.word1_data[3])
+        if sentence.word1_data == None:
+            self.field_widget_list[2].set_to_empty_value()
+        else:
+            self.field_widget_list[2].setCurrentIndex(sentence.word1_data[3])
 
         self.field_widget_list[3].insert_new(sentence.kanji_data)
         if sentence.word2_data == None:

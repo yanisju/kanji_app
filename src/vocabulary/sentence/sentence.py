@@ -3,6 +3,7 @@ from ..str_utils import *
 
 class Sentence():
     def __init__(self, sentence, translation, kanji_data, word):
+        self.word = word
         self.sentence = sentence
         self.translation = translation
         word1_reading, word1_meaning, word1_position  = kanji_data[word]

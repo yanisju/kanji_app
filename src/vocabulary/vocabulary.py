@@ -97,14 +97,5 @@ class Vocabulary:
 
         for i in range(0, len(sentences)):
             kanji_data = self._get_kanji_data(transcriptions[i])
-            self.sentences.append(Sentence(sentences[i], translations[i], kanji_data, self.word))
-
-        # self.lang_from_sentence = data[0]
-        # self.lang_to_sentence = data[1]
-        # self.sentences_transcription = data[2]
-        # self.set_sentence_anki_format()          
-        # self.meaning = data[3]
-        # self.part_of_speech = data[4]
-        
-        # self._set_meaning_str()    
+            self.sentences.append(Sentence(sentences[i], translations[i], kanji_data, self.word))  
         

@@ -18,7 +18,7 @@ class UpLeftWidget(QWidget):
         self.vocabulary_list_view = self._configure_vocabulary_list_view() # View for retrieved words
         self.layout.addWidget(self.vocabulary_list_view)
         
-        self.sentence_view = SentenceTableView(self.central_widget, self.vocabulary_manager.sentence_model, vocabulary_manager)
+        self.sentence_view = SentenceTableView(self.central_widget, self.vocabulary_manager.sentence_model, vocabulary_manager, card_text_view)
         self.sentence_view.configure(card_text_view) 
         self.layout.addWidget(self.sentence_view)
 

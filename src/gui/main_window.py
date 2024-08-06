@@ -28,17 +28,17 @@ class MainWindow(QMainWindow):
         self.central_grid_layout = QGridLayout(self.centralWidget)
         self.centralWidget.setLayout(self.central_grid_layout)
         
-        self.down_left_widget = CardTextView()
-        self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager, self.down_left_widget)
+        self.card_text_view = CardTextView()
+        self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager, self.card_text_view)
         self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget, self._anki_manager)
-        self.down_right_widget = SentenceTableView(self.centralWidget, self.vocabulary_manager.sentence_added_model, self.vocabulary_manager)
+        self.down_right_widget = SentenceTableView(self.centralWidget, self.vocabulary_manager.sentence_added_model, self.vocabulary_manager, self.card_text_view)
         
-        self.down_left_widget.refresh_when_clicked(self.up_left_widget.sentence_view)
-        self.down_left_widget.refresh_when_clicked(self.down_right_widget)
+        self.card_text_view.refresh_when_clicked(self.up_left_widget.sentence_view)
+        self.card_text_view.refresh_when_clicked(self.down_right_widget)
 
         self.central_grid_layout.addWidget(self.up_left_widget, 0, 0)
         self.central_grid_layout.addWidget(self.up_right_widget, 0, 1)
-        self.central_grid_layout.addWidget(self.down_left_widget, 1, 0)
+        self.central_grid_layout.addWidget(self.card_text_view, 1, 0)
         self.central_grid_layout.addWidget(self.down_right_widget, 1, 1)
     
     def _createMenu(self):
