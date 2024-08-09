@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QVBoxLayout, QPushButton, QWidget
 from ...vocabulary.manager import VocabularyManager
 from .buttons.add_one_word import AddOneWordLayout
 from .buttons.choose_file import ChooseFileButton
-from .buttons.add_to_anki_list import AddToAnkiList
+from .buttons.add_to_anki_list import AddToAnkiListButton
 from .buttons.create_package import CreatePackageButton
 
 class UpRightWidget(QWidget):
@@ -18,7 +18,7 @@ class UpRightWidget(QWidget):
         
         self.layout.addLayout(AddOneWordLayout())
         self.layout.addWidget(ChooseFileButton(central_widget, vocabulary_manager))   
-        self.layout.addWidget(AddToAnkiList(self.up_left_widget.sentence_view, self.vocabulary_manager))
+        self.layout.addWidget(AddToAnkiListButton(self.up_left_widget.sentence_view, self.vocabulary_manager))
         self.layout.addWidget(CreatePackageButton(anki_manager))
     
     def _get_create_package_button(self):

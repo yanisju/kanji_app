@@ -1,10 +1,5 @@
 from requests_html import HTMLSession
 
-def retrieve_meaning(word):
-    """ Retrieve meaning through Jisho website. """
-    json_meaning = retrieve_json_meaning(word)
-    return deserialize_json_meaning(json_meaning, word)
-        
 def retrieve_json_meaning(word):
     http_request = "https://jisho.org/api/v1/search/words?keyword=" + word
     json_meaning = HTMLSession().get(http_request)
@@ -37,6 +32,22 @@ def deserialize_json_meaning(json_meaning, word):
                     one_part_of_speech = []
                     
         if(len(meanings) != 0):
-            return [meanings, parts_of_speech]
+            return (meanings, parts_of_speech)
         else: 
             raise ValueError #TODO: Modify exception
+        
+def get_meaning_str(meaning_list):
+    meaning_str = ""
+    for meaning in meaning_list:
+        if len(meaning_str) == 0:
+            meaning_str += meaning
+        else:
+            meaning_str = meaning_str + ", " + meaning
+    return meaning_str
+
+def get_meaning(word):
+    json_meaning = retrieve_json_meaning(word)
+    meanings, part_of_speech = deserialize_json_meaning(json_meaning, word)
+    word_meaning = get_meaning_str(meanings) 
+    
+    return word_meaning, part_of_speech

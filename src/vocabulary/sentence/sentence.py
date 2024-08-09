@@ -6,7 +6,7 @@ class Sentence():
         self.word = word
         self.sentence = sentence
         self.translation = translation
-        word1_reading, word1_meaning, word1_position  = kanji_data[word]
+        word1_reading, word1_meaning, word1_position = kanji_data[word]
         self.word1_data = (word, word1_reading, word1_meaning, word1_position)
         self.word2_data = None
         self.fields = (sentence, translation, self.word1_data, self.word2_data)

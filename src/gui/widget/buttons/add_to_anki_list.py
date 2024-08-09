@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QPushButton
 
-class AddToAnkiList(QPushButton):
+class AddToAnkiListButton(QPushButton):
     def __init__(self, sentence_view, vocabulary_manager):
         super().__init__()
         self.sentence_view = sentence_view
