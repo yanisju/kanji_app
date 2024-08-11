@@ -10,5 +10,6 @@ class AddToAnkiListButton(QPushButton):
     
     def _add_to_anki_list_action(self):
         row_number = self.sentence_view.currentIndex().row()
-        sentence_to_add = self.vocabulary_manager.sentence_model.get_sentence_by_row(row_number)
+        sentence_to_clone = self.vocabulary_manager.sentence_model.get_sentence_by_row(row_number) # Original sentence
+        sentence_to_add = sentence_to_clone.clone()
         self.vocabulary_manager.sentence_added_model.append_sentence(sentence_to_add)

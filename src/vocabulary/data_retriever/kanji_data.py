@@ -60,6 +60,7 @@ def update_data_only_kanji(kanji_data: dict, word: str):
     return sort_dict(kanji_data)
 
 def update_data_kanji_kana(kanji_data: dict, word: str):
+    """Update dictionnary if word contains both kanjis and kanas."""
     word_reading = ""
     word_position = -1
     first_kanji = True
@@ -67,6 +68,7 @@ def update_data_kanji_kana(kanji_data: dict, word: str):
         if check_char_is_kana(word[i]):
             word_reading += word[i]
         else:
+            print(kanji_data.items())
             reading, meaning, position = kanji_data.pop(word[i])
             word_reading += reading
             if first_kanji:

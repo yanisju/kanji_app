@@ -2,13 +2,17 @@ from PyQt6.QtGui import QStandardItem
 from ..str_utils import *
 
 class Sentence():
-    def __init__(self, sentence, translation, kanji_data, word):
+    def __init__(self, sentence, translation, kanji_data, word, word2 = None):
         self.word = word
         self.sentence = sentence
         self.translation = translation
         word1_reading, word1_meaning, word1_position = kanji_data[word]
         self.word1_data = (word, word1_reading, word1_meaning, word1_position)
-        self.word2_data = None
+        if word2:
+            word2_reading, word2_meaning, word2_position = kanji_data[word2]
+            self.word2_data = (word2, word2_reading, word2_meaning, word2_position)
+        else:
+            self.word2_data = None  
         self.fields = (sentence, translation, self.word1_data, self.word2_data)
 
         self.kanji_data = kanji_data # Dict containing kanji and theirs readings.
@@ -33,3 +37,13 @@ class Sentence():
         
         self.kanji_data = dict(kanji_data)
         self.position_kanji_sentence = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
+
+    def clone(self):
+        """Return a new sentence with the same attributes."""
+        sentence, translation, kanji_data, word1_data, word2_data = self.sentence, self.translation, self.kanji_data, self.word1_data, self.word2_data
+        word1, *_ = word1_data
+        if word2_data:
+            word2, *_ = word2_data
+        else:
+            word2 = None
+        return Sentence(sentence, translation, kanji_data, word1, word2)

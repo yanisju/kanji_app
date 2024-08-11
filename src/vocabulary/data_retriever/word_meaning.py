@@ -32,7 +32,7 @@ def deserialize_json_meaning(json_meaning, word):
                     one_part_of_speech = []
                     
         if(len(meanings) != 0):
-            return (meanings, parts_of_speech)
+            return (meanings, parts_of_speech[0])
         else: 
             raise ValueError #TODO: Modify exception
         
@@ -49,5 +49,7 @@ def get_meaning(word):
     json_meaning = retrieve_json_meaning(word)
     meanings, part_of_speech = deserialize_json_meaning(json_meaning, word)
     word_meaning = get_meaning_str(meanings) 
+
+    print(part_of_speech)
     
     return word_meaning, part_of_speech
