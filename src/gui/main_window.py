@@ -40,7 +40,10 @@ class MainWindow(QMainWindow):
         self.central_grid_layout.addWidget(self.up_right_widget, 0, 1)
         self.central_grid_layout.addWidget(self.card_text_view, 1, 0)
         self.central_grid_layout.addWidget(self.down_right_widget, 1, 1)
-    
+
+        self.up_right_widget.add_to_anki_list_button.add_to_anki_manager_signal.connect(self._anki_manager.add_sentence)
+        self.down_right_widget.card_dialog.confirm_button_clicked_signal.connect(self._anki_manager.modify_sentence)
+
     def _createMenu(self):
         menu = self.menuBar().addMenu("&Menu")
         menu.addAction("&Exit", self.close)

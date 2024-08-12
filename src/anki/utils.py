@@ -1,48 +1,50 @@
-# TODO: USE LATER THIS FILE TO CREATE ANKI NOTES
 
-def _transform_transcription_to_anki_format(self, sentence):
-    """ Transform sentences in order to get furiganas and highlighting in Anki."""
-    # Define the regex pattern for the initial format
-    pattern = r'\[([^\|\[\]]+)\|([^\[\]]+)\]'
-    
-    # Define the tags to be applied sequentially
-    tags = ['h', 'n4', 'a', 'n5', 'n2']
-    tag_index = 0
+def get_word_anki_format(word_reading):
+    color = "a" # TODO: get color in data
+    return f"[{word_reading};{color}]"
 
-    # Function to replace each match with the desired format
-    def replace_match(match):
-        nonlocal tag_index
-        kanji = match.group(1)
-        reading = match.group(2)
-        
-        # Remove any extra '|' in the reading part
-        reading = reading.replace('|', '')
-        
-        # Check if the kanji is composed only of Roman characters or digits
-        if kanji.isalnum() and all(c.isdigit() or 'A' <= c <= 'Z' or 'a' <= c <= 'z' for c in kanji):
-            # If so, just return the kanji without annotation
-            return kanji
-        
-        # Assign the current tag from the tags list
-        tag = tags[tag_index]
-        
-        # Increment the tag_index for the next kanji
-        tag_index = (tag_index + 1) % len(tags)
-        
-        # Construct the new format with spaces before and after
-        return f' {kanji}[{reading};{tag}] '
-    
-    # Apply the transformation using the regex pattern and the replace function
-    transformed_sentence = re.sub(pattern, replace_match, sentence)
-    
-    # Remove any extra spaces that might be introduced at the start or end of the sentence
-    transformed_sentence = transformed_sentence.strip()
-    
-    return transformed_sentence
+def get_sentence_anki_format(sentence_str, kanji_data):
+    sentence_anki_format = sentence_str
+    added_word_index = 0
+    for word, word_data in kanji_data.items():
+        word_reading, *_  = word_data
+        word_position = sentence_anki_format.find(word)
+        if word_position != -1:
+            word_anki_format = get_word_anki_format(word_reading)
+            position = word_position + len(word)  # Position to put brackets
+            sentence_anki_format = sentence_anki_format[:position] + word_anki_format + " " + sentence_anki_format[position:] 
+            added_word_index += len(word) + len(word_anki_format)  + 1
+            if word_position != 0 and word_position != " ":
+                sentence_anki_format = sentence_anki_format[:word_position] + " " + sentence_anki_format[word_position:]
 
-def get_anki_format(self, original_transcriptions):
-    """Transform original transcription to Anki cards supported transcription. """
-    sentences_anki_format = []
-    for transcription in original_transcriptions:
-        sentences_anki_format.append(self._transform_transcription_to_anki_format(transcription))
-    return sentences_anki_format
+    return sentence_anki_format
+
+def get_word_n_anki_format(word, word_reading):
+    word_reading_anki_format = get_word_anki_format(word_reading)
+    return word + word_reading_anki_format
+
+def get_fields_as_list(sentence):
+    fields_list = []
+    fields_list.append(get_sentence_anki_format(sentence.sentence, sentence.kanji_data))
+    fields_list.append(sentence.translation)
+    
+    if sentence.word1_data:
+        word1, word1_reading, word1_meaning, _ = sentence.word1_data
+        fields_list.append(get_word_n_anki_format(word1, word1_reading))
+        fields_list.append(word1_meaning)
+    else: 
+        fields_list.append("")
+        fields_list.append("")
+
+    if sentence.word2_data:
+        word2, word2_reading, word2_meaning, _ = sentence.word2_data
+        fields_list.append(get_word_n_anki_format(word2, word2_reading))
+        fields_list.append(word2_meaning)
+    else: 
+        fields_list.append("")
+        fields_list.append("")
+
+    fields_list.append("")
+
+    return fields_list
+

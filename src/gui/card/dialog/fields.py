@@ -4,7 +4,7 @@ from .vocabulary_combobox import VocabularyComboBox
 
 
 class FieldsLayout(QVBoxLayout):
-    def __init__(self, card_view, sentence):
+    def __init__(self, card_view):
         super().__init__()
         self.card_view = card_view
 
@@ -30,9 +30,9 @@ class FieldsLayout(QVBoxLayout):
         ]
         self.fields_value = []
 
-        self._init_fields(sentence)
+        self._init_fields()
 
-    def _init_fields(self, sentence):
+    def _init_fields(self):
         """Initialize all fields based on vocabulary attributes."""
 
         for i in range(2):
@@ -41,7 +41,10 @@ class FieldsLayout(QVBoxLayout):
             self.field_form_layout.addRow(self.fields_name[i], field_line_edit)
 
         for i in range(2, 4):
-            field_combobox = VocabularyComboBox()
+            if i == 2:
+                field_combobox = VocabularyComboBox()
+            else: 
+                field_combobox = VocabularyComboBox(True)
             self.field_widget_list.append(field_combobox)
             self.field_form_layout.addRow(self.fields_name[i], field_combobox)
             self.kanji_data_model.itemChanged.connect(field_combobox.is_kanji_data_model_modified)
@@ -58,6 +61,8 @@ class FieldsLayout(QVBoxLayout):
                 self.refresh_fields_value
             )  # Modify view when one of the line edit field is modified
 
+    def update(self, sentence):
+        """Update fields to the current sentence"""
         self.field_widget_list[2].insert_new(sentence.kanji_data)
         if sentence.word1_data == None:
             self.field_widget_list[2].set_to_empty_value()

@@ -17,8 +17,9 @@ class UpRightWidget(QWidget):
         self.up_left_widget = up_left_widget
         
         self.layout.addLayout(AddOneWordLayout(vocabulary_manager))
-        self.layout.addWidget(ChooseFileButton(central_widget, vocabulary_manager))   
-        self.layout.addWidget(AddToAnkiListButton(self.up_left_widget.sentence_view, self.vocabulary_manager))
+        self.layout.addWidget(ChooseFileButton(central_widget, vocabulary_manager))
+        self.add_to_anki_list_button = AddToAnkiListButton(self.up_left_widget.sentence_view, self.vocabulary_manager)
+        self.layout.addWidget(self.add_to_anki_list_button)
         self.layout.addWidget(CreatePackageButton(anki_manager))
     
     def _get_create_package_button(self):

@@ -13,6 +13,8 @@ class SentenceTableView(QTableView):
         
         self.vocabulary_manager = vocabulary_manager
 
+        self.card_dialog = CardDialog(self.central_widget, main_card_view)
+
         self.doubleClicked.connect(lambda x: self.double_clicked_action(main_card_view))
 
     def configure(self, card_text_view):
@@ -30,5 +32,5 @@ class SentenceTableView(QTableView):
         row = self.currentIndex().row()
         sentence = self.model_on.get_sentence_by_row(row)
 
-        card_dialog = CardDialog(self.central_widget, main_card_view, self.model_on, sentence, row)
-        card_dialog.open()
+        self.card_dialog.update(self.model_on, sentence, row)
+        self.card_dialog.open()

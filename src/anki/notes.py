@@ -1,5 +1,7 @@
 import genanki
 
+from .utils import *
+
 class Notes():
     """A class representing notes within an Anki deck, containing individual cards."""
 
@@ -15,24 +17,23 @@ class Notes():
         for note in self._notes:
             yield note
             
-    def add(self, card):
+    def add(self, sentence):
         """Add a single note to the deck. """
-        note_field = list(card) # list() is used to have two different references
-        note_field[0] = str(self._sort_number)
-        self._sort_number += 1
-        note_field[1], note_field[2] = note_field[2], note_field[1]
-        note_field.append('')
+        note_field = get_fields_as_list(sentence)
+        note_field.insert(0, str(self._sort_number))
 
         note = genanki.Note(
                 model=self.model,
                 fields = note_field)
         
         self._notes.append(note)
+        self._sort_number += 1
 
-    def modify(self, card, row):
+    def modify(self, sentence, row):
+        note_field = get_fields_as_list(sentence)
         note = genanki.Note(
                 model=self.model,
-                fields = card)
+                fields = note_field)
         
         self._notes[row] = note
 

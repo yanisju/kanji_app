@@ -1,9 +1,7 @@
 from .vocabulary.manager import VocabularyManager
 from .gui.main_window import MainWindow
 from PyQt6.QtWidgets import QApplication
-from .anki.manager import AnkiManager
-from .anki.notes import Notes
-
+from .anki import AnkiManager
 
 import sys
 
@@ -13,7 +11,7 @@ class App:
 
 if __name__ == "__main__":
     anki_manager = AnkiManager()
-    vocabulary_manager = VocabularyManager(anki_manager.notes)
+    vocabulary_manager = VocabularyManager()
     
 
     app = QApplication(sys.argv)
