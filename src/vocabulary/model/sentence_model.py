@@ -3,7 +3,7 @@ from PyQt6.QtGui import QStandardItemModel
 class SentenceModel(QStandardItemModel):
 
     def __init__(self):
-        super().__init__(0,0)
+        super().__init__(0,4)
         self.sentences = [] # Current Sentences hold by the model
 
     def append_sentence(self, sentence):
@@ -29,4 +29,5 @@ class SentenceModel(QStandardItemModel):
             
     def get_sentence_by_row(self, row):
         return self.sentences[row]
+    
     

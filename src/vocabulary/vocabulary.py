@@ -1,5 +1,5 @@
 from .sentence.sentence import Sentence
-from .item.vocabulary import VocabularyItem
+from PyQt6.QtGui import QStandardItem
 
 class Vocabulary:
     """ A class used to represent a single vocabulary, and its example sentence.
@@ -13,7 +13,7 @@ class Vocabulary:
         self.sentences = [] # Each example sentences 
         self._get_data()
 
-        self.item = VocabularyItem(self.word, self.meaning)
+        self.item = [QStandardItem(self.word), QStandardItem(self.meaning)]
     
     def _get_data(self):
         """ Retrieve data with the vocabulary. """

@@ -1,9 +1,9 @@
 from PyQt6.QtWidgets import QHBoxLayout, QWidget
-from PyQt6.QtWidgets import QTableView
 
 from ...vocabulary.manager import VocabularyManager
 
-from .sentence_table_view import SentenceTableView
+from .table_view.vocabulary import VocabularyTableView
+from .table_view.sentence import SentenceTableView
 
 class UpLeftWidget(QWidget):
     """Widget containing vocabulary and sentence table view. """
@@ -13,22 +13,10 @@ class UpLeftWidget(QWidget):
         
         self.layout = QHBoxLayout(self)
         self.setLayout(self.layout)
-        self.vocabulary_manager = vocabulary_manager
         
-        self.vocabulary_list_view = self._configure_vocabulary_list_view() # View for retrieved words
+        self.vocabulary_list_view = VocabularyTableView(vocabulary_manager) # View for retrieved words
         self.layout.addWidget(self.vocabulary_list_view)
         
-        self.sentence_view = SentenceTableView(self.central_widget, self.vocabulary_manager.sentence_model, vocabulary_manager, card_text_view)
+        self.sentence_view = SentenceTableView(self.central_widget, vocabulary_manager.sentence_model, vocabulary_manager, card_text_view)
         self.sentence_view.configure(card_text_view) 
         self.layout.addWidget(self.sentence_view)
-
-    def _configure_vocabulary_list_view(self):
-        """ Initialize word view and set up signals. """
-        view = QTableView()
-        view.setModel(self.vocabulary_manager.vocabulary_model) # Use vocabulary.manager.vocabulary_model as model
-        view_item_selection = view.selectionModel()
-    
-        view_item_selection.selectionChanged.connect(lambda x: self.vocabulary_manager.refresh_sentence_model(view.currentIndex().row())) # Change sentences view to current word
-        view_item_selection.selectionChanged.connect(lambda x: self.vocabulary_manager.refresh_sentence_model(view.currentIndex().row()))
-
-        return view

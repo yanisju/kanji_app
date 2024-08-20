@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QTableView
 
-from ..card.dialog import CardDialog
+from ....card.dialog import CardDialog
 
 class SentenceTableView(QTableView):
     """Table view for the different sentences of one vocabulary."""

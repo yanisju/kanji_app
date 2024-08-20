@@ -5,7 +5,7 @@ from .widget.up_right_widget import UpRightWidget
 from .widget.up_left_widget import UpLeftWidget
 from .card.text_view import CardTextView
 
-from .widget.sentence_table_view import SentenceTableView
+from .widget.table_view.sentence import SentenceTableView
 
 class MainWindow(QMainWindow):
     def __init__(self, vocabulary_manager, anki_manager):
