@@ -1,6 +1,3 @@
-
-from PyQt6.QtGui import QStandardItemModel
-
 from .data_retriever import DataRetriever
 from .vocabulary import Vocabulary
 from .model.sentence import SentenceModel
@@ -40,4 +37,12 @@ class VocabularyManager:
         if(row != -1):
             word = self.vocabulary_model.item(row, 0).text()
             vocabulary = self.vocabularies[word]
-            self.sentence_model.refresh(vocabulary.sentences)   
+            self.sentence_model.refresh(vocabulary.sentences) 
+    
+    def remove_sentence(self, row):
+        sentence_vocabulary = self.sentence_model.sentences[row].vocabulary
+        sentence_vocabulary.delete_sentence(row)
+        self.sentence_model.remove_row(row)
+
+    def remove_all_sentences(self):
+        sentence_vocabulary = self.sentence_model.sentences[0].vocabulary

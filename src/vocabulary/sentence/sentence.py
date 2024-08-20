@@ -2,7 +2,8 @@ from PyQt6.QtGui import QStandardItem
 from ..str_utils import *
 
 class Sentence():
-    def __init__(self, sentence, translation, kanji_data, word, word2 = None):
+    def __init__(self, vocabulary, sentence, translation, kanji_data, word, word2 = None):
+        self.vocabulary = vocabulary
         self.word = word
         self.sentence = sentence
         self.translation = translation
@@ -40,10 +41,10 @@ class Sentence():
 
     def clone(self):
         """Return a new sentence with the same attributes."""
-        sentence, translation, kanji_data, word1_data, word2_data = self.sentence, self.translation, self.kanji_data, self.word1_data, self.word2_data
+        vocabulary, sentence, translation, kanji_data, word1_data, word2_data = self.vocabulary, self.sentence, self.translation, self.kanji_data, self.word1_data, self.word2_data
         word1, *_ = word1_data
         if word2_data:
             word2, *_ = word2_data
         else:
             word2 = None
-        return Sentence(sentence, translation, kanji_data, word1, word2)
+        return Sentence(vocabulary, sentence, translation, kanji_data, word1, word2)

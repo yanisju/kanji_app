@@ -1,22 +1,32 @@
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from ....vocabulary.str_utils import *
 
+import PyQt6.QtCore
+
 class KanjiDataModel(QStandardItemModel):
     """Model containg kanjis, theirs readings and theirs meanings for TableView.
     self.kanji_data is a dictionnary containing in real time the data about kanjis: theirs readings / meanings / positions in view.
     """
 
     def __init__(self):
-        super().__init__(0, 0)
+        super().__init__(0, 3)
         self.kanji_data = None
         self.position_kanji_sentence = None
         self.sentence = None
+        self._configure()
+        
+
+    def _configure(self):
+        self.setHeaderData(0, PyQt6.QtCore.Qt.Orientation.Horizontal, "Kanji")
+        self.setHeaderData(1, PyQt6.QtCore.Qt.Orientation.Horizontal, "Reading")
+        self.setHeaderData(2, PyQt6.QtCore.Qt.Orientation.Horizontal, "Meanings")
+
         self.itemChanged.connect(self.is_modified)
 
     def refresh(self, kanji_data: dict, sentence: str):
         """Refresh model with a new dictionnary containing kanjis data."""
         if self.kanji_data != None:  # If model is not empty
-            self.clear()
+            self.removeRows(0, self.rowCount())
         self.kanji_data = dict(sorted(kanji_data.items(), key=lambda item: item[1][2]))
 
         for kanji in self.kanji_data.keys():

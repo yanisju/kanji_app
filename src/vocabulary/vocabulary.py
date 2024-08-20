@@ -20,5 +20,7 @@ class Vocabulary:
         sentences, translations, kanjis_data, self.meaning, parts_of_speech = self.sentence_retriever.get_data(self.word, self.meaning) # Retrieve sentences from DataRetriever
         
         for i in range(0, len(sentences)):
-            self.sentences.append(Sentence(sentences[i], translations[i], kanjis_data[i], self.word))  
+            self.sentences.append(Sentence(self, sentences[i], translations[i], kanjis_data[i], self.word))  
         
+    def delete_sentence(self, row):
+        self.sentences.pop(row)

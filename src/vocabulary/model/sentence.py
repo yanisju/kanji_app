@@ -37,4 +37,6 @@ class SentenceModel(QStandardItemModel):
     def get_sentence_by_row(self, row):
         return self.sentences[row]
     
-    
+    def remove_row(self, row):
+        self.removeRow(row)
+        self.sentences.pop(row)

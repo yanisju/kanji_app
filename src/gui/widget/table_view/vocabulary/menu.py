@@ -3,6 +3,7 @@ from .action.del_one_vocabulary import DeleteVocabularyAction
 from .action.delete_all_vocabularies import DeleteAllVocabulariesAction
 
 class VocabularyTableViewMenu(QMenu):
+    """Menu displayed when user right-clicks on vocabulary table view. """
     
     def __init__(self, parent, vocabulary_manager):
         super().__init__(parent)

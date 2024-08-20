@@ -1,6 +1,9 @@
 from PyQt6.QtWidgets import QTableView
 
+from .menu import SentenceTableViewMenu
+
 from ....card.dialog import CardDialog
+
 
 class SentenceTableView(QTableView):
     """Table view for the different sentences of one vocabulary."""
@@ -10,7 +13,9 @@ class SentenceTableView(QTableView):
         self.central_widget = central_widget
         self.model_on = model
         self.setModel(model)
-        self.setEditTriggers(self.EditTrigger.NoEditTriggers)
+        self.setEditTriggers(self.EditTrigger.NoEditTriggers) # Disable editing
+
+        self.menu = SentenceTableViewMenu(self, vocabulary_manager)
         
         self.vocabulary_manager = vocabulary_manager
 
@@ -19,7 +24,8 @@ class SentenceTableView(QTableView):
         self.doubleClicked.connect(self.double_clicked_action)
 
     def configure(self, card_text_view):
-        """Configure sentence table view, to display sentence text view when a line is clicked."""
+        """Configure sentence table view, to display sentence text view when a line is clicked.
+        TODO: set it as a signal"""
         self.clicked.connect(
             lambda x: card_text_view.set_card_view(
                 self.model_on.get_sentence_by_row(self.currentIndex().row()),
@@ -27,6 +33,14 @@ class SentenceTableView(QTableView):
                 self.model_on.get_sentence_by_row(self.currentIndex().row()).kanji_data
             )
         )
+
+    def contextMenuEvent(self, event):
+        row = self.rowAt(event.pos().y())
+        column = self.columnAt(event.pos().x())
+
+        self.menu.set_current_position(row, column)
+
+        self.menu.exec(event.globalPos())
     
     def double_clicked_action(self):
         """When a sentence is double-clicked, opens a new CardDialog to edit its fields."""

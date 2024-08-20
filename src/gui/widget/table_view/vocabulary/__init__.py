@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QTableView
 from .menu import VocabularyTableViewMenu
 
 class VocabularyTableView(QTableView):
-    """Table view for the vocabulary. """
+    """Table view for the vocabulary."""
 
     def __init__(self, vocabulary_manager, parent = None) -> None:
         super().__init__()
