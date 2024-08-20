@@ -1,11 +1,18 @@
 from PyQt6.QtGui import QStandardItemModel
+import PyQt6.QtCore
 
 class SentenceModel(QStandardItemModel):
-
     def __init__(self):
         super().__init__(0,4)
         self.sentences = [] # Current Sentences hold by the model
+        self._configure()
 
+    def _configure(self):
+        self.setHeaderData(0, PyQt6.QtCore.Qt.Orientation.Horizontal, "Sentence")
+        self.setHeaderData(1, PyQt6.QtCore.Qt.Orientation.Horizontal, "Meaning")
+        self.setHeaderData(2, PyQt6.QtCore.Qt.Orientation.Horizontal, "Word 1")
+        self.setHeaderData(3, PyQt6.QtCore.Qt.Orientation.Horizontal, "Word 2")
+        
     def append_sentence(self, sentence):
         self.sentences.append(sentence)
         sentence.compute_standard_item()

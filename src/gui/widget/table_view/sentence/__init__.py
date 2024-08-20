@@ -10,12 +10,13 @@ class SentenceTableView(QTableView):
         self.central_widget = central_widget
         self.model_on = model
         self.setModel(model)
+        self.setEditTriggers(self.EditTrigger.NoEditTriggers)
         
         self.vocabulary_manager = vocabulary_manager
 
         self.card_dialog = CardDialog(self.central_widget, main_card_view)
 
-        self.doubleClicked.connect(lambda x: self.double_clicked_action(main_card_view))
+        self.doubleClicked.connect(self.double_clicked_action)
 
     def configure(self, card_text_view):
         """Configure sentence table view, to display sentence text view when a line is clicked."""
@@ -27,7 +28,7 @@ class SentenceTableView(QTableView):
             )
         )
     
-    def double_clicked_action(self, main_card_view):
+    def double_clicked_action(self):
         """When a sentence is double-clicked, opens a new CardDialog to edit its fields."""
         row = self.currentIndex().row()
         sentence = self.model_on.get_sentence_by_row(row)

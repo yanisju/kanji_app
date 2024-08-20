@@ -3,7 +3,8 @@ from PyQt6.QtGui import QStandardItemModel
 
 from .data_retriever import DataRetriever
 from .vocabulary import Vocabulary
-from .model.sentence_model import SentenceModel
+from .model.sentence import SentenceModel
+from .model.vocabulary import VocabularyModel
 
 class VocabularyManager:
     def __init__(self):
@@ -11,9 +12,8 @@ class VocabularyManager:
         
         self.vocabularies = dict() # Dictionnary of vocabularies instance
         
-        self.vocabulary_model = QStandardItemModel(0,2) # Model for retrieved words
+        self.vocabulary_model = VocabularyModel() # Model for retrieved words
         self.sentence_model = SentenceModel()
-
         self.sentence_added_model = SentenceModel()
     
     def add_word(self, word):
@@ -27,13 +27,13 @@ class VocabularyManager:
         word = self.vocabulary_model.item(row, 0).text()
 
         self.vocabulary_model.removeRow(row)
-        self.sentence_model.clear()
+        self.sentence_model.removeRows(0, self.sentence_model.rowCount())
         del self.vocabularies[word]
 
     def delete_all_vocabularies(self):
         """Delete every word from dictionnary and models. """
-        self.vocabulary_model.clear()
-        self.sentence_model.clear()
+        self.vocabulary_model.removeRows(0, self.vocabulary_model.rowCount())
+        self.sentence_model.removeRows(0, self.sentence_model.rowCount())
         self.vocabularies.clear()
 
     def refresh_sentence_model(self, row):
