@@ -1,5 +1,7 @@
 from requests_html import HTMLSession
 
+from . import find_kanjis_in_dict,  check_word_contains_kana
+
 def create_sentences_html_request(word, lang_from, lang_to):
     """ Create HTML request: fetch through Tatoeba website."""
     
@@ -13,11 +15,28 @@ def retrieve_sentences(word, lang_from, lang_to):
     json_sentences = session.get(create_sentences_html_request(word, lang_from, lang_to))
     return json_sentences.json()
 
-def deserialize_json_sentence(json_sentences, sentence_desired_count):
-    """ Returns from the fetched sentence:
-    - Example sentence in the desired language.
-    - Translation from the example sentence in the desired language.
-    - Transcription of the example sentence. (especially for japanese)
+def deserialize_json_sentence(json_sentences, sentence_desired_count, word):
+    """ 
+    Processes JSON formatted sentences and returns a tuple containing example sentences, their translations, and transcriptions.
+
+    This function extracts a specified number of example sentences, their translations, and transcriptions from a JSON structure. It checks if the desired word appears in each sentence before including it in the results.
+
+    Args:
+    -----
+    json_sentences : dict
+        A dictionary containing sentences in JSON format, typically returned from an API.
+    sentence_desired_count : int
+        The number of example sentences to retrieve.
+    word : str
+        The word that must appear in the example sentences.
+
+    Returns:
+    --------
+    tuple
+        A tuple containing three lists:
+        - `lang_from_sentence` (list of str): The example sentences in the original language.
+        - `lang_to_sentence` (list of str): The translations of the example sentences.
+        - `sentence_transcription` (list of str): The transcriptions of the example sentences (especially useful for Japanese).
     """
     
     lang_from_sentence = []
@@ -30,20 +49,22 @@ def deserialize_json_sentence(json_sentences, sentence_desired_count):
         example_sentences_count = sentence_desired_count
     
     for i in range(example_sentences_count): # For the number of sentences retrieved
-        lang_from_sentence.append(json_sentences['results'][i]["text"])
-        
-        j = 0
-        while(json_sentences['results'][i]["translations"][j] == []): # Sometimes the first translation is empty
-            j += 1
-        
-        k = 0
-        while(json_sentences['results'][i]["translations"][j][k] == []): # Same
-            k += 1
-        lang_to_sentence.append(json_sentences['results'][i]["translations"][j][k]["text"])
-        
-        sentence_transcription.append(json_sentences['results'][i]["transcriptions"][0]["text"])
+        this_lang_from_sentence = json_sentences['results'][i]["text"]
+        if check_word_contains_kana(word) or word in this_lang_from_sentence: # Add sentence if word does appear in sentence
+            lang_from_sentence.append(this_lang_from_sentence)
+            
+            j = 0
+            while(json_sentences['results'][i]["translations"][j] == []): # Sometimes the first translation is empty
+                j += 1
+            
+            k = 0
+            while(json_sentences['results'][i]["translations"][j][k] == []): # Same
+                k += 1
+            lang_to_sentence.append(json_sentences['results'][i]["translations"][j][k]["text"])
+            
+            sentence_transcription.append(json_sentences['results'][i]["transcriptions"][0]["text"])
     return (lang_from_sentence, lang_to_sentence, sentence_transcription)
 
 def get_sentences(word, lang_from, lang_to, sentence_desired_count):
     json_sentences = retrieve_sentences(word, lang_from, lang_to)
-    return deserialize_json_sentence(json_sentences, sentence_desired_count)
+    return deserialize_json_sentence(json_sentences, sentence_desired_count, word)

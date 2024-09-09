@@ -26,6 +26,21 @@ def sort_dict(kanji_data : dict): # Sort dict by kanji position
     return sorted_dict
 
 def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
+    """
+    Finds and returns a tuple of kanji characters from a dictionary that matches a specific kanji string.
+
+    Args:
+    -----
+    kanjis_data : dict
+        A dictionary where kanji characters are keys.
+    kanji_to_find : str
+        The kanji string to find in the dictionary.
+
+    Returns:
+    --------
+    tuple 
+        A tuple of kanji characters found in the dictionary, or None if not found.
+    """
     merged_keys = ""
     for key in kanjis_data.keys():
         merged_keys += key
@@ -41,12 +56,33 @@ def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
             current_position += len(key)
         return tuple(kanjis_in_dict)
     else:
-        return -1
+        return None
 
 def update_data_only_kanji(kanji_data: dict, word: str):
+    """
+    Updates kanji data for a word composed solely of kanji characters by merging data.
+
+    Args:
+    -----
+    kanji_data : dict
+        A dictionary where kanji characters are keys and values are tuples of (reading, meaning, position).
+    word : str
+        The word composed solely of kanji characters to update in the dictionary.
+
+    Returns:
+    --------
+    dict
+        An updated and sorted dictionary with merged kanji data for the specified word.
+    
+    Raises:
+    -------
+    Exception
+        If the word is not found in the kanji data.
+    """
     kanjis = find_kanjis_in_dict(kanji_data, word)
-    data_to_merge = []
     new_position = kanji_data[kanjis[0]][2] # Get position of the first kanji
+
+    data_to_merge = []
     for kanji in kanjis:
         data_to_merge.append(kanji_data.pop(kanji))
     
@@ -79,7 +115,26 @@ def update_data_kanji_kana(kanji_data: dict, word: str):
     return sort_dict(kanji_data)
         
 def get_kanji_data(sentence: str, word: str, word_meaning : str): 
-    """Return a dictionnary containg kanji as keys and a tuple (reading, meaning, position) as values."""
+    """
+    Returns a dictionary containing kanji as keys and a tuple (reading, meaning, position) as values.
+
+    This function extracts kanji data (reading, meaning, position) from a sentence 
+    and ensures the specified word is present in the resulting dictionary.
+
+    Args:
+    -----
+    sentence : str
+        The sentence containing the kanji to extract.
+    word : str
+        The word to ensure is present in the kanji data.
+    word_meaning : str
+        The meaning of the word to be included in the kanji data.
+
+    Returns:
+    --------
+    dict
+        A dictionary where kanji characters are keys and values are tuples of (reading, meaning, position).
+    """
     pattern = r'\[([^\|\[\]]+)\|([^\[\]]+)\]'
     result = re.findall(pattern, sentence) 
     dict = {}
