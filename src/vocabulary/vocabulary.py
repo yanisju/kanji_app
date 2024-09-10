@@ -21,17 +21,18 @@ class Vocabulary:
         A list containing QStandardItems representing the vocabulary word and its meaning, destined to be inserted in a model.
     """
 
-    def __init__(self, word, sentence_retriever):
+    def __init__(self, word, sentence_retriever, quick_init = False):
         self.word = word
         self.meaning = "" # TODO: create a class
 
         self.sentence_retriever = sentence_retriever
         self.sentences = [] # TODO: create a SentenceManger instead
-        self._get_data()
+
+        self._get_data(quick_init)
 
         self.item = [QStandardItem(self.word), QStandardItem(self.meaning)]
     
-    def _get_data(self):
+    def _get_data(self, quick_init):
         """
         Retrieves data associated with the vocabulary word.
 
@@ -39,7 +40,7 @@ class Vocabulary:
         kanji data, the meaning of the word, and parts of speech. It then populates
         the sentences attribute with Sentence objects."""
 
-        sentences, translations, kanjis_data, self.meaning, parts_of_speech = self.sentence_retriever.get_data(self.word, self.meaning) # Retrieve sentences from DataRetriever
+        sentences, translations, kanjis_data, self.meaning, parts_of_speech = self.sentence_retriever.get_data(self.word, self.meaning, quick_init) # Retrieve sentences from DataRetriever
         
         sentences_count = len(sentences)
         for i in range(0, sentences_count):

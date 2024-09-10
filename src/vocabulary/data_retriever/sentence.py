@@ -1,4 +1,5 @@
 from requests_html import HTMLSession
+import json
 
 from . import find_kanjis_in_dict,  check_word_contains_kana
 
@@ -14,6 +15,12 @@ def retrieve_sentences(word, lang_from, lang_to):
     session = HTMLSession()
     json_sentences = session.get(create_sentences_html_request(word, lang_from, lang_to))
     return json_sentences.json()
+
+def retrieve_sentences_quick_init(word):
+    path = "data/quick_init/sentences/" + word + ".txt"
+    with open(path) as file:
+        sentences = file.read()
+    return json.loads(sentences)
 
 def deserialize_json_sentence(json_sentences, sentence_desired_count, word):
     """ 
@@ -65,6 +72,9 @@ def deserialize_json_sentence(json_sentences, sentence_desired_count, word):
             sentence_transcription.append(json_sentences['results'][i]["transcriptions"][0]["text"])
     return (lang_from_sentence, lang_to_sentence, sentence_transcription)
 
-def get_sentences(word, lang_from, lang_to, sentence_desired_count):
-    json_sentences = retrieve_sentences(word, lang_from, lang_to)
+def get_sentences(word, lang_from, lang_to, sentence_desired_count, quick_init):
+    if quick_init:
+        json_sentences = retrieve_sentences_quick_init(word)
+    else:
+        json_sentences = retrieve_sentences(word, lang_from, lang_to)
     return deserialize_json_sentence(json_sentences, sentence_desired_count, word)

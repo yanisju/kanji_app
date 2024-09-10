@@ -1,9 +1,16 @@
 from requests_html import HTMLSession
+import json
 
 def retrieve_json_meaning(word):
     http_request = "https://jisho.org/api/v1/search/words?keyword=" + word
     json_meaning = HTMLSession().get(http_request)
     return json_meaning.json()
+
+def retrieve_json_meaning_quick_init(word):
+    path = "data/quick_init/meanings/" + word + ".txt"
+    with open(path, encoding="utf-8") as file:
+        meanings = file.read()
+    return json.loads(meanings)
 
 # TODO: can get mutliple meanings, the first one is often the most precise one. (senses[0])
 # However. sometimes a word can have a lot of meaning: in that case, the program must open a new tab 
@@ -45,8 +52,11 @@ def get_meaning_str(meaning_list):
             meaning_str = meaning_str + ", " + meaning
     return meaning_str
 
-def get_meaning(word):
-    json_meaning = retrieve_json_meaning(word)
+def get_meaning(word, quick_init):
+    if quick_init:
+        json_meaning = retrieve_json_meaning_quick_init(word)
+    else:
+        json_meaning = retrieve_json_meaning(word)
     meanings, part_of_speech = deserialize_json_meaning(json_meaning, word)
     word_meaning = get_meaning_str(meanings) 
     

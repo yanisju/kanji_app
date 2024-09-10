@@ -35,7 +35,7 @@ class DataRetriever():
         self.lang_from = lang_from
         self.lang_to = lang_to
 
-    def get_data(self, word, word_meaning):
+    def get_data(self, word, word_meaning, quick_init):
         """
         Retrieves data for a given word, including example sentences, translations, kanji readings, 
         meanings, and positions within sentences.
@@ -63,8 +63,8 @@ class DataRetriever():
                 The part of speech for the word (e.g., noun, verb).
         """
 
-        sentences, sentences_lang_to, transcriptions = get_sentences(word, self.lang_from, self.lang_to, self.sentence_desired_count)
-        word_meaning, word_part_of_speech = get_meaning(word)
+        sentences, sentences_lang_to, transcriptions = get_sentences(word, self.lang_from, self.lang_to, self.sentence_desired_count, quick_init)
+        word_meaning, word_part_of_speech = get_meaning(word, quick_init)
 
         kanji_data = []
         for transcription in transcriptions:

@@ -43,6 +43,11 @@ class VocabularyManager:
         self.vocabularies.update({word : vocabulary})
         self.vocabulary_model.appendRow(vocabulary.item)
 
+    def add_word_quick_init(self, word):
+        vocabulary = Vocabulary(word, self.data_retriever, quick_init=True)
+        self.vocabularies.update({word : vocabulary})
+        self.vocabulary_model.appendRow(vocabulary.item)
+
     def delete_vocabulary(self, row):
         """
         Deletes a vocabulary word from the dictionary and the model.
