@@ -65,9 +65,60 @@ class DataRetriever():
 
         sentences, sentences_lang_to, transcriptions = get_sentences(word, self.lang_from, self.lang_to, self.sentence_desired_count, quick_init)
         word_meaning, word_part_of_speech = get_meaning(word, quick_init)
-
-        kanji_data = []
-        for transcription in transcriptions:
-            kanji_data.append(get_kanji_data(transcription, word, word_meaning))
+        kanji_data = self._get_kanji_data(transcriptions, word, word_meaning)
         
-        return (sentences, sentences_lang_to, tuple(kanji_data), word_meaning, word_part_of_speech)
+        return (sentences, sentences_lang_to, kanji_data, word_meaning, word_part_of_speech)
+    
+    def _get_kanji_data(self, transcriptions, word: str, word_meaning: str):
+        """
+        Retrieve kanji data for each sentence, returning a dictionary where kanji are the keys and their readings, 
+        meanings, and positions in the sentence are the values.
+
+        This method processes a list of sentence transcriptions and generates kanji data for each sentence.
+        It handles cases where the word does not appear exactly as written in the kanji data by updating the 
+        dictionary when kana is involved. The final kanji data includes the reading, meaning, and position of the 
+        word in the sentence.
+
+        Args:
+        -----
+        transcriptions : list of str
+            List of transcriptions for the sentences containing the word.
+        word : str
+            The target word whose kanji data needs to be processed.
+        word_meaning : str
+            The meaning of the word, used to update the kanji data if necessary.
+
+        Returns:
+        --------
+        tuple of dict
+            A tuple where each element is a dictionary representing kanji data for a sentence. The dictionary has kanji 
+            characters as keys and their values as a tuple of (reading, meaning, position).
+        """
+
+        sentences_kanji_data = []
+
+        for transcription in transcriptions:
+            # Retrieve kanji data from the transcription
+            kanji_data = get_kanji_reading_meaning_position(transcription)
+
+            # Check if the word appears in the kanji data
+            if not is_word_in_dict(kanji_data, word):
+                # If the word contains kana, update the kanji data accordingly
+                if check_word_contains_kana(word):
+                    kanji_data = update_data_kanji_kana(kanji_data, word)
+                # Uncomment to handle words without kana
+                # else:
+                #     kanji_data = update_data_only_kanji(kanji_data, word)
+
+            # Check again if the word appears in the updated kanji data
+            if is_word_in_dict(kanji_data, word):
+                # Update the word's reading, meaning, and position
+                word_reading, _, word_position = kanji_data[word]
+                kanji_data[word] = (word_reading, word_meaning, word_position)
+
+            print(is_word_in_dict(kanji_data, word))
+
+            # Add the kanji data to the list of sentence kanji data
+            sentences_kanji_data.append(kanji_data)
+
+        return tuple(sentences_kanji_data)

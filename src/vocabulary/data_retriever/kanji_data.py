@@ -12,7 +12,7 @@ def check_word_contains_kana(word: str):
             return True
     return False
 
-def check_kanji_is_in_dict(kanji_data: dict, word: str):
+def is_word_in_dict(kanji_data: dict, word: str):
     return word in kanji_data.keys()
 
 def sort_dict(kanji_data : dict): # Sort dict by kanji position
@@ -42,7 +42,7 @@ def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
         A tuple of kanji characters found in the dictionary, or None if not found.
     """
     merged_keys = ""
-    for key in kanjis_data.keys():
+    for key in kanjis_data.keys(): # Merge all kanjis in one string
         merged_keys += key
     if kanji_to_find in merged_keys:
         position_start = merged_keys.index(kanji_to_find)
@@ -51,6 +51,7 @@ def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
         current_position = 0
         kanjis_in_dict = []
         for key in kanjis_data.keys():
+            pass
             if current_position >= position_start and current_position <= position_end:
                 kanjis_in_dict.append(key)
             current_position += len(key)
@@ -100,35 +101,37 @@ def update_data_kanji_kana(kanji_data: dict, word: str):
     word_reading = ""
     word_position = -1
     first_kanji = True
-    for i in range(len(word)):
+
+    for i in range(len(word)): # For each char of word
         if check_char_is_kana(word[i]):
             word_reading += word[i]
         else:
-            reading, meaning, position = kanji_data.pop(word[i])
-            word_reading += reading
-            if first_kanji:
-                word_meaning = meaning
-                word_position = position
+            try:
+                reading, meaning, position = kanji_data.pop(word[i])
+                word_reading += reading
+                if first_kanji:
+                    word_meaning = meaning
+                    word_position = position
+            except: # Sometimes, word doesn't appear completely in sentence
+                word_meaning = ""
+                word_position = -1
+            
     word_data = (word_reading, word_meaning, word_position)
     kanji_data[word] = word_data
 
     return sort_dict(kanji_data)
         
-def get_kanji_data(sentence: str, word: str, word_meaning : str): 
+def get_kanji_reading_meaning_position(sentence: str): 
     """
     Returns a dictionary containing kanji as keys and a tuple (reading, meaning, position) as values.
 
-    This function extracts kanji data (reading, meaning, position) from a sentence 
-    and ensures the specified word is present in the resulting dictionary.
+    This function extracts kanji data (reading, meaning, position) from a sentence transcription
+    and returns it as a dict.
 
     Args:
     -----
     sentence : str
         The sentence containing the kanji to extract.
-    word : str
-        The word to ensure is present in the kanji data.
-    word_meaning : str
-        The meaning of the word to be included in the kanji data.
 
     Returns:
     --------
@@ -144,12 +147,4 @@ def get_kanji_data(sentence: str, word: str, word_meaning : str):
             reading = reading.replace('|', '')
             dict[kanji] = (reading, "", i)
             i += 1
-    if not check_kanji_is_in_dict(dict, word): # Sometimes, word doesn't appear in kanji data
-        if check_word_contains_kana(word):
-            dict = update_data_kanji_kana(dict, word)
-        else:
-            dict = update_data_only_kanji(dict, word)
-
-    word_reading, _, word_position = dict[word] # Update word meaning
-    dict[word] = (word_reading, word_meaning, word_position)
     return dict

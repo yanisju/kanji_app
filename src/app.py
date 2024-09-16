@@ -18,7 +18,7 @@ class App:
         sys.exit(self.app.exec())
 
     def quick_init(self, words_file):
-        path = "data/input/" + words_file + ".txt"
+        path = "data/input/" + words_file
         with open(path, encoding="utf-8") as file:
             lines = file.readlines()
             for line in lines:
@@ -30,7 +30,7 @@ class App:
 
 if __name__ == "__main__":
     app = App()
-    if sys.argv[1] == "--quick-init":
+    if len(sys.argv) > 1 and sys.argv[1] == "--quick-init":
         app.quick_init(sys.argv[2])
     else:
         app.start()

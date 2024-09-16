@@ -24,14 +24,16 @@ def deserialize_json_meaning(json_meaning, word):
     if status_code != 200:
         raise ValueError # TODO: Modify exception
     else:
-        for i in range(len(json_meaning.get("data"))):
-            if(json_meaning.get("data")[i].get("japanese")[0].get("word") == word): # Check if the word in dictionnary is the same
-                for j in range(len(json_meaning.get("data")[i].get("senses"))):
+        json_data = json_meaning.get("data")
+        for i in range(len(json_data)):
+            if(json_data[i].get("japanese")[0].get("word") == word): # Check if the word in dictionnary is the same
+                for j in range(len(json_data[i].get("senses"))):
                     # TODO: modify
-                    for k in range(len(json_meaning.get("data")[i].get("senses")[0].get("english_definitions"))): # senses[0] / senses[j]
-                        one_meaning.append(json_meaning.get("data")[i].get("senses")[0].get("english_definitions")[k])
-                    for k in range(len(json_meaning.get("data")[i].get("senses")[j].get("parts_of_speech"))):
-                        one_part_of_speech.append(json_meaning.get("data")[0].get("senses")[j].get("parts_of_speech")[k])
+                    for k in range(len(json_data[i].get("senses")[0].get("english_definitions"))): # senses[0] / senses[j]
+                        one_meaning.append(json_data[i].get("senses")[0].get("english_definitions")[k])
+                    for k in range(len(json_data[i].get("senses")[j].get("parts_of_speech"))):
+                        pass
+                        one_part_of_speech.append(json_data[i].get("senses")[j].get("parts_of_speech")[k])
                     #  meanings.append(one_meaning)
                     meanings = one_meaning
                     parts_of_speech.append(one_part_of_speech)
@@ -41,6 +43,7 @@ def deserialize_json_meaning(json_meaning, word):
         if(len(meanings) != 0):
             return (meanings, parts_of_speech[0])
         else: 
+            return ("can't find meanings", "same")
             raise ValueError #TODO: Modify exception
         
 def get_meaning_str(meaning_list):

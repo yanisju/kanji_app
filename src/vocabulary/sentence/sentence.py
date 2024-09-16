@@ -1,5 +1,6 @@
 from PyQt6.QtGui import QStandardItem
 from ..str_utils import *
+from ..data_retriever.kanji_data import is_word_in_dict
 
 class Sentence():
     """
@@ -33,8 +34,13 @@ class Sentence():
         self.word = word
         self.sentence = sentence
         self.translation = translation
-        word1_reading, word1_meaning, word1_position = kanji_data[word]
+
+        if is_word_in_dict(kanji_data, word):
+            word1_reading, word1_meaning, word1_position = kanji_data[word]
+        else: # If word does not appear in kanji_data, takes first element
+            word1_reading, word1_meaning, word1_position = kanji_data[next(iter(kanji_data))]
         self.word1_data = (word, word1_reading, word1_meaning, word1_position)
+        
         if word2:
             word2_reading, word2_meaning, word2_position = kanji_data[word2]
             self.word2_data = (word2, word2_reading, word2_meaning, word2_position)
