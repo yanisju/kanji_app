@@ -1,5 +1,5 @@
 from .kanji_data import *
-from .word_meaning import *
+from ..meaning.retriever import *
 from .sentence import *
 
 class DataRetriever():
@@ -35,7 +35,7 @@ class DataRetriever():
         self.lang_from = lang_from
         self.lang_to = lang_to
 
-    def get_data(self, word, word_meaning, quick_init):
+    def get_data(self, word, word_meaning_object, quick_init):
         """
         Retrieves data for a given word, including example sentences, translations, kanji readings, 
         meanings, and positions within sentences.
@@ -44,7 +44,7 @@ class DataRetriever():
         -----
         word : str
             The vocabulary word for which data is to be retrieved.
-        word_meaning : str
+        word_meaning : VocabularyMeaning
             The initial meaning of the word (may be updated by the method).
 
         Returns:
@@ -64,10 +64,11 @@ class DataRetriever():
         """
 
         sentences, sentences_lang_to, transcriptions = get_sentences(word, self.lang_from, self.lang_to, self.sentence_desired_count, quick_init)
-        word_meaning, word_part_of_speech = get_meaning(word, quick_init)
+        word_meaning = word_meaning_object.meaning
+        word_part_of_speech = word_meaning_object.part_of_speech
         kanji_data = self._get_kanji_data(transcriptions, word, word_meaning)
         
-        return (sentences, sentences_lang_to, kanji_data, word_meaning, word_part_of_speech)
+        return (sentences, sentences_lang_to, kanji_data)
     
     def _get_kanji_data(self, transcriptions, word: str, word_meaning: str):
         """
@@ -98,7 +99,6 @@ class DataRetriever():
         sentences_kanji_data = []
 
         for transcription in transcriptions:
-            # Retrieve kanji data from the transcription
             kanji_data = get_kanji_reading_meaning_position(transcription)
 
             # Check if the word appears in the kanji data
@@ -106,9 +106,8 @@ class DataRetriever():
                 # If the word contains kana, update the kanji data accordingly
                 if check_word_contains_kana(word):
                     kanji_data = update_data_kanji_kana(kanji_data, word)
-                # Uncomment to handle words without kana
-                # else:
-                #     kanji_data = update_data_only_kanji(kanji_data, word)
+                else:
+                    kanji_data = update_data_only_kanji(kanji_data, word)
 
             # Check again if the word appears in the updated kanji data
             if is_word_in_dict(kanji_data, word):
