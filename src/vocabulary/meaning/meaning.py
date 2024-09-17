@@ -7,7 +7,7 @@ class VocabularyMeaning():
         self.count = 0 
         self._meanings = []
         self._part_of_speech = []
-        self.current_selection = 0
+        self.current_selection = 1
         self.standard_item_model = QStandardItemModel()
 
     def add(self, meaning, part_of_speech):
@@ -35,11 +35,11 @@ class VocabularyMeaning():
 
     @property
     def meaning(self):
-        return self._meanings[self.current_selection]
+        return self._meanings[self.current_selection - 1]
     
     @property
     def part_of_speech(self):
-        return self._part_of_speech[self.current_selection]
+        return self._part_of_speech[self.current_selection - 1]
     
     def fetch_from_jisho(self, quick_init):
         meanings, part_of_speech = get_meaning(self.word, quick_init)

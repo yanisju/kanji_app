@@ -12,14 +12,10 @@ class Vocabulary:
     -----------
     word : str
         The vocabulary word itself.
-    meaning : str
-        The meaning of the vocabulary word. (Placeholder for future implementation as a separate class)
     sentence_retriever : DataRetriever
         An instance responsible for retrieving sentences and related data for the vocabulary word.
-    sentences : list
-        A list of Sentence objects that provide example sentences using the vocabulary word.
-    item : list
-        A list containing QStandardItems representing the vocabulary word and its meaning, destined to be inserted in a model.
+    quick_init : boolean
+        TODO: complete
     """
 
     def __init__(self, word, sentence_retriever, quick_init = False):
@@ -59,3 +55,6 @@ class Vocabulary:
             The index of the sentence to be deleted.
         """
         self.sentences.pop(row)
+
+    def set_meaning_standard_item(self, model):
+        self.meaning_object.standard_item_model = model
