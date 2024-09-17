@@ -13,15 +13,8 @@ class CardDialog(QDialog):
     def __init__(self, central_widget, main_card_view):
         super().__init__(central_widget) # Init this widget as a child of central widget NOT SURE IF NEEDED
         self.main_card_view = main_card_view
-
         self._init_layout()
-        
-        
-    def update(self, sentences_model, sentence: Sentence, sentence_row):
-        """Update card dialog view and fields to the current sentence."""
-        self._init_variables(sentences_model, sentence, sentence_row)
-        self.fields_layout.update(sentence)
-
+    
     def _init_layout(self):
         self.layout = QVBoxLayout(self) # Main layout of Dialog
         self.setLayout(self.layout)
@@ -38,15 +31,38 @@ class CardDialog(QDialog):
         buttons_layout = QHBoxLayout() # Layout for bottom buttons
         self.layout.addLayout(buttons_layout)
         self._init_buttons_layout(buttons_layout)
-    
+
     def _init_buttons_layout(self, layout):
         self.confirm_button = QPushButton("Confirm")
         self.cancel_button = QPushButton("Cancel")
         layout.addWidget(self.confirm_button)
         layout.addWidget(self.cancel_button)
         self.confirm_button.clicked.connect(self._confirm_button_clicked) 
-        
         self.cancel_button.clicked.connect(self.reject)
+
+    def _confirm_button_clicked(self):
+        self.fields_layout.refresh_fields_value() # TODO: move this and that
+        self._update_sentence_attributes()
+        self.confirm_button_clicked_signal.emit(self.sentence, self.sentence_row)
+        self.accept()
+
+    def _update_sentence_attributes(self): # TODO: put it in another class
+        """Update current sentence with modified attributes in view. """
+        self.sentence.update_attributes(tuple(self.fields_layout.fields_value), 
+                                        self.fields_layout.kanji_data_model.kanji_data)
+        self.sentences_model.modify_row(self.sentence, self.sentence_row)
+        if hasattr(self, "sentence"): # Update CardView from Main Application as well
+            self.main_card_view.set_card_view(self.sentence, 
+                                    self.sentence.position_kanji_sentence,
+                                    self.sentence.kanji_data)
+        
+
+    def update(self, sentences_model, sentence: Sentence, sentence_row):
+        """If Dialog is opened, dialog view and fields must be updated 
+        to the current sentence."""
+
+        self._init_variables(sentences_model, sentence, sentence_row)
+        self.fields_layout.update(sentence)
 
     def _init_variables(self, sentences_model, sentence: Sentence, sentence_row):
         """Initialiaze sentences variables for the CardDialog. """
@@ -62,19 +78,3 @@ class CardDialog(QDialog):
                                     self.fields_layout.kanji_data_model.position_kanji_sentence,
                                     self.fields_layout.kanji_data_model.kanji_data) # Init card view with card fields
         
-    def _confirm_button_clicked(self):
-        self.fields_layout.refresh_fields_value() # TODO: move this and that
-        self._update_sentence_attributes()
-        self.confirm_button_clicked_signal.emit(self.sentence, self.sentence_row)
-        self.accept()
-        
-
-    def _update_sentence_attributes(self): # TODO: put it in another class
-        """Update current sentence with modified attributes in view. """
-        self.sentence.update_attributes(tuple(self.fields_layout.fields_value), 
-                                        self.fields_layout.kanji_data_model.kanji_data)
-        self.sentences_model.modify_row(self.sentence, self.sentence_row)
-        if hasattr(self, "sentence"): # Update CardView from Main Application as well
-            self.main_card_view.set_card_view(self.sentence, 
-                                    self.sentence.position_kanji_sentence,
-                                    self.sentence.kanji_data)

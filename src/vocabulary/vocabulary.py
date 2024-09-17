@@ -24,15 +24,15 @@ class Vocabulary:
 
     def __init__(self, word, sentence_retriever, quick_init = False):
         self.word = word
-        self.meaning_pos_object = VocabularyMeaning(word)
-        self.meaning_pos_object.fetch_from_jisho(quick_init)
+        self.meaning_object = VocabularyMeaning(word)
+        self.meaning_object.fetch_from_jisho(quick_init)
 
         self.sentence_retriever = sentence_retriever
         self.sentences = [] # TODO: create a SentenceManger instead
 
         self._get_data(quick_init)
 
-        self.item = [QStandardItem(self.word), QStandardItem(self.meaning_pos_object.meaning)]
+        self.item = [QStandardItem(self.word), QStandardItem(self.meaning_object.meaning)]
     
     def _get_data(self, quick_init):
         """
@@ -42,7 +42,7 @@ class Vocabulary:
         kanji data, the meaning of the word, and parts of speech. It then populates
         the sentences attribute with Sentence objects."""
 
-        sentences, translations, kanjis_data = self.sentence_retriever.get_data(self.word, self.meaning_pos_object, quick_init) # Retrieve sentences from DataRetriever
+        sentences, translations, kanjis_data = self.sentence_retriever.get_data(self.word, self.meaning_object, quick_init) # Retrieve sentences from DataRetriever
         
         sentences_count = len(sentences)
         for i in range(0, sentences_count):

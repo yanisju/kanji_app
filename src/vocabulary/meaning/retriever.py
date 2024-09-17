@@ -16,7 +16,7 @@ def find_data_index(word, data):
     """Find the accurate number in data JSON."""
     index = 0
     found = False
-    while(index < len(data) and found != False):
+    while(index < len(data) and found == False):
         if word == data[index].get("slug"):
             found = True
     if found == True:

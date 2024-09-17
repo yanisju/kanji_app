@@ -105,3 +105,6 @@ class VocabularyManager:
     def remove_all_sentences(self):
         # TODO: finish to write this method
         sentence_vocabulary = self.sentence_model.sentences[0].vocabulary
+
+    def __getitem__(self, index):
+        return list(self.vocabularies.values())[index]
