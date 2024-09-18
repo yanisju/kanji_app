@@ -2,6 +2,8 @@ from PyQt6.QtWidgets import QVBoxLayout, QFormLayout, QLineEdit, QTableView
 from .kanji_data_model import KanjiDataModel
 from .vocabulary_combobox import VocabularyComboBox
 
+from PyQt6.QtWidgets import QHeaderView
+
 
 class FieldsLayout(QVBoxLayout):
     def __init__(self, card_view):
@@ -12,6 +14,8 @@ class FieldsLayout(QVBoxLayout):
         self.kanji_table_view = (
             QTableView()
         )  # View containg kanjis and theirs readings + meanings
+        self.kanji_table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        
         self.addLayout(self.field_form_layout)
         self.addWidget(self.kanji_table_view)
 

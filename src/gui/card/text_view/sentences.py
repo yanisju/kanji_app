@@ -24,23 +24,50 @@ def get_sentence_from(text):
     return result
 
 def get_sentence_meaning(word1_data, word2_data):
-    result = ""
-    if word1_data != None:
-        word1, _, word1_meaning, *_ = word1_data
-        result += word1 + " - " + word1_meaning
-    
-    if word2_data != None:
-        word2, _, word2_meaning, *_ = word2_data
-        result += "<br>" + word2 + " - " + word2_meaning
-    return result
-        
-def get_text(sentence_fields):
-        if(len(sentence_fields) == 0):
-            return ""
-        sentence, translation, word1_data, word2_data = sentence_fields
+    """
+    Return the formatted meaning of two words as HTML.
 
-        card_text = get_sentence_from(sentence)
-        card_text += "<hr>" 
-        card_text += translation + "<br>"
-        card_text += get_sentence_meaning(word1_data, word2_data)
-        return card_text
+    Args:
+        word1_data (tuple): Data for the first word (word, reading, meaning, kanji_data, position).
+        word2_data (tuple): Data for the second word (same format as word1_data).
+
+    Returns:
+        str: Formatted HTML string showing word and its meaning.
+    """
+    result = ""
+    if word1_data is not None:
+        word1, _, word1_meaning, *_ = word1_data
+        result += f"<b>{word1}</b> - <i>{word1_meaning}</i>"
+    
+    if word2_data is not None:
+        word2, _, word2_meaning, *_ = word2_data
+        result += f"<br><b>{word2}</b> - <i>{word2_meaning}</i>"
+    
+    return result
+
+
+def get_text(sentence_fields):
+    """
+    Generate formatted HTML content for the Anki card.
+
+    Args:
+        sentence_fields (list): A list containing sentence, translation, word1_data, word2_data.
+
+    Returns:
+        str: Formatted HTML string for the sentence, translation, and word meanings.
+    """
+    if len(sentence_fields) == 0:
+        return ""
+
+    # Unpack sentence fields
+    sentence, translation, word1_data, word2_data = sentence_fields
+
+    # Build the sentence and translation sections
+    card_text = f"<div class='sentence'><span>{get_sentence_from(sentence)}</span></div>"
+    card_text += "<hr>"
+    card_text += f"<div class='translation'>{translation}</div><br>"
+    
+    # Append word meanings
+    card_text += f"<div class='word-meanings'>{get_sentence_meaning(word1_data, word2_data)}</div>"
+
+    return card_text

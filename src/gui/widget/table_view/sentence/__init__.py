@@ -4,6 +4,8 @@ from .menu import SentenceTableViewMenu
 
 from ....card.dialog import CardDialog
 
+from PyQt6.QtWidgets import QHeaderView
+
 
 class SentenceTableView(QTableView):
     """Table view for the different sentences of one vocabulary."""
@@ -14,6 +16,7 @@ class SentenceTableView(QTableView):
         self.model_on = model
         self.setModel(model)
         self.setEditTriggers(self.EditTrigger.NoEditTriggers) # Disable editing
+        self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
         self.menu = SentenceTableViewMenu(self, vocabulary_manager)
         

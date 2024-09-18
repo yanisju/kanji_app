@@ -28,7 +28,7 @@ class Vocabulary:
 
         self._get_data(quick_init)
 
-        self.item = [QStandardItem(self.word), QStandardItem(self.meaning_object.meaning)]
+        self.item = [QStandardItem(self.word), QStandardItem(self.meaning_object.meaning), QStandardItem(self.meaning_object.part_of_speech)]
     
     def _get_data(self, quick_init):
         """

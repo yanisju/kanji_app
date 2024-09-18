@@ -41,6 +41,9 @@ class MainWindow(QMainWindow):
         self.central_grid_layout.addWidget(self.card_text_view, 1, 0)
         self.central_grid_layout.addWidget(self.down_right_widget, 1, 1)
 
+        self.central_grid_layout.setColumnStretch(0, 50)  # 2/3 pour la première colonne (UpLeftWidget)
+        self.central_grid_layout.setColumnStretch(1, 1)  # 1/3 pour la deuxième colonne (UpRightWidget)
+
         self.up_right_widget.add_to_anki_list_button.add_to_anki_manager_signal.connect(self._anki_manager.add_sentence)
         self.down_right_widget.card_dialog.confirm_button_clicked_signal.connect(self._anki_manager.modify_sentence)
 

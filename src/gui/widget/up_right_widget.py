@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QVBoxLayout, QPushButton, QWidget
+from PyQt6.QtWidgets import QVBoxLayout, QPushButton, QWidget, QSizePolicy
 from ...vocabulary.manager import VocabularyManager
 from .button.add_one_word import AddOneWordLayout
 from .button.choose_file import ChooseFileButton
@@ -8,6 +8,10 @@ from .button.create_package import CreatePackageButton
 class UpRightWidget(QWidget):
     def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager, up_left_widget, anki_manager):
         super().__init__(central_widget) # Init this widget as a child of central widget
+
+        policy = QSizePolicy()
+        policy.setHorizontalPolicy(QSizePolicy.Policy.Maximum)
+        self.setSizePolicy(policy)
         
         self.layout = QVBoxLayout(self) # Init the main layout of the widget as a child of the widget
         self.setLayout(self.layout)

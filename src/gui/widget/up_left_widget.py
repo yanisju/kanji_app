@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QHBoxLayout, QWidget
+from PyQt6.QtWidgets import QHBoxLayout, QWidget, QSizePolicy
 
 from ...vocabulary.manager import VocabularyManager
 
@@ -10,6 +10,10 @@ class UpLeftWidget(QWidget):
     def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager, card_text_view):
         super().__init__(central_widget) # Init this widget as a child of central widget
         self.central_widget = central_widget
+
+        policy = QSizePolicy()
+        policy.setHorizontalPolicy(QSizePolicy.Policy.MinimumExpanding)
+        self.setSizePolicy(policy)
         
         self.layout = QHBoxLayout(self)
         self.setLayout(self.layout)

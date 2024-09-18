@@ -67,5 +67,3 @@ class MeaningDialog(QDialog):
 
         self.spin_box.refresh(self.current_selection, self.meaning_model.rowCount())
         super().open()
-
-    
