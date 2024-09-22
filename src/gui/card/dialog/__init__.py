@@ -11,7 +11,8 @@ class CardDialog(QDialog):
     confirm_button_clicked_signal = pyqtSignal(Sentence, int)
 
     def __init__(self, central_widget, main_card_view):
-        super().__init__(central_widget) # Init this widget as a child of central widget NOT SURE IF NEEDED
+        super().__init__(central_widget) 
+        self.setWindowTitle("Anki Card Editor")
         self.main_card_view = main_card_view
         self._init_layout()
     

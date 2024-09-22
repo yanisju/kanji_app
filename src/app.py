@@ -14,8 +14,17 @@ class App:
         self.main_window = MainWindow(self.vocabulary_manager, self.anki_manager)
 
     def start(self):
+        self._resize_and_center()
         self.main_window.show()
         sys.exit(self.app.exec())
+    
+    def _resize_and_center(self):
+        screen_rect = self.main_window.screen().availableGeometry()
+        self.main_window.resize(screen_rect.width() - 200, screen_rect.height() - 100)
+
+        x_center = int((screen_rect.width() - self.main_window.width()) / 2)
+        y_center = int((screen_rect.height()-self.main_window.height()) / 2)
+        self.main_window.move(x_center, y_center)
 
     def quick_init(self, words_file):
         path = "data/input/" + words_file

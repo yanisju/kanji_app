@@ -41,12 +41,13 @@ class VocabularyManager:
         """
         vocabulary = Vocabulary(word, self.data_retriever)
         self.vocabularies.update({word : vocabulary})
-        self.vocabulary_model.appendRow(vocabulary.item)
+        self.vocabulary_model.append_vocabulary(word, vocabulary.item)
+
 
     def add_word_quick_init(self, word):
         vocabulary = Vocabulary(word, self.data_retriever, quick_init=True)
         self.vocabularies.update({word : vocabulary})
-        self.vocabulary_model.appendRow(vocabulary.item)
+        self.vocabulary_model.append_vocabulary(word, vocabulary.item)
 
     def delete_vocabulary(self, row):
         """

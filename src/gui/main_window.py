@@ -1,8 +1,12 @@
 
 from PyQt6.QtWidgets import QMainWindow, QWidget, QGridLayout, QToolBar, QFormLayout, QLineEdit, QStatusBar
+from PyQt6.QtGui import QScreen
 
-from .widget.up_right_widget import UpRightWidget
-from .widget.up_left_widget import UpLeftWidget
+from .widget.vocabulary import VocabularyWidget
+from .widget.sentence import SentenceWidget
+
+from .widget.action import ActionWiget
+from .widget.sentence_rendering import SentenceRenderingWidget
 from .card.text_view import CardTextView
 
 from .widget.table_view.sentence import SentenceTableView
@@ -10,6 +14,7 @@ from .widget.table_view.sentence import SentenceTableView
 class MainWindow(QMainWindow):
     def __init__(self, vocabulary_manager, anki_manager):
         super().__init__(parent=None)
+        
         self.setWindowTitle("Vocanki")
         
         self.centralWidget = QWidget(self)  # Central widget
@@ -25,27 +30,34 @@ class MainWindow(QMainWindow):
         
     
     def _create_window_skeleton(self):
+        # self.setContentsMargins(0, 0, 0, 0)
         self.central_grid_layout = QGridLayout(self.centralWidget)
         self.centralWidget.setLayout(self.central_grid_layout)
         
-        self.card_text_view = CardTextView()
-        self.up_left_widget = UpLeftWidget(self.centralWidget, self.vocabulary_manager, self.card_text_view)
-        self.up_right_widget = UpRightWidget(self.centralWidget, self.vocabulary_manager, self.up_left_widget, self._anki_manager)
-        self.down_right_widget = SentenceTableView(self.centralWidget, self.vocabulary_manager.sentence_added_model, self.vocabulary_manager, self.card_text_view)
+        self.central_grid_layout.setColumnStretch(0, 10)
+        self.central_grid_layout.setColumnStretch(1, 1)
         
-        self.card_text_view.refresh_when_clicked(self.up_left_widget.sentence_view)
-        self.card_text_view.refresh_when_clicked(self.down_right_widget)
+        self.central_grid_layout.setContentsMargins(5, 5, 5, 5)  # Réduit les marges autour de la grille
+        # self.central_grid_layout.setSpacing(1)
+        
+        self.sentence_rendering_widget = SentenceRenderingWidget(self.centralWidget)
+        self.vocabulary_widget = VocabularyWidget(self.centralWidget, self.vocabulary_manager)
+        self.sentence_widget = SentenceWidget(self.centralWidget, "Sentence List",self.vocabulary_manager.sentence_model,self.vocabulary_manager, self.sentence_rendering_widget.card_text_view)
+        self.added_sentence_widget = SentenceWidget(self.centralWidget, "Added Sentence List", self.vocabulary_manager.sentence_added_model,self.vocabulary_manager, self.sentence_rendering_widget.card_text_view)
+        self.action_widget = ActionWiget(self.centralWidget, self.vocabulary_manager, self.sentence_widget, self._anki_manager)
+        
 
-        self.central_grid_layout.addWidget(self.up_left_widget, 0, 0)
-        self.central_grid_layout.addWidget(self.up_right_widget, 0, 1)
-        self.central_grid_layout.addWidget(self.card_text_view, 1, 0)
-        self.central_grid_layout.addWidget(self.down_right_widget, 1, 1)
 
-        self.central_grid_layout.setColumnStretch(0, 50)  # 2/3 pour la première colonne (UpLeftWidget)
-        self.central_grid_layout.setColumnStretch(1, 1)  # 1/3 pour la deuxième colonne (UpRightWidget)
+        self.central_grid_layout.addWidget(self.vocabulary_widget, 0, 0)
+        self.central_grid_layout.addWidget(self.action_widget, 0, 1)
+        self.central_grid_layout.addWidget(self.sentence_widget, 1, 0)
+        self.central_grid_layout.addWidget(self.added_sentence_widget, 1, 1)
+        self.central_grid_layout.addWidget(self.sentence_rendering_widget, 2, 0, 1, 2)
+        
 
-        self.up_right_widget.add_to_anki_list_button.add_to_anki_manager_signal.connect(self._anki_manager.add_sentence)
-        self.down_right_widget.card_dialog.confirm_button_clicked_signal.connect(self._anki_manager.modify_sentence)
+
+        # self.up_right_widget.add_to_anki_list_button.add_to_anki_manager_signal.connect(self._anki_manager.add_sentence)
+        # self.down_right_widget.card_dialog.confirm_button_clicked_signal.connect(self._anki_manager.modify_sentence)
 
     def _createMenu(self):
         menu = self.menuBar().addMenu("&Menu")

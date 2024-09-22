@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import QTableView
+from PyQt6.QtGui import QFont
 
 from .menu import SentenceTableViewMenu
 
@@ -15,28 +16,23 @@ class SentenceTableView(QTableView):
         self.central_widget = central_widget
         self.model_on = model
         self.setModel(model)
+        self.vocabulary_manager = vocabulary_manager
+        self.card_text_view = main_card_view
+
+        font = QFont()
+        font.setPointSize(11)
+        self.setFont(font)
+        
         self.setEditTriggers(self.EditTrigger.NoEditTriggers) # Disable editing
         self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
         self.menu = SentenceTableViewMenu(self, vocabulary_manager)
         
-        self.vocabulary_manager = vocabulary_manager
-
         self.card_dialog = CardDialog(self.central_widget, main_card_view)
 
+        self.clicked.connect(self.clicked_action)
         self.doubleClicked.connect(self.double_clicked_action)
-
-    def configure(self, card_text_view):
-        """Configure sentence table view, to display sentence text view when a line is clicked.
-        TODO: set it as a signal"""
-        self.clicked.connect(
-            lambda x: card_text_view.set_card_view(
-                self.model_on.get_sentence_by_row(self.currentIndex().row()),
-                self.model_on.get_sentence_by_row(self.currentIndex().row()).position_kanji_sentence,
-                self.model_on.get_sentence_by_row(self.currentIndex().row()).kanji_data
-            )
-        )
-
+        
     def contextMenuEvent(self, event):
         row = self.rowAt(event.pos().y())
         column = self.columnAt(event.pos().x())
@@ -44,6 +40,13 @@ class SentenceTableView(QTableView):
         self.menu.set_current_position(row, column)
 
         self.menu.exec(event.globalPos())
+
+    def clicked_action(self):
+        """When a sentence is double-clicked, update card view."""
+        self.card_text_view.set_card_view(
+            self.model_on.get_sentence_by_row(self.currentIndex().row()),
+            self.model_on.get_sentence_by_row(self.currentIndex().row()).position_kanji_sentence,
+            self.model_on.get_sentence_by_row(self.currentIndex().row()).kanji_data)
     
     def double_clicked_action(self):
         """When a sentence is double-clicked, opens a new CardDialog to edit its fields."""

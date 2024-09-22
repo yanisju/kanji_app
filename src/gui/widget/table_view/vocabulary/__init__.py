@@ -1,8 +1,10 @@
-from PyQt6.QtWidgets import QTableView
+from PyQt6.QtWidgets import QTableView, QHeaderView
+from PyQt6.QtGui import QFont
+
 from .menu import VocabularyTableViewMenu
 from ....meaning_dialog import MeaningDialog
 
-from PyQt6.QtWidgets import QHeaderView
+
 
 class VocabularyTableView(QTableView):
     """
@@ -43,6 +45,10 @@ class VocabularyTableView(QTableView):
         """
         super().__init__()
         self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+
+        font = QFont()
+        font.setPointSize(11)
+        self.setFont(font)
 
         self.vocabulary_manager = vocabulary_manager
         self.setModel(vocabulary_manager.vocabulary_model)

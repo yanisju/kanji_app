@@ -5,16 +5,28 @@ from .button.choose_file import ChooseFileButton
 from .button.add_to_anki_list import AddToAnkiListButton
 from .button.create_package import CreatePackageButton
 
-class UpRightWidget(QWidget):
+from PyQt6.QtCore import QSize
+
+class ActionWiget(QWidget):
     def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager, up_left_widget, anki_manager):
         super().__init__(central_widget) # Init this widget as a child of central widget
 
+        self.setContentsMargins(0,0,0,0)
+                # self.setSizeHint(5, 5)
+        self.setMinimumSize(140,140)
+        self.setMaximumSize(140,140)
         policy = QSizePolicy()
         policy.setHorizontalPolicy(QSizePolicy.Policy.Maximum)
+        policy.setVerticalPolicy(QSizePolicy.Policy.Maximum)
         self.setSizePolicy(policy)
+        # self.updateGeometry()
+
+        
         
         self.layout = QVBoxLayout(self) # Init the main layout of the widget as a child of the widget
         self.setLayout(self.layout)
+
+
         
         self.central_widget = central_widget
         self.vocabulary_manager = vocabulary_manager
