@@ -12,6 +12,7 @@ class MeaningDialog(QDialog):
 
     def __init__(self, parent) -> None:
         super().__init__(parent)
+        self.setWindowTitle("Word Meaning Editor")
         self.current_selection = 1
         self._init_layout()
 

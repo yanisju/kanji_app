@@ -115,8 +115,6 @@ class DataRetriever():
                 word_reading, _, word_position = kanji_data[word]
                 kanji_data[word] = (word_reading, word_meaning, word_position)
 
-            print(is_word_in_dict(kanji_data, word))
-
             # Add the kanji data to the list of sentence kanji data
             sentences_kanji_data.append(kanji_data)
 

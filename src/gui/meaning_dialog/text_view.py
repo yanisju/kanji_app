@@ -2,7 +2,6 @@ from PyQt6.QtWidgets import QTextEdit
 from PyQt6.QtGui import QStandardItemModel
 
 class MeaningTextView(QTextEdit):
-    
     def __init__(self) -> None:
         super().__init__()
         self.setReadOnly(True)

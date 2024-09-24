@@ -8,38 +8,24 @@ from .button.create_package import CreatePackageButton
 from PyQt6.QtCore import QSize
 
 class ActionWiget(QWidget):
-    def __init__(self, central_widget: QWidget, vocabulary_manager: VocabularyManager, up_left_widget, anki_manager):
-        super().__init__(central_widget) # Init this widget as a child of central widget
+    def __init__(self, parent: QWidget, vocabulary_manager: VocabularyManager, sentence_widget, anki_manager):
+        super().__init__(parent)
+        layout = QVBoxLayout(self)
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
 
-        self.setContentsMargins(0,0,0,0)
-                # self.setSizeHint(5, 5)
-        self.setMinimumSize(140,140)
-        self.setMaximumSize(140,140)
-        policy = QSizePolicy()
-        policy.setHorizontalPolicy(QSizePolicy.Policy.Maximum)
-        policy.setVerticalPolicy(QSizePolicy.Policy.Maximum)
-        self.setSizePolicy(policy)
-        # self.updateGeometry()
-
-        
-        
-        self.layout = QVBoxLayout(self) # Init the main layout of the widget as a child of the widget
-        self.setLayout(self.layout)
-
-
-        
-        self.central_widget = central_widget
-        self.vocabulary_manager = vocabulary_manager
-        self.up_left_widget = up_left_widget
-        
-        self.layout.addLayout(AddOneWordLayout(vocabulary_manager))
-        self.layout.addWidget(ChooseFileButton(central_widget, vocabulary_manager))
-        self.add_to_anki_list_button = AddToAnkiListButton(self.up_left_widget.sentence_view, self.vocabulary_manager)
-        self.layout.addWidget(self.add_to_anki_list_button)
-        self.layout.addWidget(CreatePackageButton(anki_manager))
+        layout.addLayout(AddOneWordLayout(vocabulary_manager))
+        layout.addWidget(ChooseFileButton(parent, vocabulary_manager))
+        add_to_anki_list_button = AddToAnkiListButton(sentence_widget.sentence_view, vocabulary_manager)
+        layout.addWidget(add_to_anki_list_button)
+        layout.addWidget(CreatePackageButton(anki_manager))
     
     def _get_create_package_button(self):
         button = QPushButton("Create Package")
         button.clicked.connect(self._anki_manager.generate_deck)
 
         return button
+    
+    def sizeHint(self):
+        width = int(self.parentWidget().width() * 0.15) 
+        height = int(self.parentWidget().height() * 0.33) 
+        return QSize(width, height)
