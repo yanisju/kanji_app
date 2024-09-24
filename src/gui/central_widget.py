@@ -11,7 +11,7 @@ class CentralWidget(QWidget):
         layout = QVBoxLayout(self)
 
         sentence_rendering_widget = SentenceRenderingWidget(self)
-        sentence_widget = SentenceWidget(parent, "Sentence List", vocabulary_manager.sentence_model, vocabulary_manager, sentence_rendering_widget.card_text_view)
+        sentence_widget = SentenceWidget(self, "Sentence List", vocabulary_manager.sentence_model, vocabulary_manager, sentence_rendering_widget.card_text_view)
         
         vocabulary_layout = QHBoxLayout()
         vocabulary_layout.addWidget(VocabularyWidget(self, vocabulary_manager))

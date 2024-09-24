@@ -17,7 +17,7 @@ class VocabularyWidget(QWidget):
         label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(label)
 
-        vocabulary_list_view = VocabularyTableView(vocabulary_manager) # View for retrieved words
+        vocabulary_list_view = VocabularyTableView(parent, vocabulary_manager) # View for retrieved words
         layout.addWidget(vocabulary_list_view)
 
     def sizeHint(self):

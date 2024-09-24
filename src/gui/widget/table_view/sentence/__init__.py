@@ -13,10 +13,8 @@ class SentenceTableView(QTableView):
     
     def __init__(self, central_widget, model, vocabulary_manager, main_card_view = None):
         super().__init__(central_widget)
-        self.central_widget = central_widget
         self.model_on = model
         self.setModel(model)
-        self.vocabulary_manager = vocabulary_manager
         self.card_text_view = main_card_view
 
         font = QFont()
@@ -28,7 +26,7 @@ class SentenceTableView(QTableView):
 
         self.menu = SentenceTableViewMenu(self, vocabulary_manager)
         
-        self.card_dialog = CardDialog(self.central_widget, main_card_view)
+        self.card_dialog = CardDialog(central_widget, main_card_view)
 
         self.clicked.connect(self.clicked_action)
         self.doubleClicked.connect(self.double_clicked_action)

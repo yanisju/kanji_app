@@ -32,7 +32,7 @@ class VocabularyTableView(QTableView):
         Updates the vocabulary item based on the confirmed selection from the `MeaningDialog`.
     """
 
-    def __init__(self, vocabulary_manager) -> None:
+    def __init__(self, parent, vocabulary_manager) -> None:
         """
         Initializes the VocabularyTableView instance with the given vocabulary manager.
 
@@ -41,7 +41,7 @@ class VocabularyTableView(QTableView):
         vocabulary_manager : VocabularyManager
             The manager responsible for providing the vocabulary data model and operations.
         """
-        super().__init__()
+        super().__init__(parent)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
         font = QFont()
@@ -53,7 +53,7 @@ class VocabularyTableView(QTableView):
         self.setEditTriggers(self.EditTrigger.NoEditTriggers)
 
         self.menu = VocabularyTableViewMenu(self, vocabulary_manager)
-        self.meaning_dialog = MeaningDialog(self)
+        self.meaning_dialog = MeaningDialog(parent)
         self.meaning_dialog.confirm_button_clicked_signal.connect(self._meaning_dialog_confirm_action)
         self.doubleClicked.connect(self._double_clicked)
 

@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton, QTableView, QHeaderView
+from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton, QTableView, QHeaderView, QFormLayout, QLabel
 from PyQt6.QtGui import QStandardItemModel, QFont
 from PyQt6.QtCore import pyqtSignal
 
@@ -13,6 +13,11 @@ class MeaningDialog(QDialog):
     def __init__(self, parent) -> None:
         super().__init__(parent)
         self.setWindowTitle("Word Meaning Editor")
+
+        font = QFont()
+        font.setPointSize(11)
+        self.setFont(font)
+        self.resize(int(parent.parent().width() * 0.6), int(parent.parent().height() * 0.6))
         self.current_selection = 1
         self._init_layout()
 
@@ -20,11 +25,13 @@ class MeaningDialog(QDialog):
         layout = QVBoxLayout(self) # Main layout of Dialog
         self.setLayout(layout)
 
-        tools_layout = QHBoxLayout()
+        
+        label = QLabel("Current Selection: ", self)
         self.spin_box = SelectionSpinBox()
         self.spin_box.valueChanged.connect(self._set_current_selection)
-        tools_layout.addWidget(self.spin_box)
-        layout.addLayout(tools_layout)
+        form_layout = QFormLayout()
+        form_layout.addRow(label, self.spin_box)
+        layout.addLayout(form_layout)
         
         meaning_layout = QHBoxLayout() # Layout for card view and fields 
         layout.addLayout(meaning_layout)
@@ -34,9 +41,7 @@ class MeaningDialog(QDialog):
 
         self.table_view = QTableView()
         self.table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
-        font = QFont()
-        font.setPointSize(11)
-        self.table_view.setFont(font)
+        
         meaning_layout.addWidget(self.table_view)
 
         buttons_layout = QHBoxLayout() # Layout for bottom buttons

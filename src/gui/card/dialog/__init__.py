@@ -1,4 +1,5 @@
 from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton
+from PyQt6.QtGui import QFont
 from ..text_view import CardTextView
 from .fields import FieldsLayout
 from ....vocabulary.sentence.sentence import Sentence
@@ -13,6 +14,13 @@ class CardDialog(QDialog):
     def __init__(self, central_widget, main_card_view):
         super().__init__(central_widget) 
         self.setWindowTitle("Anki Card Editor")
+
+        font = QFont()
+        font.setPointSize(11)
+        self.setFont(font)
+
+        self.resize(int(central_widget.parent().width() * 0.7), int(central_widget.parent().height() * 0.7))
+
         self.main_card_view = main_card_view
         self._init_layout()
     
