@@ -7,11 +7,11 @@ import sys
 
 class App:
     def __init__(self):
-        self.anki_manager = AnkiManager()
+        anki_manager = AnkiManager()
         self.vocabulary_manager = VocabularyManager()
 
         self.app = QApplication(sys.argv)
-        self.main_window = MainWindow(self.vocabulary_manager, self.anki_manager)
+        self.main_window = MainWindow(self.vocabulary_manager, anki_manager)
 
     def start(self):
         self._resize_and_center()

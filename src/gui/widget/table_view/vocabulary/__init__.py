@@ -4,8 +4,6 @@ from PyQt6.QtGui import QFont
 from .menu import VocabularyTableViewMenu
 from ....meaning_dialog import MeaningDialog
 
-
-
 class VocabularyTableView(QTableView):
     """
     A custom QTableView for displaying and managing vocabulary items in a table format.

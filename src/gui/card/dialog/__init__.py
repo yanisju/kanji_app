@@ -17,11 +17,11 @@ class CardDialog(QDialog):
         self._init_layout()
     
     def _init_layout(self):
-        self.layout = QVBoxLayout(self) # Main layout of Dialog
-        self.setLayout(self.layout)
+        layout = QVBoxLayout(self) # Main layout of Dialog
+        self.setLayout(layout)
         
         card_layout = QHBoxLayout() # Layout for card view and fields 
-        self.layout.addLayout(card_layout)
+        layout.addLayout(card_layout)
 
         self.card_view = CardTextView() # TextEdit to view current card in Anki
         card_layout.addWidget(self.card_view)
@@ -30,16 +30,16 @@ class CardDialog(QDialog):
         card_layout.addLayout(self.fields_layout)
         
         buttons_layout = QHBoxLayout() # Layout for bottom buttons
-        self.layout.addLayout(buttons_layout)
+        layout.addLayout(buttons_layout)
         self._init_buttons_layout(buttons_layout)
 
     def _init_buttons_layout(self, layout):
         self.confirm_button = QPushButton("Confirm")
-        self.cancel_button = QPushButton("Cancel")
+        cancel_button = QPushButton("Cancel")
         layout.addWidget(self.confirm_button)
-        layout.addWidget(self.cancel_button)
+        layout.addWidget(cancel_button)
         self.confirm_button.clicked.connect(self._confirm_button_clicked) 
-        self.cancel_button.clicked.connect(self.reject)
+        cancel_button.clicked.connect(self.reject)
 
     def _confirm_button_clicked(self):
         self.fields_layout.refresh_fields_value() # TODO: move this and that

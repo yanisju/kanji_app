@@ -10,22 +10,18 @@ class FieldsLayout(QVBoxLayout):
         super().__init__()
         self.card_view = card_view
 
-        self.field_form_layout = QFormLayout()  # Form layout containg fields
-        self.kanji_table_view = (
-            QTableView()
-        )  # View containg kanjis and theirs readings + meanings
+        field_form_layout = QFormLayout()  # Form layout containg fields
+        self.kanji_table_view = QTableView()# View containg kanjis and theirs readings + meanings
         self.kanji_table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         
-        self.addLayout(self.field_form_layout)
+        self.addLayout(field_form_layout)
         self.addWidget(self.kanji_table_view)
 
         self.kanji_data_model = KanjiDataModel()
         self.kanji_table_view.setModel(self.kanji_data_model)
 
 
-        self.field_widget_list = (
-            []
-        )  # All QLineEdit for each fields of the vocabulary.
+        self.field_widget_list = []  # All QLineEdit for each fields of the vocabulary.
         self.fields_name = [
             "Sentence:",
             "Meaning:",
@@ -34,15 +30,15 @@ class FieldsLayout(QVBoxLayout):
         ]
         self.fields_value = []
 
-        self._init_fields()
+        self._init_fields(field_form_layout)
 
-    def _init_fields(self):
+    def _init_fields(self, field_form_layout):
         """Initialize all fields based on vocabulary attributes."""
 
         for i in range(2):
             field_line_edit = QLineEdit()
             self.field_widget_list.append(field_line_edit)
-            self.field_form_layout.addRow(self.fields_name[i], field_line_edit)
+            field_form_layout.addRow(self.fields_name[i], field_line_edit)
 
         for i in range(2, 4):
             if i == 2:
@@ -50,7 +46,7 @@ class FieldsLayout(QVBoxLayout):
             else: 
                 field_combobox = VocabularyComboBox(True)
             self.field_widget_list.append(field_combobox)
-            self.field_form_layout.addRow(self.fields_name[i], field_combobox)
+            field_form_layout.addRow(self.fields_name[i], field_combobox)
             self.kanji_data_model.itemChanged.connect(field_combobox.is_kanji_data_model_modified)
             self.kanji_data_model.itemChanged.connect(self.refresh_fields_value)
             self.kanji_data_model.itemChanged.connect(lambda x: self.card_view.refresh_view(self.fields_value))

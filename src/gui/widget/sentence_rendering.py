@@ -9,16 +9,16 @@ class SentenceRenderingWidget(QWidget):
         super().__init__(parent)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
-        self.layout = QVBoxLayout()
-        self.setLayout(self.layout)
+        layout = QVBoxLayout()
+        self.setLayout(layout)
 
-        self.label = QLabel("Sentence Rendering", self)
-        self.label.setStyleSheet("font-size: 16px; font-weight: bold;")
-        self.label.setAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.layout.addWidget(self.label)
+        label = QLabel("Sentence Rendering", self)
+        label.setStyleSheet("font-size: 16px; font-weight: bold;")
+        label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(label)
 
         self.card_text_view = CardTextView() # View for retrieved words
-        self.layout.addWidget(self.card_text_view)
+        layout.addWidget(self.card_text_view)
 
     def sizeHint(self):
         width = int(self.parentWidget().width()) 

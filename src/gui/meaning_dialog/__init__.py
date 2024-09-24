@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton, QTableView, QSpinBox 
-from PyQt6.QtGui import QStandardItemModel
+from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton, QTableView, QHeaderView
+from PyQt6.QtGui import QStandardItemModel, QFont
 from PyQt6.QtCore import pyqtSignal
 
 from .text_view import MeaningTextView
@@ -17,26 +17,30 @@ class MeaningDialog(QDialog):
         self._init_layout()
 
     def _init_layout(self):
-        self.layout = QVBoxLayout(self) # Main layout of Dialog
-        self.setLayout(self.layout)
+        layout = QVBoxLayout(self) # Main layout of Dialog
+        self.setLayout(layout)
 
         tools_layout = QHBoxLayout()
         self.spin_box = SelectionSpinBox()
         self.spin_box.valueChanged.connect(self._set_current_selection)
         tools_layout.addWidget(self.spin_box)
-        self.layout.addLayout(tools_layout)
+        layout.addLayout(tools_layout)
         
         meaning_layout = QHBoxLayout() # Layout for card view and fields 
-        self.layout.addLayout(meaning_layout)
+        layout.addLayout(meaning_layout)
 
         self.meaning_view = MeaningTextView()
         meaning_layout.addWidget(self.meaning_view)
 
         self.table_view = QTableView()
+        self.table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        font = QFont()
+        font.setPointSize(11)
+        self.table_view.setFont(font)
         meaning_layout.addWidget(self.table_view)
 
         buttons_layout = QHBoxLayout() # Layout for bottom buttons
-        self.layout.addLayout(buttons_layout)
+        layout.addLayout(buttons_layout)
         self._init_buttons_layout(buttons_layout)
 
     def _set_current_selection(self, new_current_selection):
@@ -44,11 +48,11 @@ class MeaningDialog(QDialog):
 
     def _init_buttons_layout(self, layout):
         self.confirm_button = QPushButton("Confirm")
-        self.cancel_button = QPushButton("Cancel")
+        cancel_button = QPushButton("Cancel")
         layout.addWidget(self.confirm_button)
-        layout.addWidget(self.cancel_button)
+        layout.addWidget(cancel_button)
         self.confirm_button.clicked.connect(self._confirm_button_clicked) 
-        self.cancel_button.clicked.connect(self.reject)
+        cancel_button.clicked.connect(self.reject)
 
     def _confirm_button_clicked(self):
         self.confirm_button_clicked_signal.emit(self.table_view.model(), 
@@ -56,7 +60,6 @@ class MeaningDialog(QDialog):
         self.accept()
 
     
-
     def open(self, vocabulary):
         self.vocabulary = vocabulary
         meaning_object = vocabulary.meaning_object
