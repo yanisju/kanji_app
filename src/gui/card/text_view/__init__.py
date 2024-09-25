@@ -20,13 +20,14 @@ class CardTextView(QTextEdit):
             stylesheet = file.read()
         self.setStyleSheet(stylesheet)
 
-    def set_card_view(self, sentence: Sentence, position_kanji: dict, kanji_data: dict):
+    def set_card_view(self, sentence: Sentence, position_kanji: dict, kanji_data: dict, is_sentence_from_word_list: bool):
         """Set card view, based on vocabulary fields."""
 
         self.sentence = sentence
         self.position_kanji = position_kanji
         self.kanji_data = kanji_data
         self.sentence_fields = sentence.fields
+        self.is_sentence_from_word_list = is_sentence_from_word_list
 
         card_text = get_text(self.sentence_fields)
         self.setHtml(card_text)

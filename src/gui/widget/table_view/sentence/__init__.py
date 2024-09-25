@@ -41,10 +41,11 @@ class SentenceTableView(QTableView):
 
     def clicked_action(self):
         """When a sentence is double-clicked, update card view."""
-        self.card_text_view.set_card_view(
-            self.model_on.get_sentence_by_row(self.currentIndex().row()),
-            self.model_on.get_sentence_by_row(self.currentIndex().row()).position_kanji_sentence,
-            self.model_on.get_sentence_by_row(self.currentIndex().row()).kanji_data)
+        sentence_clicked = self.model_on.get_sentence_by_row(self.currentIndex().row())
+        self.card_text_view.set_card_view(sentence_clicked,
+            sentence_clicked.position_kanji_sentence,
+            sentence_clicked.kanji_data,
+            True)
     
     def double_clicked_action(self):
         """When a sentence is double-clicked, opens a new CardDialog to edit its fields."""

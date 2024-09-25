@@ -109,3 +109,6 @@ class VocabularyManager:
 
     def __getitem__(self, index):
         return list(self.vocabularies.values())[index]
+    
+    def get_word(self, index):
+        return list(self.vocabularies.keys())[index]

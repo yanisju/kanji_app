@@ -85,5 +85,6 @@ class CardDialog(QDialog):
 
         self.card_view.set_card_view(self.sentence, 
                                     self.fields_layout.kanji_data_model.position_kanji_sentence,
-                                    self.fields_layout.kanji_data_model.kanji_data) # Init card view with card fields
+                                    self.fields_layout.kanji_data_model.kanji_data,
+                                    False) # Init card view with card fields
         

@@ -1,32 +1,56 @@
 from PyQt6.QtWidgets import QMenu
+from PyQt6.QtGui import QFont
+
 from .action.del_one_vocabulary import DeleteVocabularyAction
 from .action.delete_all_vocabularies import DeleteAllVocabulariesAction
+from .action.open_meaning_editor import OpenMeaningEditorAction
+from .action.lookup_on_jisho import LookupOnJishoAction
 
 class VocabularyTableViewMenu(QMenu):
     """Menu displayed when user right-clicks on vocabulary table view. """
     
     def __init__(self, parent, vocabulary_manager):
         super().__init__(parent)
+        self.vocabulary_manager = vocabulary_manager
         self.row = -1
         self.column = -1
+
+        font = QFont()
+        font.setPointSize(11)
+        self.setFont(font)
 
         self.set_actions(vocabulary_manager)
         
 
     def set_actions(self, vocabulary_manager):
-        self.del_one_vocabulary_action = DeleteVocabularyAction(self)
-        self.addAction(self.del_one_vocabulary_action)
-        self.del_one_vocabulary_action.triggered.connect(lambda: vocabulary_manager.delete_vocabulary(self.row))
+        self.open_meaning_editor_action = OpenMeaningEditorAction(self, self.parent())
+        self.addAction(self.open_meaning_editor_action)
 
-        self.del_every_vocabulary_action = DeleteAllVocabulariesAction(self)
+        self.lookup_on_jisho_action = LookupOnJishoAction(self, vocabulary_manager)
+        self.addAction(self.lookup_on_jisho_action)
+
+        self.del_one_vocabulary_action = DeleteVocabularyAction(self, vocabulary_manager)
+        self.addAction(self.del_one_vocabulary_action)
+
+        self.del_every_vocabulary_action = DeleteAllVocabulariesAction(self, vocabulary_manager)
         self.addAction(self.del_every_vocabulary_action)
-        self.del_every_vocabulary_action.triggered.connect(lambda: vocabulary_manager.delete_all_vocabularies())
+
     
     def set_current_position(self, row: int, column: int):
         self.row = row
         self.column = column
 
+        if self.vocabulary_manager.vocabulary_model.rowCount() == 0:
+            self.del_every_vocabulary_action.setEnabled(False)
+        else:
+            self.del_every_vocabulary_action.setEnabled(True)
+
+
         if(row == -1):
             self.del_one_vocabulary_action.setEnabled(False)
+            self.open_meaning_editor_action.setEnabled(False)
+            self.lookup_on_jisho_action.setEnabled(False)
         else:
             self.del_one_vocabulary_action.setEnabled(True)
+            self.open_meaning_editor_action.setEnabled(True)
+            self.lookup_on_jisho_action.setEnabled(True)
