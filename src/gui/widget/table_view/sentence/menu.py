@@ -13,8 +13,11 @@ class SentenceTableViewMenu(QMenu):
 
     def _set_actions(self, vocabulary_manager):
         """Set actions data and behaviors."""
-        self.add_empty_sentence_action = AddEmptySentenceAction(self)
+        self.add_empty_sentence_action = AddEmptySentenceAction(self, vocabulary_manager)
         self.addAction(self.add_empty_sentence_action)
+
+        self.addSeparator()
+
         self.del_one_sentence_action = DeleteOneSentenceAction(self)
         self.addAction(self.del_one_sentence_action)
         self.del_one_sentence_action.triggered.connect(lambda: vocabulary_manager.remove_sentence(self.row))

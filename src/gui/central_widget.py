@@ -11,16 +11,16 @@ class CentralWidget(QWidget):
         layout = QVBoxLayout(self)
 
         sentence_rendering_widget = SentenceRenderingWidget(self)
-        sentence_widget = SentenceWidget(self, "Sentence List", vocabulary_manager.sentence_model, vocabulary_manager, sentence_rendering_widget.card_text_view)
+        sentence_widget = SentenceWidget(self, "Sentence List", vocabulary_manager, sentence_rendering_widget.card_text_view)
         
         vocabulary_layout = QHBoxLayout()
-        vocabulary_layout.addWidget(VocabularyWidget(self, vocabulary_manager, sentence_rendering_widget))
+        vocabulary_layout.addWidget(VocabularyWidget(self, vocabulary_manager, sentence_rendering_widget, sentence_widget.sentence_view))
         vocabulary_layout.addWidget(ActionWiget(self, vocabulary_manager, sentence_widget, anki_manager))
         layout.addLayout(vocabulary_layout)
 
         sentence_layout = QHBoxLayout()
         sentence_layout.addWidget(sentence_widget)
-        added_sentence_widget = SentenceWidget(self, "Added Sentence List", vocabulary_manager.sentence_added_model, vocabulary_manager, sentence_rendering_widget.card_text_view)
+        added_sentence_widget = SentenceWidget(self, "Added Sentence List", vocabulary_manager, sentence_rendering_widget.card_text_view)
         sentence_layout.addWidget(added_sentence_widget)
         layout.addLayout(sentence_layout)
 

@@ -35,7 +35,9 @@ class Sentence():
         self.sentence = sentence
         self.translation = translation
 
-        if is_word_in_dict(kanji_data, word):
+        if bool(kanji_data) is False: # If kanji_data is empty
+            word1_reading, word1_meaning, word1_position = "", "", -1
+        elif is_word_in_dict(kanji_data, word):
             word1_reading, word1_meaning, word1_position = kanji_data[word]
         else: # If word does not appear in kanji_data, takes first element
             word1_reading, word1_meaning, word1_position = kanji_data[next(iter(kanji_data))]

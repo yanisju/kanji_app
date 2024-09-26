@@ -27,11 +27,12 @@ class SentenceModel(QStandardItemModel):
         Removes a sentence from the model and its corresponding row.
     """
 
-    def __init__(self):
+    def __init__(self, vocabulary = None):
         """
         Initializes the SentenceModel with a predefined structure of four columns.
         """
         super().__init__(0, 4)
+        self.vocabulary = vocabulary
         self.sentences = []  # Current Sentences held by the model
         self._configure()
 
@@ -77,25 +78,28 @@ class SentenceModel(QStandardItemModel):
             sentence.compute_standard_item()
             self.setItem(row, j, sentence.standard_item[j])
         
-    def refresh(self, sentences):
-        """
-        Clears and repopulates the model with a new list of sentences.
+    # def refresh(self, vocabulary):
+    #     """
+    #     Clears and repopulates the model with a new list of sentences.
 
-        This method removes all existing rows and repopulates the model with the provided list of Sentence objects.
+    #     This method removes all existing rows and repopulates the model with the provided list of Sentence objects.
 
-        Args:
-        -----
-        sentences : list
-            A list of Sentence objects to repopulate the model with.
-        """
-        self.removeRows(0, self.rowCount())
-        self.sentences.clear()
+    #     Args:
+    #     -----
+    #     sentences : list
+    #         A list of Sentence objects to repopulate the model with.
+    #     """
+    #     self.current_vocabulary = vocabulary
+    #     sentences = vocabulary.sentences
 
-        for i in range(len(sentences)):
-            self.sentences.append(sentences[i])
-            for j in range(len(sentences[i].standard_item)):
-                sentences[i].compute_standard_item()
-                self.setItem(i, j, sentences[i].standard_item[j])
+    #     self.removeRows(0, self.rowCount())
+    #     self.sentences.clear()
+
+    #     for i in range(len(sentences)):
+    #         self.sentences.append(sentences[i])
+    #         for j in range(len(sentences[i].standard_item)):
+    #             sentences[i].compute_standard_item()
+    #             self.setItem(i, j, sentences[i].standard_item[j])
             
     def get_sentence_by_row(self, row):
         """

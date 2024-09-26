@@ -32,7 +32,7 @@ class VocabularyTableView(QTableView):
         Updates the vocabulary item based on the confirmed selection from the `MeaningDialog`.
     """
 
-    def __init__(self, parent, vocabulary_manager, sentence_rendering_widget) -> None:
+    def __init__(self, parent, vocabulary_manager, sentence_rendering_widget, sentence_table_view) -> None:
         """
         Initializes the VocabularyTableView instance with the given vocabulary manager.
 
@@ -44,22 +44,19 @@ class VocabularyTableView(QTableView):
         super().__init__(parent)
         self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
-        font = QFont()
-        font.setPointSize(11)
-        self.setFont(font)
-
         self.vocabulary_manager = vocabulary_manager
+        self.sentence_table_view = sentence_table_view
         self.setModel(vocabulary_manager.vocabulary_model)
         self.setEditTriggers(self.EditTrigger.NoEditTriggers)
 
-        self.menu = VocabularyTableViewMenu(self, vocabulary_manager, sentence_rendering_widget)
+        self.menu = VocabularyTableViewMenu(self, vocabulary_manager, sentence_rendering_widget, sentence_table_view)
         self.meaning_dialog = MeaningDialog(parent)
         self.meaning_dialog.confirm_button_clicked_signal.connect(self._meaning_dialog_confirm_action)
         self.doubleClicked.connect(self._double_clicked)
 
         # Change sentence view when a different word is selected
         view_item_selection = self.selectionModel()
-        view_item_selection.selectionChanged.connect(lambda x: vocabulary_manager.refresh_sentence_model(self.currentIndex().row()))
+        view_item_selection.selectionChanged.connect(self._selection_changed_action)
 
     def contextMenuEvent(self, event):
         """
@@ -109,3 +106,8 @@ class VocabularyTableView(QTableView):
 
         # Update the vocabulary model in the table view
         self.vocabulary_manager.vocabulary_model.modify_row(row, new_meaning, new_part_of_speech)
+
+    def _selection_changed_action(self):
+        selection_row = self.currentIndex().row()
+        vocabulary_sentences_model = self.vocabulary_manager[selection_row].sentences_model
+        self.sentence_table_view.setModel(vocabulary_sentences_model)

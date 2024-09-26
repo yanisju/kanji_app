@@ -27,7 +27,6 @@ class VocabularyManager:
         self.vocabularies = dict() # Dictionnary of vocabularies instance
         
         self.vocabulary_model = VocabularyModel() # Model for retrieved words
-        self.sentence_model = SentenceModel()
         self.sentence_added_model = SentenceModel()
     
     def add_word(self, word):
@@ -59,9 +58,8 @@ class VocabularyManager:
             The index of the vocabulary word to be deleted in the vocabulary model.
         """
         word = self.vocabulary_model.item(row, 0).text()
-
         self.vocabulary_model.removeRow(row)
-        self.sentence_model.removeRows(0, self.sentence_model.rowCount())
+        self.vocabularies[word].sentences_model.clear()
         del self.vocabularies[word]
 
     def delete_all_vocabularies(self):
@@ -69,43 +67,7 @@ class VocabularyManager:
         Deletes all vocabulary words from the dictionary and the models.
         """
         self.vocabulary_model.removeRows(0, self.vocabulary_model.rowCount())
-        self.sentence_model.removeRows(0, self.sentence_model.rowCount())
         self.vocabularies.clear()
-
-    def refresh_sentence_model(self, row):
-        """
-        Refreshes the sentence model with the sentences of the selected vocabulary word.
-
-        When user select a new vocabulary in VocabularyTableView, sentences in SentenceTableView must be updated. This function modify the 
-        contents of the SentenceTableView model, based on vocabulary sentences.
-
-        Args:
-        -----
-        row : int
-            The index of the selected vocabulary word in the vocabulary model.
-        """
-
-        if(row != -1):
-            word = self.vocabulary_model.item(row, 0).text()
-            vocabulary = self.vocabularies[word]
-            self.sentence_model.refresh(vocabulary.sentences) 
-    
-    def remove_sentence(self, row):
-        """
-        Removes a sentence from the sentence model and the associated vocabulary.
-
-        Args:
-        -----
-        row : int
-            The index of the sentence to be removed in the sentence model.
-        """
-        sentence_vocabulary = self.sentence_model.sentences[row].vocabulary
-        sentence_vocabulary.delete_sentence(row)
-        self.sentence_model.remove_row(row)
-
-    def remove_all_sentences(self):
-        # TODO: finish to write this method
-        sentence_vocabulary = self.sentence_model.sentences[0].vocabulary
 
     def __getitem__(self, index):
         return list(self.vocabularies.values())[index]

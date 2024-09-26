@@ -10,6 +10,7 @@ class CardTextView(QTextEdit):
     def __init__(self, is_main_window: bool) -> None:
         super().__init__()
         self.is_main_window = is_main_window
+        self.sentence = None
 
         self.setReadOnly(True)
         self.setMouseTracking(True)
@@ -21,14 +22,13 @@ class CardTextView(QTextEdit):
             stylesheet = file.read()
         self.setStyleSheet(stylesheet)
 
-    def set_card_view(self, sentence: Sentence, position_kanji: dict, kanji_data: dict, is_sentence_from_word_list: bool):
+    def set_card_view(self, sentence: Sentence, position_kanji: dict, kanji_data: dict):
         """Set card view, based on vocabulary fields."""
 
         self.sentence = sentence
         self.position_kanji = position_kanji
         self.kanji_data = kanji_data
         self.sentence_fields = sentence.fields
-        self.is_sentence_from_word_list = is_sentence_from_word_list
 
         card_text = get_text(self.sentence_fields)
         self.setHtml(card_text)

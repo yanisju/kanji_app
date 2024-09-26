@@ -6,7 +6,7 @@ from ...vocabulary.manager import VocabularyManager
 from .table_view.sentence import SentenceTableView
 
 class SentenceWidget(QWidget):
-    def __init__(self, parent: QWidget, label_name : str, model, vocabulary_manager: VocabularyManager, card_text_view) -> None:
+    def __init__(self, parent: QWidget, label_name : str, vocabulary_manager: VocabularyManager, card_text_view, is_added_sentence = False) -> None:
         super().__init__(parent)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         layout = QVBoxLayout()
@@ -17,7 +17,10 @@ class SentenceWidget(QWidget):
         label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(label)
 
-        self.sentence_view = SentenceTableView(parent, model, vocabulary_manager, card_text_view)
+        self.sentence_view = SentenceTableView(parent, vocabulary_manager, card_text_view)
+        if is_added_sentence:
+            self.sentence_view.setModel(vocabulary_manager.sentence_added_model)
+        
         layout.addWidget(self.sentence_view)
 
     def sizeHint(self):

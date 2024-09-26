@@ -63,7 +63,7 @@ class CardDialog(QDialog):
         if hasattr(self, "sentence"): # Update CardView from Main Application as well
             self.main_card_view.set_card_view(self.sentence, 
                                     self.sentence.position_kanji_sentence,
-                                    self.sentence.kanji_data)
+                                    self.sentence.kanji_data,)
         
 
     def update(self, sentences_model, sentence: Sentence, sentence_row):
@@ -85,6 +85,6 @@ class CardDialog(QDialog):
 
         self.card_view.set_card_view(self.sentence, 
                                     self.fields_layout.kanji_data_model.position_kanji_sentence,
-                                    self.fields_layout.kanji_data_model.kanji_data,
-                                    False) # Init card view with card fields
+                                    self.fields_layout.kanji_data_model.kanji_data)
+                                    # ,False) # Init card view with card fields
         

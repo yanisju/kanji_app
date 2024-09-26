@@ -1,5 +1,4 @@
 from PyQt6.QtWidgets import QMenu
-from PyQt6.QtGui import QFont
 
 from .action.del_one_vocabulary import DeleteVocabularyAction
 from .action.delete_all_vocabularies import DeleteAllVocabulariesAction
@@ -9,30 +8,30 @@ from .action.lookup_on_jisho import LookupOnJishoAction
 class VocabularyTableViewMenu(QMenu):
     """Menu displayed when user right-clicks on vocabulary table view. """
     
-    def __init__(self, parent, vocabulary_manager, sentence_rendering_widget):
+    def __init__(self, parent, vocabulary_manager, sentence_rendering_widget, sentence_table_view):
         super().__init__(parent)
         self.vocabulary_manager = vocabulary_manager
         self.row = -1
         self.column = -1
 
-        font = QFont()
-        font.setPointSize(11)
-        self.setFont(font)
-
-        self.set_actions(vocabulary_manager, sentence_rendering_widget)
+        self.set_actions(vocabulary_manager, sentence_rendering_widget, sentence_table_view)
         
 
-    def set_actions(self, vocabulary_manager, sentence_rendering_widget):
+    def set_actions(self, vocabulary_manager, sentence_rendering_widget, sentence_table_view):
         self.open_meaning_editor_action = OpenMeaningEditorAction(self, self.parent())
         self.addAction(self.open_meaning_editor_action)
+
+        self.addSeparator()
 
         self.lookup_on_jisho_action = LookupOnJishoAction(self, vocabulary_manager)
         self.addAction(self.lookup_on_jisho_action)
 
-        self.del_one_vocabulary_action = DeleteVocabularyAction(self, vocabulary_manager, sentence_rendering_widget)
+        self.addSeparator()
+
+        self.del_one_vocabulary_action = DeleteVocabularyAction(self, vocabulary_manager, sentence_rendering_widget, sentence_table_view)
         self.addAction(self.del_one_vocabulary_action)
 
-        self.del_every_vocabulary_action = DeleteAllVocabulariesAction(self, vocabulary_manager, sentence_rendering_widget)
+        self.del_every_vocabulary_action = DeleteAllVocabulariesAction(self, vocabulary_manager, sentence_rendering_widget, sentence_table_view)
         self.addAction(self.del_every_vocabulary_action)
 
     

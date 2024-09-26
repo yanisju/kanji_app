@@ -1,5 +1,7 @@
 from .sentence.sentence import Sentence
 from .meaning.meaning import VocabularyMeaning
+from .model.sentence import SentenceModel
+
 from PyQt6.QtGui import QStandardItem
 
 from .data_retriever import find_kanjis_in_dict,  check_word_contains_kana
@@ -25,6 +27,7 @@ class Vocabulary:
 
         self.sentence_retriever = sentence_retriever
         self.sentences = [] # TODO: create a SentenceManger instead
+        self.sentences_model = SentenceModel(self)
 
         self._get_data(quick_init)
 
@@ -43,7 +46,14 @@ class Vocabulary:
         sentences_count = len(sentences)
         for i in range(0, sentences_count):
             if check_word_contains_kana(self.word) or find_kanjis_in_dict(kanjis_data[i], self.word) is not None:
-                self.sentences.append(Sentence(self, sentences[i], translations[i], kanjis_data[i], self.word))  
+                self.add_sentence(sentences[i], translations[i], kanjis_data[i])
+
+
+    def add_sentence(self, sentence_str, translation_str, kanjis_data):
+        new_sentence = Sentence(self, sentence_str, translation_str, kanjis_data, self.word)
+        self.sentences.append(new_sentence)  
+        self.sentences_model.append_sentence(new_sentence)
+
         
     def delete_sentence(self, row):
         """
@@ -55,6 +65,8 @@ class Vocabulary:
             The index of the sentence to be deleted.
         """
         self.sentences.pop(row)
+        self.sentences_model.remove_row(row)
+
 
     def set_meaning_standard_item(self, model):
         self.meaning_object.standard_item_model = model
