@@ -7,8 +7,9 @@ from .sentences import *
 class CardTextView(QTextEdit):
     """Text view of the card in Anki."""
 
-    def __init__(self) -> None:
+    def __init__(self, is_main_window: bool) -> None:
         super().__init__()
+        self.is_main_window = is_main_window
 
         self.setReadOnly(True)
         self.setMouseTracking(True)

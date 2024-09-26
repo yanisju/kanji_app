@@ -6,7 +6,7 @@ from ...vocabulary.manager import VocabularyManager
 from .table_view.vocabulary import VocabularyTableView
 
 class VocabularyWidget(QWidget):
-    def __init__(self, parent: QWidget, vocabulary_manager: VocabularyManager) -> None:
+    def __init__(self, parent: QWidget, vocabulary_manager: VocabularyManager, sentence_rendering_widget) -> None:
         super().__init__(parent)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         layout = QVBoxLayout(self)
@@ -17,7 +17,7 @@ class VocabularyWidget(QWidget):
         label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(label)
 
-        vocabulary_list_view = VocabularyTableView(parent, vocabulary_manager) # View for retrieved words
+        vocabulary_list_view = VocabularyTableView(parent, vocabulary_manager, sentence_rendering_widget) # View for retrieved words
         layout.addWidget(vocabulary_list_view)
 
     def sizeHint(self):

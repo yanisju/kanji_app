@@ -17,7 +17,7 @@ class SentenceRenderingWidget(QWidget):
         label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(label)
 
-        self.card_text_view = CardTextView() # View for retrieved words
+        self.card_text_view = CardTextView(True) # View for retrieved words
         layout.addWidget(self.card_text_view)
 
     def sizeHint(self):

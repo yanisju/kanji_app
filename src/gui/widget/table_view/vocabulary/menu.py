@@ -9,7 +9,7 @@ from .action.lookup_on_jisho import LookupOnJishoAction
 class VocabularyTableViewMenu(QMenu):
     """Menu displayed when user right-clicks on vocabulary table view. """
     
-    def __init__(self, parent, vocabulary_manager):
+    def __init__(self, parent, vocabulary_manager, sentence_rendering_widget):
         super().__init__(parent)
         self.vocabulary_manager = vocabulary_manager
         self.row = -1
@@ -19,20 +19,20 @@ class VocabularyTableViewMenu(QMenu):
         font.setPointSize(11)
         self.setFont(font)
 
-        self.set_actions(vocabulary_manager)
+        self.set_actions(vocabulary_manager, sentence_rendering_widget)
         
 
-    def set_actions(self, vocabulary_manager):
+    def set_actions(self, vocabulary_manager, sentence_rendering_widget):
         self.open_meaning_editor_action = OpenMeaningEditorAction(self, self.parent())
         self.addAction(self.open_meaning_editor_action)
 
         self.lookup_on_jisho_action = LookupOnJishoAction(self, vocabulary_manager)
         self.addAction(self.lookup_on_jisho_action)
 
-        self.del_one_vocabulary_action = DeleteVocabularyAction(self, vocabulary_manager)
+        self.del_one_vocabulary_action = DeleteVocabularyAction(self, vocabulary_manager, sentence_rendering_widget)
         self.addAction(self.del_one_vocabulary_action)
 
-        self.del_every_vocabulary_action = DeleteAllVocabulariesAction(self, vocabulary_manager)
+        self.del_every_vocabulary_action = DeleteAllVocabulariesAction(self, vocabulary_manager, sentence_rendering_widget)
         self.addAction(self.del_every_vocabulary_action)
 
     

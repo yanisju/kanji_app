@@ -31,7 +31,7 @@ class CardDialog(QDialog):
         card_layout = QHBoxLayout() # Layout for card view and fields 
         layout.addLayout(card_layout)
 
-        self.card_view = CardTextView() # TextEdit to view current card in Anki
+        self.card_view = CardTextView(False) # TextEdit to view current card in Anki
         card_layout.addWidget(self.card_view)
 
         self.fields_layout = FieldsLayout(self.card_view) # Layout to modify card fields / Modify card view
