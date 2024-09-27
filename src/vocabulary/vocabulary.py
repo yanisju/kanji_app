@@ -54,8 +54,10 @@ class Vocabulary:
         self.sentences.append(new_sentence)  
         self.sentences_model.append_sentence(new_sentence)
 
+    def get_sentence(self, row):
+        return self.sentences[row]
         
-    def delete_sentence(self, row):
+    def remove_one_sentence(self, row):
         """
         Deletes a sentence from the sentences list based on its position.
 
@@ -67,6 +69,9 @@ class Vocabulary:
         self.sentences.pop(row)
         self.sentences_model.remove_row(row)
 
+    def remove_all_sentence(self):
+        self.sentences.clear()
+        self.sentences_model.remove_all_rows()
 
     def set_meaning_standard_item(self, model):
         self.meaning_object.standard_item_model = model

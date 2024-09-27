@@ -48,6 +48,10 @@ class VocabularyManager:
         self.vocabularies.update({word : vocabulary})
         self.vocabulary_model.append_vocabulary(word, vocabulary.item)
 
+    def add_sentence_to_deck(self, sentence):
+        sentence_to_add = sentence.clone()
+        self.sentence_added_model.append_sentence(sentence_to_add)
+
     def delete_vocabulary(self, row):
         """
         Deletes a vocabulary word from the dictionary and the model.

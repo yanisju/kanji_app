@@ -15,7 +15,7 @@ class ActionWiget(QWidget):
 
         layout.addLayout(AddOneWordLayout(vocabulary_manager))
         layout.addWidget(ChooseFileButton(parent, vocabulary_manager))
-        add_to_anki_list_button = AddToAnkiListButton(sentence_widget.sentence_view, vocabulary_manager)
+        add_to_anki_list_button = AddToAnkiListButton(sentence_widget.sentence_table_view, vocabulary_manager)
         layout.addWidget(add_to_anki_list_button)
         layout.addWidget(CreatePackageButton(anki_manager))
     

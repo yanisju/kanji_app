@@ -77,29 +77,6 @@ class SentenceModel(QStandardItemModel):
         for j in range(len(sentence.standard_item)):
             sentence.compute_standard_item()
             self.setItem(row, j, sentence.standard_item[j])
-        
-    # def refresh(self, vocabulary):
-    #     """
-    #     Clears and repopulates the model with a new list of sentences.
-
-    #     This method removes all existing rows and repopulates the model with the provided list of Sentence objects.
-
-    #     Args:
-    #     -----
-    #     sentences : list
-    #         A list of Sentence objects to repopulate the model with.
-    #     """
-    #     self.current_vocabulary = vocabulary
-    #     sentences = vocabulary.sentences
-
-    #     self.removeRows(0, self.rowCount())
-    #     self.sentences.clear()
-
-    #     for i in range(len(sentences)):
-    #         self.sentences.append(sentences[i])
-    #         for j in range(len(sentences[i].standard_item)):
-    #             sentences[i].compute_standard_item()
-    #             self.setItem(i, j, sentences[i].standard_item[j])
             
     def get_sentence_by_row(self, row):
         """
@@ -130,3 +107,7 @@ class SentenceModel(QStandardItemModel):
         """
         self.removeRow(row)
         self.sentences.pop(row)
+
+    def remove_all_rows(self):
+        self.sentences.clear()
+        self.removeRows(0, self.rowCount())

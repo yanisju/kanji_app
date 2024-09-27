@@ -17,11 +17,11 @@ class SentenceWidget(QWidget):
         label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(label)
 
-        self.sentence_view = SentenceTableView(parent, vocabulary_manager, card_text_view)
+        self.sentence_table_view = SentenceTableView(parent, vocabulary_manager, card_text_view)
         if is_added_sentence:
-            self.sentence_view.setModel(vocabulary_manager.sentence_added_model)
+            self.sentence_table_view.setModel(vocabulary_manager.sentence_added_model)
         
-        layout.addWidget(self.sentence_view)
+        layout.addWidget(self.sentence_table_view)
 
     def sizeHint(self):
         width = int(self.parentWidget().width() * 0.5) 

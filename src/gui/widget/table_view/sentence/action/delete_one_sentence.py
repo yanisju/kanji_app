@@ -5,3 +5,9 @@ class DeleteOneSentenceAction(QAction):
         super().__init__(parent)
         self.setText("Delete Sentence")
         self.setIcon(QIcon("data/icons/minus.png"))
+
+        self.triggered.connect(self._action)
+
+    def _action(self):
+        vocabulary = self.parent().parent().model().vocabulary
+        vocabulary.remove_one_sentence(self.parent().row)

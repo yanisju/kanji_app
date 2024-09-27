@@ -19,5 +19,5 @@ class DeleteVocabularyAction(QAction):
             self.sentence_rendering_widget.card_text_view.clear()
         
         self.vocabulary_manager.delete_vocabulary(self.parent().row)
-        # self.sentence_table_view.model().clear()
+        # self.sentence_table_view.model().clear() <-- Need to delete the right vocabulary 
         
