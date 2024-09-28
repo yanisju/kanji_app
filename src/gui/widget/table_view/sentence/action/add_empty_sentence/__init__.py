@@ -10,5 +10,4 @@ class AddEmptySentenceAction(QAction):
         self.triggered.connect(self._action)
 
     def _action(self):
-        vocabulary = self.parent().parent().model().vocabulary
-        vocabulary.add_sentence("", "", dict())
+        pass

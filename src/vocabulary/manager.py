@@ -1,6 +1,6 @@
 from .data_retriever import DataRetriever
 from .vocabulary import Vocabulary
-from .model.sentence import SentenceModel
+from .sentence.manager import SentenceManager
 from .model.vocabulary import VocabularyModel
 
 class VocabularyManager:
@@ -27,7 +27,7 @@ class VocabularyManager:
         self.vocabularies = dict() # Dictionnary of vocabularies instance
         
         self.vocabulary_model = VocabularyModel() # Model for retrieved words
-        self.sentence_added_model = SentenceModel()
+        self.sentence_added_to_deck = SentenceManager()
     
     def add_word(self, word):
         """
@@ -50,7 +50,7 @@ class VocabularyManager:
 
     def add_sentence_to_deck(self, sentence):
         sentence_to_add = sentence.clone()
-        self.sentence_added_model.append_sentence(sentence_to_add)
+        self.sentence_added_to_deck.append(sentence_to_add)
 
     def delete_vocabulary(self, row):
         """
@@ -63,7 +63,7 @@ class VocabularyManager:
         """
         word = self.vocabulary_model.item(row, 0).text()
         self.vocabulary_model.removeRow(row)
-        self.vocabularies[word].sentences_model.clear()
+        self.vocabularies[word].sentence_manager.clear()
         del self.vocabularies[word]
 
     def delete_all_vocabularies(self):

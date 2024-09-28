@@ -1,4 +1,4 @@
-from .sentence.sentence import Sentence
+from .sentence.manager import SentenceManager
 from .meaning.meaning import VocabularyMeaning
 from .model.sentence import SentenceModel
 
@@ -26,13 +26,12 @@ class Vocabulary:
         self.meaning_object.fetch_from_jisho(quick_init)
 
         self.sentence_retriever = sentence_retriever
-        self.sentences = [] # TODO: create a SentenceManger instead
-        self.sentences_model = SentenceModel(self)
+        self.sentence_manager = SentenceManager(self)
 
         self._get_data(quick_init)
 
         self.item = [QStandardItem(self.word), QStandardItem(self.meaning_object.meaning), QStandardItem(self.meaning_object.part_of_speech)]
-    
+
     def _get_data(self, quick_init):
         """
         Retrieves data associated with the vocabulary word.
@@ -46,17 +45,8 @@ class Vocabulary:
         sentences_count = len(sentences)
         for i in range(0, sentences_count):
             if check_word_contains_kana(self.word) or find_kanjis_in_dict(kanjis_data[i], self.word) is not None:
-                self.add_sentence(sentences[i], translations[i], kanjis_data[i])
+                self.sentence_manager.append_from_sentence_data(sentences[i], translations[i], kanjis_data[i])
 
-
-    def add_sentence(self, sentence_str, translation_str, kanjis_data):
-        new_sentence = Sentence(self, sentence_str, translation_str, kanjis_data, self.word)
-        self.sentences.append(new_sentence)  
-        self.sentences_model.append_sentence(new_sentence)
-
-    def get_sentence(self, row):
-        return self.sentences[row]
-        
     def remove_one_sentence(self, row):
         """
         Deletes a sentence from the sentences list based on its position.

@@ -109,5 +109,5 @@ class VocabularyTableView(QTableView):
 
     def _selection_changed_action(self):
         selection_row = self.currentIndex().row()
-        vocabulary_sentences_model = self.vocabulary_manager[selection_row].sentences_model
+        vocabulary_sentences_model = self.vocabulary_manager[selection_row].sentence_manager.sentences_model
         self.sentence_table_view.setModel(vocabulary_sentences_model)

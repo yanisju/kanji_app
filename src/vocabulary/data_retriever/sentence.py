@@ -1,7 +1,7 @@
 from requests_html import HTMLSession
 import json
 
-from . import find_kanjis_in_dict,  check_word_contains_kana
+from . import check_word_contains_kana
 
 def create_sentences_html_request(word, lang_from, lang_to):
     """ Create HTML request: fetch through Tatoeba website."""

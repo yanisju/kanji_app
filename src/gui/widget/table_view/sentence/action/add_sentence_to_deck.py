@@ -11,5 +11,5 @@ class AddSentenceToDeckAction(QAction):
 
     def _action(self):
         vocabulary = self.parent().parent().model().vocabulary
-        sentence = vocabulary.get_sentence(self.parent().row)
+        sentence = vocabulary.sentence_manager[self.parent().row]
         self.vocabulary_manager.add_sentence_to_deck(sentence)

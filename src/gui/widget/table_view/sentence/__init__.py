@@ -10,14 +10,14 @@ from PyQt6.QtWidgets import QHeaderView
 class SentenceTableView(QTableView):
     """Table view for the different sentences of one vocabulary."""
     
-    def __init__(self, central_widget, vocabulary_manager, main_card_view = None):
+    def __init__(self, central_widget, vocabulary_manager, main_card_view = None, is_added_sentence = False):
         super().__init__(central_widget)
         self.card_text_view = main_card_view
         
         self.setEditTriggers(self.EditTrigger.NoEditTriggers) # Disable editing
         self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
-        self.menu = SentenceTableViewMenu(self, vocabulary_manager)
+        self.menu = SentenceTableViewMenu(self, vocabulary_manager, is_added_sentence)
         self.card_dialog = CardDialog(central_widget, main_card_view)
 
         self.clicked.connect(self.clicked_action)

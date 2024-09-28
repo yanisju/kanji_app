@@ -17,9 +17,9 @@ class SentenceWidget(QWidget):
         label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(label)
 
-        self.sentence_table_view = SentenceTableView(parent, vocabulary_manager, card_text_view)
+        self.sentence_table_view = SentenceTableView(parent, vocabulary_manager, card_text_view, is_added_sentence)
         if is_added_sentence:
-            self.sentence_table_view.setModel(vocabulary_manager.sentence_added_model)
+            self.sentence_table_view.setModel(vocabulary_manager.sentence_added_to_deck.sentences_model)
         
         layout.addWidget(self.sentence_table_view)
 
