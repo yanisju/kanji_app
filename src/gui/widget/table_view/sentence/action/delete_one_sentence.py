@@ -9,5 +9,5 @@ class DeleteOneSentenceAction(QAction):
         self.triggered.connect(self._action)
 
     def _action(self):
-        vocabulary = self.parent().parent().model().vocabulary
-        vocabulary.remove_one_sentence(self.parent().row)
+        sentence_manager = self.parent().parent().model().sentence_manager
+        sentence_manager.pop(self.parent().row)

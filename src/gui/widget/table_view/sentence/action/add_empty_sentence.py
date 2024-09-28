@@ -10,4 +10,5 @@ class AddEmptySentenceAction(QAction):
         self.triggered.connect(self._action)
 
     def _action(self):
-        pass
+        sentence_manager = self.parent().parent().model().sentence_manager
+        sentence_manager.append_empty_sentence()

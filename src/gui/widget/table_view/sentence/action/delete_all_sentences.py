@@ -9,5 +9,5 @@ class DeleteAllSentenceAction(QAction):
         self.triggered.connect(self._action)
 
     def _action(self):
-        vocabulary = self.parent().parent().model().vocabulary
-        vocabulary.remove_all_sentence()
+        sentence_manager = self.parent().parent().model().sentence_manager
+        sentence_manager.clear()

@@ -27,13 +27,12 @@ class SentenceModel(QStandardItemModel):
         Removes a sentence from the model and its corresponding row.
     """
 
-    def __init__(self, vocabulary = None):
+    def __init__(self, sentence_manager):
         """
         Initializes the SentenceModel with a predefined structure of four columns.
         """
         super().__init__(0, 4)
-        self.vocabulary = vocabulary
-        self.sentences = []  # Current Sentences held by the model
+        self.sentence_manager = sentence_manager
         self._configure()
 
     def _configure(self):
@@ -56,7 +55,6 @@ class SentenceModel(QStandardItemModel):
         sentence : Sentence
             The Sentence object to be added to the model.
         """
-        self.sentences.append(sentence)
         sentence.compute_standard_item()
         self.appendRow(sentence.standard_item)
 
@@ -73,7 +71,7 @@ class SentenceModel(QStandardItemModel):
         row : int
             The index of the row to be modified.
         """
-        self.sentences[row] = sentence
+        self.sentence_manager[row] = sentence
         for j in range(len(sentence.standard_item)):
             sentence.compute_standard_item()
             self.setItem(row, j, sentence.standard_item[j])
@@ -92,7 +90,7 @@ class SentenceModel(QStandardItemModel):
         Sentence
             The Sentence object corresponding to the given row index.
         """
-        return self.sentences[row]
+        return self.sentence_manager[row]
     
     def remove_row(self, row):
         """
@@ -106,8 +104,6 @@ class SentenceModel(QStandardItemModel):
             The index of the row to be removed.
         """
         self.removeRow(row)
-        self.sentences.pop(row)
 
     def remove_all_rows(self):
-        self.sentences.clear()
         self.removeRows(0, self.rowCount())

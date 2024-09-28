@@ -10,6 +10,6 @@ class AddSentenceToDeckAction(QAction):
         self.triggered.connect(self._action)
 
     def _action(self):
-        vocabulary = self.parent().parent().model().vocabulary
-        sentence = vocabulary.sentence_manager[self.parent().row]
+        sentence_manager = self.parent().parent().model().sentence_manager
+        sentence = sentence_manager[self.parent().row]
         self.vocabulary_manager.add_sentence_to_deck(sentence)

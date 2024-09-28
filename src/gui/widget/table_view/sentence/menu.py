@@ -3,8 +3,7 @@ from .action.open_card_editor import OpenMeaningEditorAction
 from .action.add_sentence_to_deck import AddSentenceToDeckAction
 from .action.delete_one_sentence import DeleteOneSentenceAction
 from .action.delete_all_sentences import DeleteAllSentenceAction
-from .action.add_empty_sentence.deck import AddEmptySentenceDeckAction
-from .action.add_empty_sentence.vocabulary import AddEmptySentenceVocabularyAction
+from .action.add_empty_sentence import AddEmptySentenceAction
 
 class SentenceTableViewMenu(QMenu):
     """Menu displayed when user right-clicks on sentence table view. """
@@ -28,10 +27,7 @@ class SentenceTableViewMenu(QMenu):
 
         self.addSeparator()
 
-        if self.is_added_sentence:
-            self.add_empty_sentence_action =  AddEmptySentenceDeckAction(self, vocabulary_manager)
-        else:
-            self.add_empty_sentence_action =  AddEmptySentenceVocabularyAction(self, vocabulary_manager)
+        self.add_empty_sentence_action = AddEmptySentenceAction(self, vocabulary_manager)
         self.addAction(self.add_empty_sentence_action)
 
         self.addSeparator()
