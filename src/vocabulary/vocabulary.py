@@ -1,6 +1,5 @@
 from .sentence.manager import SentenceManager
 from .meaning.meaning import VocabularyMeaning
-from .model.sentence import SentenceModel
 
 from PyQt6.QtGui import QStandardItem
 

@@ -4,9 +4,10 @@ from PyQt6.QtCore import QVariant
 class VocabularyComboBox(QComboBox):
     """Class defining ComboBox for words in CardDialog."""
 
-    def __init__(self, add_empty_value = False) -> None:
+    def __init__(self, add_empty_value, kanji_data_model) -> None:
         super().__init__()
         self.add_empty_value = add_empty_value
+        kanji_data_model.itemChanged.connect(self.is_kanji_data_model_modified)
 
     def insert_new(self, kanji_data):
         self.clear()

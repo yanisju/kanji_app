@@ -20,7 +20,7 @@ class Sentence():
         A tuple containing the first word's kanji, reading, meaning, and position in the sentence.
     word2_data : tuple or None
         A tuple containing the second word's kanji, reading, meaning, and position in the sentence, or None if there is no second word.
-    fields : tuple
+    attributes : tuple
         A tuple containing the sentence, translation, word1_data, and word2_data.
     kanji_data : dict
         A dictionary containing kanji as keys and their readings, meanings, and positions as values.
@@ -48,7 +48,7 @@ class Sentence():
             self.word2_data = (word2, word2_reading, word2_meaning, word2_position)
         else:
             self.word2_data = None  
-        self.fields = (sentence, translation, self.word1_data, self.word2_data)
+        self.attributes = (sentence, translation, self.word1_data, self.word2_data)
 
         self.kanji_data = kanji_data # Dict containing kanji and theirs readings.
         self.position_kanji_sentence = get_position_kanji_sentence(sentence, kanji_data.keys()) # Dict containg positions in text as keys and kanjis as values.
@@ -65,20 +65,20 @@ class Sentence():
             word2_kanji = self.word2_data[0]
         self.standard_item = [QStandardItem(self.sentence), QStandardItem(self.translation), QStandardItem(word1_kanji), QStandardItem(word2_kanji)] 
 
-    def update_attributes(self, fields: tuple, kanji_data: dict):
+    def update_attributes(self, attributes: tuple, kanji_data: dict):
         """
         Updates the sentence attributes.
 
         Args:
         -----
-        fields : tuple
+        attributes : tuple
             A tuple containing the sentence, translation, word1_data, and word2_data.
         kanji_data : dict
             A dictionary containing kanji as keys and their readings, meanings, and positions as values.
         """
 
-        self.sentence, self.translation, self.word1_data, self.word2_data = fields
-        self.fields = fields
+        self.sentence, self.translation, self.word1_data, self.word2_data = attributes
+        self.attributes = attributes
         
         self.kanji_data = dict(kanji_data)
         self.position_kanji_sentence = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())

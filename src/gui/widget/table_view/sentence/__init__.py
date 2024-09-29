@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QTableView
 
 from .menu import SentenceTableViewMenu
 
-from ....card.dialog import CardDialog
+from ....dialog.card import CardDialog
 
 from PyQt6.QtWidgets import QHeaderView
 
@@ -50,5 +50,5 @@ class SentenceTableView(QTableView):
         row = self.currentIndex().row()
         sentence = self.model().get_sentence_by_row(row)
 
-        self.card_dialog.update(self.model(), sentence, row)
-        self.card_dialog.open()
+        self.card_dialog.open(self.model(), sentence, row)
+

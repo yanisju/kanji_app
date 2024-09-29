@@ -1,5 +1,5 @@
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
-from ....vocabulary.str_utils import *
+from .....vocabulary.str_utils import *
 
 import PyQt6.QtCore
 

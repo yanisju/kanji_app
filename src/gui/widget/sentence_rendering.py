@@ -2,7 +2,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtCore import QSize
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy
-from ..card.text_view import CardTextView
+from ..widget.card_text_view import CardTextView
 
 class SentenceRenderingWidget(QWidget):
     def __init__(self, parent: QWidget) -> None:

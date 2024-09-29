@@ -1,8 +1,7 @@
 from PyQt6.QtWidgets import QTableView, QHeaderView
-from PyQt6.QtGui import QFont
 
 from .menu import VocabularyTableViewMenu
-from ....meaning_dialog import MeaningDialog
+from ....dialog.meaning import MeaningDialog
 
 class VocabularyTableView(QTableView):
     """
