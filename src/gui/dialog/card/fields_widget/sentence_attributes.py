@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QWidget, QFormLayout, QLineEdit
 from .vocabulary_combobox import VocabularyComboBox
 
 class SentenceAttributesWidget(QWidget):
-    def __init__(self, parent: QWidget, card_view, kanji_data_model) -> None:
+    def __init__(self, parent: QWidget, card_view) -> None:
         super().__init__(parent)
         layout = QFormLayout(self)
         self.setLayout(layout)
@@ -16,10 +16,10 @@ class SentenceAttributesWidget(QWidget):
             "Word 2: ",
         ]
 
-        self.widget_list = self._init_layout(layout, attributes_name, kanji_data_model)
+        self.widget_list = self._init_layout(layout, attributes_name)
         self.attributes_value = []
 
-    def _init_layout(self, form_layout, attributes_name, kanji_data_model):
+    def _init_layout(self, form_layout, attributes_name):
         widget_list = []
 
         line_edit = QLineEdit()
@@ -32,15 +32,15 @@ class SentenceAttributesWidget(QWidget):
         form_layout.addRow(attributes_name[1], line_edit)
         line_edit.textEdited.connect(self._is_translation_attribute_modified)
 
-        word1_combobox = VocabularyComboBox(False, kanji_data_model)
-        widget_list.append(word1_combobox)
-        form_layout.addRow(attributes_name[2], word1_combobox)
-        word1_combobox.currentIndexChanged.connect(self._is_word1_attribute_modified)
+        self.word1_combobox = VocabularyComboBox(False)
+        widget_list.append(self.word1_combobox)
+        form_layout.addRow(attributes_name[2], self.word1_combobox)
+        self.word1_combobox.currentIndexChanged.connect(self._is_word1_attribute_modified)
 
-        word2_combobox = VocabularyComboBox(True, kanji_data_model)
-        widget_list.append(word2_combobox)
-        form_layout.addRow(attributes_name[3], word2_combobox)
-        word2_combobox.currentIndexChanged.connect(self._is_word2_attribute_modified)
+        self.word2_combobox = VocabularyComboBox(True)
+        widget_list.append(self.word2_combobox)
+        form_layout.addRow(attributes_name[3], self.word2_combobox)
+        self.word2_combobox.currentIndexChanged.connect(self._is_word2_attribute_modified)
 
         return tuple(widget_list)
 
@@ -84,6 +84,9 @@ class SentenceAttributesWidget(QWidget):
         else:
             self.widget_list[3].setCurrentIndex(sentence.word2_data[3])
         self.attributes_value[3] = self.widget_list[3].itemData(self.widget_list[3].currentIndex())
+
+        self.word1_combobox.set_kanji_data_model(sentence.kanji_data_model)
+        self.word2_combobox.set_kanji_data_model(sentence.kanji_data_model)
         
         
     

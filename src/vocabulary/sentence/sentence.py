@@ -1,6 +1,7 @@
 from PyQt6.QtGui import QStandardItem
 from ..str_utils import *
 from ..data_retriever.kanji_data import is_word_in_dict
+from .kanji_data_model import KanjiDataModel
 
 class Sentence():
     """
@@ -55,6 +56,8 @@ class Sentence():
 
         self.standard_item = None # QStandardItem in order to be inserted in the model
         self.compute_standard_item() # TODO: class does not contain standard item, but method return it directly
+
+        self.kanji_data_model = KanjiDataModel()
 
     def compute_standard_item(self):
         """Update standard item to insert in Sentence model, based on current sentences attributes. """
