@@ -1,19 +1,9 @@
-import re
-
-from ..sentence.kanji_data import KanjiData
-
 def check_char_is_kana(char):
     if ord(char) >= 12352 and ord(char) <= 12543:
         return True
     else:
         return False
-
-def check_word_contains_kana(word: str):
-    for char in word:
-        if check_char_is_kana(char): 
-            return True
-    return False
-
+    
 def is_word_in_dict(kanji_data: dict, word: str):
     return word in kanji_data.keys()
 
@@ -50,31 +40,3 @@ def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
         return tuple(kanjis_in_dict)
     else:
         return None
-
-def get_kanji_reading_meaning_position(sentence: str): 
-    """
-    Returns a dictionary containing kanji as keys and a tuple (reading, meaning, position) as values.
-
-    This function extracts kanji data (reading, meaning, position) from a sentence transcription
-    and returns it as a dict.
-
-    Args:
-    -----
-    sentence : str
-        The sentence containing the kanji to extract.
-
-    Returns:
-    --------
-    dict
-        A dictionary where kanji characters are keys and values are tuples of (reading, meaning, position).
-    """
-    pattern = r'\[([^\|\[\]]+)\|([^\[\]]+)\]'
-    result = re.findall(pattern, sentence) 
-    kanji_data = KanjiData()
-    i = 0
-    for match in result:
-            kanji, reading = match
-            reading = reading.replace('|', '')
-            kanji_data.add(kanji, reading, "", i)
-            i += 1
-    return kanji_data

@@ -8,7 +8,7 @@ from PyQt6.QtCore import pyqtSignal
 class CardDialog(QDialog):
     """Pop-up window for creating and editing a Anki card and its field. """
 
-    confirm_button_clicked_signal = pyqtSignal(Sentence, int)
+    # confirm_button_clicked_signal = pyqtSignal(Sentence, int)
 
     def __init__(self, central_widget, main_card_view):
         super().__init__(central_widget) 
@@ -46,18 +46,18 @@ class CardDialog(QDialog):
 
     def _confirm_button_clicked(self):
         self._update_sentence_attributes()
-        self.confirm_button_clicked_signal.emit(self.sentence, self.sentence_row)
+        # self.confirm_button_clicked_signal.emit(self.sentence, self.sentence_row)
         self.accept()
 
     def _update_sentence_attributes(self): # TODO: put it in another class
         """Update current sentence with modified attributes in view. """
         self.sentence.update_attributes(tuple(self.fields_widget.sentence_attributes_widget.attributes_value), 
-                                        self.fields_widget.kanji_data_model.kanji_data)
+                                        self.fields_widget.kanji_table_view.model())
         self.sentences_model.modify_row(self.sentence, self.sentence_row)
         if hasattr(self, "sentence"): # Update CardView from Main Application as well
             self.main_card_view.set_card_view(self.sentence, 
                                     self.sentence.position_kanji_sentence,
-                                    self.sentence.kanji_data,)
+                                    self.sentence.kanji_data)
         
 
     def open(self, sentences_model, sentence: Sentence, sentence_row):
@@ -70,8 +70,8 @@ class CardDialog(QDialog):
         
         self.fields_widget.set_to_new_sentence(sentence)
 
-        self.card_view.set_card_view(self.sentence, 
-                                    sentence.kanji_data_model.position_kanji_sentence,
-                                    sentence.kanji_data_model.kanji_data) # Init card view with card fields
-
+        self.card_view.set_card_view(sentence, 
+                                    sentence.position_kanji_sentence,
+                                    sentence.kanji_data) # Init card view with card fields
+        
         super().open()

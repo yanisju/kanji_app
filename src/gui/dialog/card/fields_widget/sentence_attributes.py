@@ -85,8 +85,8 @@ class SentenceAttributesWidget(QWidget):
             self.widget_list[3].setCurrentIndex(sentence.word2_data[3])
         self.attributes_value[3] = self.widget_list[3].itemData(self.widget_list[3].currentIndex())
 
-        self.word1_combobox.set_kanji_data_model(sentence.kanji_data_model)
-        self.word2_combobox.set_kanji_data_model(sentence.kanji_data_model)
+        self.word1_combobox.set_kanji_data_model(sentence.kanji_data.model)
+        self.word2_combobox.set_kanji_data_model(sentence.kanji_data.model)
         
         
     

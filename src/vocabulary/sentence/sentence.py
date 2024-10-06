@@ -1,7 +1,7 @@
 from PyQt6.QtGui import QStandardItem
 from ..str_utils import *
 from ..data_retriever.kanji_data import is_word_in_dict
-from .kanji_data_model import KanjiDataModel
+from .kanji_data import KanjiData
 
 class Sentence():
     """
@@ -35,6 +35,7 @@ class Sentence():
         self.word = word
         self.sentence = sentence
         self.translation = translation
+        self.kanji_data = kanji_data
 
         if bool(kanji_data) is False: # If kanji_data is empty
             word1_reading, word1_meaning, word1_position = "", "", -1
@@ -57,8 +58,6 @@ class Sentence():
         self.standard_item = None # QStandardItem in order to be inserted in the model
         self.compute_standard_item() # TODO: class does not contain standard item, but method return it directly
 
-        self.kanji_data_model = KanjiDataModel()
-
     def compute_standard_item(self):
         """Update standard item to insert in Sentence model, based on current sentences attributes. """
         word1_kanji, word2_kanji = None, None
@@ -68,7 +67,7 @@ class Sentence():
             word2_kanji = self.word2_data[0]
         self.standard_item = [QStandardItem(self.sentence), QStandardItem(self.translation), QStandardItem(word1_kanji), QStandardItem(word2_kanji)] 
 
-    def update_attributes(self, attributes: tuple, kanji_data: dict):
+    def update_attributes(self, attributes: tuple, new_kanji_data_model):
         """
         Updates the sentence attributes.
 
@@ -83,7 +82,7 @@ class Sentence():
         self.sentence, self.translation, self.word1_data, self.word2_data = attributes
         self.attributes = attributes
         
-        self.kanji_data = dict(kanji_data)
+        self.kanji_data.set_model(new_kanji_data_model)
         self.position_kanji_sentence = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
 
     def clone(self):
@@ -101,4 +100,5 @@ class Sentence():
             word2, *_ = word2_data
         else:
             word2 = None
-        return Sentence(vocabulary, sentence, translation, kanji_data, word1, word2)
+        new_kanji_data = kanji_data.clone()
+        return Sentence(vocabulary, sentence, translation, new_kanji_data, word1, word2)

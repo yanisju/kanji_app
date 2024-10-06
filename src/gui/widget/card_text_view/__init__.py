@@ -46,4 +46,4 @@ class CardTextView(QTextEdit):
             show_transcription(self, event, len(self.sentence_attributes[0]), self.position_kanji, self.kanji_data)
     
     def sizeHint(self):
-        return QSize(int(self.parent().width() / 2), int(self.parent().height() / 2))
+        return QSize(int(self.parent().width() / 2), int(self.parent().height()))

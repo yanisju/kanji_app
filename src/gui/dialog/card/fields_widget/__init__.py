@@ -27,12 +27,9 @@ class FieldsWidget(QWidget):
 
     def set_to_new_sentence(self, sentence):
         """Fill each fields for the card with the current items."""
-
-        
-        self.kanji_data_model = sentence.kanji_data_model 
-        self.kanji_table_view.setModel(sentence.kanji_data_model)
+        self.kanji_table_view.setModel(sentence.kanji_data.model.get_a_copy())
         self.sentence_attributes_widget.set_to_new_sentence(sentence)
-        sentence.kanji_data_model.refresh(sentence.kanji_data, self.sentence_attributes_widget.attributes_value[0])
+        # sentence.kanji_data.model.refresh(sentence.kanji_data, self.sentence_attributes_widget.attributes_value[0])
 
     def sizeHint(self):
-        return QSize(int(self.parent().width() / 2), int(self.parent().height() / 2))
+        return QSize(int(self.parent().width() / 2), int(self.parent().height()))
