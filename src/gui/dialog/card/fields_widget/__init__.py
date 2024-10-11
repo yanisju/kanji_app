@@ -1,8 +1,7 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTableView
+from PyQt6.QtWidgets import QWidget, QVBoxLayout
 from PyQt6.QtCore import QSize
 from .sentence_attributes import SentenceAttributesWidget
-
-from PyQt6.QtWidgets import QHeaderView
+from .kanji_table_view import KanjiTableView
 
 class FieldsWidget(QWidget):
     def __init__(self, parent, card_view):
@@ -20,9 +19,7 @@ class FieldsWidget(QWidget):
         self.sentence_attributes_widget = SentenceAttributesWidget(self, self.card_view)
         layout.addWidget(self.sentence_attributes_widget)
 
-        self.kanji_table_view = QTableView(self)# View containg kanjis and theirs readings + meanings
-        self.kanji_table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
-        
+        self.kanji_table_view = KanjiTableView(self)# View containg kanjis and theirs readings + meanings
         layout.addWidget(self.kanji_table_view)
 
     def set_to_new_sentence(self, sentence):

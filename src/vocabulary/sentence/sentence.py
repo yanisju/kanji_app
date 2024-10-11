@@ -36,6 +36,7 @@ class Sentence():
         self.sentence = sentence
         self.translation = translation
         self.kanji_data = kanji_data
+        self.position_kanji = dict() # Dict containg positions in text as keys and kanjis as values.
 
         if bool(kanji_data) is False: # If kanji_data is empty
             word1_reading, word1_meaning, word1_position = "", "", -1
@@ -51,9 +52,6 @@ class Sentence():
         else:
             self.word2_data = None  
         self.attributes = (sentence, translation, self.word1_data, self.word2_data)
-
-        self.kanji_data = kanji_data # Dict containing kanji and theirs readings.
-        self.position_kanji_sentence = get_position_kanji_sentence(sentence, kanji_data.keys()) # Dict containg positions in text as keys and kanjis as values.
 
         self.standard_item = None # QStandardItem in order to be inserted in the model
         self.compute_standard_item() # TODO: class does not contain standard item, but method return it directly
@@ -83,6 +81,9 @@ class Sentence():
         self.attributes = attributes
         
         self.kanji_data.set_model(new_kanji_data_model)
+        self.position_kanji_sentence = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
+
+    def _update_position_kanji_sentence(self):
         self.position_kanji_sentence = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
 
     def clone(self):

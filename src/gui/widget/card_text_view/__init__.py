@@ -23,12 +23,10 @@ class CardTextView(QTextEdit):
             stylesheet = file.read()
         self.setStyleSheet(stylesheet)
 
-    def set_card_view(self, sentence: Sentence, position_kanji: dict, kanji_data: dict):
+    def set_card_view(self, sentence: Sentence):
         """Set card view, based on vocabulary fields."""
 
         self.sentence = sentence
-        self.position_kanji = position_kanji
-        self.kanji_data = kanji_data
         self.sentence_attributes = sentence.attributes
 
         card_text = get_text(self.sentence_attributes)
@@ -42,8 +40,8 @@ class CardTextView(QTextEdit):
 
     def mouseMoveEvent(self, event):
         """Show transcription when mouse howers a kanji."""
-        if hasattr(self, "position_kanji") and hasattr(self, "kanji_data"):
-            show_transcription(self, event, len(self.sentence_attributes[0]), self.position_kanji, self.kanji_data)
+        if self.sentence is not None:
+            show_transcription(self, event, len(self.sentence.attributes[0]), self.sentence.position_kanji, self.sentence.kanji_data)
     
     def sizeHint(self):
         return QSize(int(self.parent().width() / 2), int(self.parent().height()))

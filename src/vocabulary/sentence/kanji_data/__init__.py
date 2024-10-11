@@ -4,11 +4,18 @@ from .kanji_data_model import KanjiDataModel
 class KanjiData(dict):
     def __init__(self) -> None:
         self.model = KanjiDataModel()
+        # self.model.itemChanged.connect(self._model_is_modified)
 
     def add(self, kanji, reading, meaning, position):
         #TODO: check if kanji already exists + add to model
+        
+        if kanji in self:
+            row = list(self.keys()).index(kanji)
+            print(list(self.keys()), row)
+            self.model.modify_reading_meaning(row, reading, meaning)
+        else:
+            self.model.add_row(kanji, reading, meaning)
         self[kanji] = (reading, meaning, position)
-        self.model.add_row(kanji, reading, meaning)
 
     def remove(self, kanji):
         #TODO: check if kanji already exists + remove from model
@@ -45,7 +52,6 @@ class KanjiData(dict):
                     word_position = -1
         self.add(word, word_reading, word_meaning, word_position)
         self._sort_dict()
-        print(self.model.rowCount())
 
     def update_data_only_kanji(self, word: str):
         """
@@ -84,6 +90,37 @@ class KanjiData(dict):
 
         self._sort_dict()
         print(self.model.rowCount())
+
+    # def _model_is_modified(self, item):
+    #     """Modify its own dictionnary to fit with modifications.
+    #     Key: kanji
+    #     Item: reading, meaning, position"""
+
+    #     index = self.model.indexFromItem(item)
+    #     if index.column() != 0:  # If reading or meaning is modified
+    #         kanji = self.model.item(index.row(), 0).text()
+
+    #         if index.column() == 1: # Modify reading
+    #             self[kanji] = (
+    #                 item.text(),
+    #                 self[kanji][1],
+    #                 index.row(),
+    #             )
+    #         else:  # Modify meaning / index.column == 2
+    #             self[kanji] = (
+    #                 self[kanji][0],
+    #                 item.text(),
+    #                 index.row(),
+    #             )
+    #     else:  # If kanji is modified
+    #         kanji_to_del = [
+    #             item for item, v in self.items() if v[2] == index.row()
+    #         ]
+    #         self[item.text()] = self[kanji_to_del[0]]
+    #         del self[kanji_to_del[0]]
+
+    #     # TODO: modify textview position_kanji_sentence
+    #     # self.set_position_kanji_sentence(self.sentence, self.keys())
 
     def set_model(self, new_model):
         self.model = new_model

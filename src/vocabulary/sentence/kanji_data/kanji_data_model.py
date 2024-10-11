@@ -23,6 +23,12 @@ class KanjiDataModel(QStandardItemModel):
     def add_row(self, kanji, reading, meaning):
         self.appendRow([QStandardItem(kanji), QStandardItem(reading), QStandardItem(meaning)])
 
+    def modify_reading_meaning(self, row, reading, meaning):
+        kanji = self.item(row, 0).text()
+        data = [QStandardItem(kanji), QStandardItem(reading), QStandardItem(meaning)]
+        for i in range(3):
+            self.setItem(row, i, data[i])
+
     def get_a_copy(self):
         new_model = KanjiDataModel()
         for row_index in range(self.rowCount()):
@@ -47,48 +53,17 @@ class KanjiDataModel(QStandardItemModel):
     #     self.sentence = sentence
 
     #     self.position_kanji_sentence = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
+ 
 
-    # def is_modified(self, item):
-    #     """Modify its own kanji_data dictionnary to fit with modifications.
-    #     Key: kanji
-    #     Item: reading, meaning, position"""
+    def set_position_kanji_sentence(self, sentence, kanjis):
+        """Modify dictionnary containing positions in sentence as keys, and kanjis as values."""
+        kanjis_sorted = sorted(kanjis, key=len, reverse=True)
 
-    #     index = self.indexFromItem(item)
-    #     if index.column() != 0:  # If reading or meaning is modified
-    #         kanji = self.item(index.row(), 0).text()
-
-    #         if index.column() == 1: # Modify reading
-    #             self.kanji_data[kanji] = (
-    #                 item.text(),
-    #                 self.kanji_data[kanji][1],
-    #                 index.row(),
-    #             )
-    #         else:  # Modify meaning / index.column == 2
-    #             self.kanji_data[kanji] = (
-    #                 self.kanji_data[kanji][0],
-    #                 item.text(),
-    #                 index.row(),
-    #             )
-    #     else:  # If kanji is modified
-    #         kanji_to_del = [
-    #             item for item, v in self.kanji_data.items() if v[2] == index.row()
-    #         ]
-    #         self.kanji_data[item.text()] = self.kanji_data[kanji_to_del[0]]
-    #         del self.kanji_data[kanji_to_del[0]]
-
-    #     self.set_position_kanji_sentence(self.sentence, self.kanji_data.keys())
-
-        
-
-    # def set_position_kanji_sentence(self, sentence, kanjis):
-    #     """Modify dictionnary containing positions in sentence as keys, and kanjis as values."""
-    #     kanjis_sorted = sorted(kanjis, key=len, reverse=True)
-
-    #     self.position_kanji_sentence.clear()
-    #     for word in kanjis_sorted:
-    #         while(sentence.find(word) != -1):
-    #             for i in range(sentence.find(word), sentence.find(word) + len(word)):
-    #                 self.position_kanji_sentence[i] = word
+        self.position_kanji_sentence.clear()
+        for word in kanjis_sorted:
+            while(sentence.find(word) != -1):
+                for i in range(sentence.find(word), sentence.find(word) + len(word)):
+                    self.position_kanji_sentence[i] = word
                 
-    #             replacement = "_" * len(word)
-    #             sentence = sentence.replace(word, replacement, 1)
+                replacement = "_" * len(word)
+                sentence = sentence.replace(word, replacement, 1)
