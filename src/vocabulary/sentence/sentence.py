@@ -37,6 +37,7 @@ class Sentence():
         self.translation = translation
         self.kanji_data = kanji_data
         self.position_kanji = dict() # Dict containg positions in text as keys and kanjis as values.
+        self._update_position_kanji()
 
         if bool(kanji_data) is False: # If kanji_data is empty
             word1_reading, word1_meaning, word1_position = "", "", -1
@@ -81,10 +82,10 @@ class Sentence():
         self.attributes = attributes
         
         self.kanji_data.set_model(new_kanji_data_model)
-        self.position_kanji_sentence = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
+        self.position_kanji = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
 
-    def _update_position_kanji_sentence(self):
-        self.position_kanji_sentence = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
+    def _update_position_kanji(self):
+        self.position_kanji = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
 
     def clone(self):
         """
