@@ -45,24 +45,6 @@ class KanjiDataModel(QStandardItemModel):
     def remove(self, row):
         self.removeRow(row)
 
-    
-    # def refresh(self, kanji_data: dict, sentence: str):
-    #     """Refresh model with a new dictionnary containing kanjis data."""
-    #     if self.kanji_data != None:  # If model is not empty
-    #         self.removeRows(0, self.rowCount())
-    #     self.kanji_data = dict(sorted(kanji_data.items(), key=lambda item: item[1][2]))
-
-    #     for kanji in self.kanji_data.keys():
-    #         reading, meaning, _ = kanji_data[kanji]
-    #         self.appendRow(
-                
-    #         )
-
-    #     self.sentence = sentence
-
-    #     self.position_kanji_sentence = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
- 
-
     def set_position_kanji_sentence(self, sentence, kanjis):
         """Modify dictionnary containing positions in sentence as keys, and kanjis as values."""
         kanjis_sorted = sorted(kanjis, key=len, reverse=True)

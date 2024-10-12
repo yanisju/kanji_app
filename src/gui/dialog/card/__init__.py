@@ -61,7 +61,7 @@ class CardDialog(QDialog):
         self.sentence_row = sentence_row # Row number in the view
         self.sentences_model = sentences_model
         
-        self.fields_widget.set_to_new_sentence(sentence)
+        self.fields_widget.set_to_new_sentence(self.sentence)
 
         self.card_view.set_card_view(self.sentence) # Init card view with card fields
         

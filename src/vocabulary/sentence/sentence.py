@@ -36,6 +36,7 @@ class Sentence():
         self.sentence = sentence
         self.translation = translation
         self.kanji_data = kanji_data
+        self.kanji_data.bound_to_sentence(self)
         self.position_kanji = dict() # Dict containg positions in text as keys and kanjis as values.
         self._update_position_kanji()
 
@@ -103,4 +104,5 @@ class Sentence():
         else:
             word2 = None
         new_kanji_data = kanji_data.clone()
-        return Sentence(vocabulary, sentence, translation, new_kanji_data, word1, word2)
+        new_sentence = Sentence(vocabulary, sentence, translation, new_kanji_data, word1, word2)
+        return new_sentence
