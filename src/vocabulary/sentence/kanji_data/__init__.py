@@ -11,7 +11,6 @@ class KanjiData(dict):
         
         if kanji in self:
             row = list(self.keys()).index(kanji)
-            print(list(self.keys()), row)
             self.model.modify_reading_meaning(row, reading, meaning)
         else:
             self.model.add_row(kanji, reading, meaning)
@@ -19,7 +18,12 @@ class KanjiData(dict):
 
     def remove(self, kanji):
         #TODO: check if kanji already exists + remove from model
-        self.pop(kanji)
+        return self.pop(kanji)
+        self.model.remove()
+
+    def clear(self):
+        super().clear()
+        self.model.clear()
 
     def _sort_dict(self): # Sort dict by kanji position
         sorted_dict = dict(sorted(self.items(), key=lambda item: item[1][2])) # Sort dict by position
@@ -36,6 +40,7 @@ class KanjiData(dict):
         word_reading = ""
         word_position = -1
         first_kanji = True
+        word_meaning = ""
 
         for i in range(len(word)): # For each char of word
             if check_char_is_kana(word[i]):
@@ -43,13 +48,14 @@ class KanjiData(dict):
             else:
                 try:
                     reading, meaning, position = self.remove(word[i])
+                    
                     word_reading += reading
                     if first_kanji:
                         word_meaning = meaning
                         word_position = position
+                        first_kanji = False
                 except: # Sometimes, word doesn't appear completely in sentence
-                    word_meaning = ""
-                    word_position = -1
+                    pass
         self.add(word, word_reading, word_meaning, word_position)
         self._sort_dict()
 
@@ -89,7 +95,6 @@ class KanjiData(dict):
         self.add(word, new_reading, new_meaning, new_position)
 
         self._sort_dict()
-        print(self.model.rowCount())
 
     # def _model_is_modified(self, item):
     #     """Modify its own dictionnary to fit with modifications.

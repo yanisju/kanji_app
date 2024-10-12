@@ -36,6 +36,14 @@ class KanjiDataModel(QStandardItemModel):
             new_model.appendRow(row)
         return new_model
 
+    def get_all_rows(self):
+        l = []
+        for row_index in range(self.rowCount()):
+            l.append([self.item(row_index,c).text() for c in range(self.columnCount())])
+        return l
+    
+    def remove(self, row):
+        self.removeRow(row)
 
     
     # def refresh(self, kanji_data: dict, sentence: str):

@@ -9,8 +9,8 @@ class AnkiManager():
         
     def _get_model(self):
         # TODO: Modify and set as parameters
-        file_template_front = open("D:/Workspace/kanji_app/data/parameters/template_front.txt", "r", encoding='utf-8')
-        file_template_back = open("D:/Workspace/kanji_app/data/parameters/template_back.txt", "r", encoding='utf-8')
+        file_template_front = open("data/parameters/template_front.txt", "r", encoding='utf-8')
+        file_template_back = open("data/parameters/template_back.txt", "r", encoding='utf-8')
         template_front = file_template_front.read()
         template_back = file_template_back.read()
         
