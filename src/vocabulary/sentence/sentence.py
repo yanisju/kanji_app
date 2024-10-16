@@ -1,6 +1,6 @@
 from PyQt6.QtGui import QStandardItem
 from ..str_utils import *
-from ..data_retriever.kanji_data import is_word_in_dict
+from ..data_retriever.kanji_data import is_word_in_list
 from .kanji_data import KanjiData
 
 class Sentence():
@@ -41,16 +41,18 @@ class Sentence():
         self._update_position_kanji()
 
         if bool(kanji_data) is False: # If kanji_data is empty
-            word1_reading, word1_meaning, word1_position = "", "", -1
-        elif is_word_in_dict(kanji_data, word):
-            word1_reading, word1_meaning, word1_position = kanji_data[word]
+            word1_reading, word1_meaning = "", ""
+        elif is_word_in_list(kanji_data, word):
+            index = kanji_data._find_kanji_index(word)
+            _, word1_reading, word1_meaning = kanji_data[index]
         else: # If word does not appear in kanji_data, takes first element
-            word1_reading, word1_meaning, word1_position = kanji_data[next(iter(kanji_data))]
-        self.word1_data = (word, word1_reading, word1_meaning, word1_position)
+            _, word1_reading, word1_meaning = kanji_data[0]
+        self.word1_data = (word, word1_reading, word1_meaning)
         
         if word2:
-            word2_reading, word2_meaning, word2_position = kanji_data[word2]
-            self.word2_data = (word2, word2_reading, word2_meaning, word2_position)
+            index = kanji_data._find_kanji_index(word2)
+            word2_reading, word2_meaning = kanji_data[index]
+            self.word2_data = (word2, word2_reading, word2_meaning)
         else:
             self.word2_data = None  
         self.attributes = (sentence, translation, self.word1_data, self.word2_data)
@@ -83,10 +85,10 @@ class Sentence():
         self.attributes = attributes
         
         self.kanji_data.set_model(new_kanji_data_model)
-        self.position_kanji = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
+        self.position_kanji = get_position_kanji_sentence(self.sentence, self.kanji_data)
 
     def _update_position_kanji(self):
-        self.position_kanji = get_position_kanji_sentence(self.sentence, self.kanji_data.keys())
+        self.position_kanji = get_position_kanji_sentence(self.sentence, self.kanji_data)
 
     def clone(self):
         """

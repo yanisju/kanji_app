@@ -102,7 +102,7 @@ class DataRetriever():
             kanji_data = get_kanji_reading_meaning_position(transcription)
 
             # Check if the word appears in the kanji data
-            if not is_word_in_dict(kanji_data, word):
+            if not is_word_in_list(kanji_data, word):
                 # If the word contains kana, update the kanji data accordingly
                 if check_word_contains_kana(word):
                     kanji_data.update_data_kanji_kana(word)
@@ -110,10 +110,9 @@ class DataRetriever():
                     kanji_data.update_data_only_kanji(word)
 
             # Check again if the word appears in the updated kanji data
-            if is_word_in_dict(kanji_data, word):
+            if is_word_in_list(kanji_data, word):
                 # Update the word's reading, meaning, and position
-                word_reading, _, word_position = kanji_data[word]
-                kanji_data.add(word, word_reading, word_meaning, word_position)
+                kanji_data.update_kanji_meaning(word, word_meaning)
 
             # Add the kanji data to the list of sentence kanji data
             sentences_kanji_data.append(kanji_data)

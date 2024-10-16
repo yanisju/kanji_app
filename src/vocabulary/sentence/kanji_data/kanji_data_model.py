@@ -11,7 +11,6 @@ class KanjiDataModel(QStandardItemModel):
     def __init__(self):
         super().__init__(0, 3)
         self.modified_rows = dict()
-
         self._configure()
         
 

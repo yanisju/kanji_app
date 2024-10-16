@@ -14,8 +14,12 @@ def check_word_contains_kana(word: str):
             return True
     return False
 
-def is_word_in_dict(kanji_data: dict, word: str):
-    return word in kanji_data.keys()
+def is_word_in_list(kanji_data, word: str):
+    is_in_list = False
+    for i in range(len(kanji_data)):
+        if word == kanji_data[i][0]:
+            is_in_list = True
+    return is_in_list
 
 def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
     """
@@ -71,10 +75,8 @@ def get_kanji_reading_meaning_position(sentence: str):
     pattern = r'\[([^\|\[\]]+)\|([^\[\]]+)\]'
     result = re.findall(pattern, sentence) 
     kanji_data = KanjiData()
-    i = 0
     for match in result:
             kanji, reading = match
             reading = reading.replace('|', '')
-            kanji_data.add(kanji, reading, "", i)
-            i += 1
+            kanji_data.add(kanji, reading, "")
     return kanji_data

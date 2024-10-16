@@ -24,7 +24,8 @@ def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
         A tuple of kanji characters found in the dictionary, or None if not found.
     """
     merged_keys = ""
-    for key in kanjis_data.keys(): # Merge all kanjis in one string
+    kanjis = [k for k, *_ in kanjis_data]
+    for key in kanjis: # Merge all kanjis in one string
         merged_keys += key
     if kanji_to_find in merged_keys:
         position_start = merged_keys.index(kanji_to_find)
@@ -32,8 +33,7 @@ def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
 
         current_position = 0
         kanjis_in_dict = []
-        for key in kanjis_data.keys():
-            pass
+        for key in kanjis:
             if current_position >= position_start and current_position <= position_end:
                 kanjis_in_dict.append(key)
             current_position += len(key)

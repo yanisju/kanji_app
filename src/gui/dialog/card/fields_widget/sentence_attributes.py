@@ -75,14 +75,18 @@ class SentenceAttributesWidget(QWidget):
         if sentence.word1_data == None:
             self.widget_list[2].set_to_empty_value()
         else:
-            self.widget_list[2].setCurrentIndex(sentence.word1_data[3])
+            word1_kanji = sentence.word1_data[0]
+            _, _, word1_index = sentence.kanji_data.get_data_by_kanji(word1_kanji)
+            self.widget_list[2].setCurrentIndex(word1_index)
         self.attributes_value[2] = self.widget_list[2].itemData(self.widget_list[2].currentIndex())
 
         self.widget_list[3].insert_new(sentence.kanji_data)
         if sentence.word2_data == None:
             self.widget_list[3].set_to_empty_value()
         else:
-            self.widget_list[3].setCurrentIndex(sentence.word2_data[3])
+            word2_kanji = sentence.word2_data[0]
+            _, _, word2_index = sentence.kanji_data.get_data_by_kanji(word2_kanji)
+            self.widget_list[3].setCurrentIndex(word2_index)
         self.attributes_value[3] = self.widget_list[3].itemData(self.widget_list[3].currentIndex())
 
         self.word1_combobox.set_kanji_data_model(sentence.kanji_data.model)

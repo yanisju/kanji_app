@@ -1,7 +1,7 @@
 from .str_utils import *
 from .kanji_data_model import KanjiDataModel
 
-class KanjiData(dict):
+class KanjiData(list):
     def __init__(self) -> None:
         self.model = KanjiDataModel()
     
@@ -9,39 +9,50 @@ class KanjiData(dict):
         self.sentence = sentence
         self.model.itemChanged.connect(self._model_is_modified)
 
-    def add(self, kanji, reading, meaning, position):
-        #TODO: check if kanji already exists + add to model
-        
-        if kanji in self:
-            row = list(self.keys()).index(kanji)
-            self.model.modify_reading_meaning(row, reading, meaning)
-        else:
+    def _find_kanji_index(self, kanji):
+        for index, (k, *_) in enumerate(self):
+            if k == kanji:
+                return index
+        return -1
+    
+    def get_data_by_kanji(self, kanji: str):
+        index = self._find_kanji_index(kanji)
+        _, reading, meaning = self[index]
+        return (reading, meaning, index)
+
+    def add(self, kanji, reading, meaning):
+        kanji_index = self._find_kanji_index(kanji)
+        if kanji_index == -1:
             self.model.add_row(kanji, reading, meaning)
-        self[kanji] = (reading, meaning, position)
+            self.append((kanji, reading, meaning))
+        else:
+            raise IndexError
+
+    def add_empty(self):
+        self.append(("", "", "", ""))
+        self.model.add_row("", "", "")
 
     def remove(self, kanji):
         #TODO: check if kanji already exists + remove from model
-        return self.pop(kanji)
+        index = self._find_kanji_index(kanji)
+        if index != -1:
+            self.model.remove(index)
+            return self.pop(index) # /!\ TODO: Return kanji as well
+        else:
+            raise IndexError
         self.model.remove()
+
+    def remove_by_row(self, row):
+        self.model.remove(row)
+        self.pop(row)
 
     def clear(self):
         super().clear()
         self.model.clear()
 
-    def _sort_dict(self): # Sort dict by kanji position
-        sorted_dict = dict(sorted(self.items(), key=lambda item: item[1][2])) # Sort dict by position
-        self.clear()
-
-        i = 0
-        for kanji in sorted_dict.keys(): # Since position is incorrect, need to all positions
-            reading, meaning, _ = sorted_dict[kanji]
-            self.add(kanji, reading, meaning, i)
-            i += 1
-
     def update_data_kanji_kana(self, word: str):
         """Update dictionnary if word contains both kanjis and kanas."""
         word_reading = ""
-        word_position = -1
         first_kanji = True
         word_meaning = ""
 
@@ -50,17 +61,15 @@ class KanjiData(dict):
                 word_reading += word[i]
             else:
                 try:
-                    reading, meaning, position = self.remove(word[i])
+                    _, reading, meaning = self.remove(word[i])
                     
                     word_reading += reading
                     if first_kanji:
                         word_meaning = meaning
-                        word_position = position
                         first_kanji = False
                 except: # Sometimes, word doesn't appear completely in sentence
                     pass
-        self.add(word, word_reading, word_meaning, word_position)
-        self._sort_dict()
+        self.add(word, word_reading, word_meaning)
 
     def update_data_only_kanji(self, word: str):
         """
@@ -84,7 +93,6 @@ class KanjiData(dict):
             If the word is not found in the kanji data.
         """
         kanjis = find_kanjis_in_dict(self, word)
-        new_position = self[kanjis[0]][2] # Get position of the first kanji
 
         data_to_merge = []
         for kanji in kanjis:
@@ -92,43 +100,30 @@ class KanjiData(dict):
         
         new_reading, new_meaning = "", ""
         for data in data_to_merge:
-            data_reading, data_meaning, _ = data
+            _, data_reading, data_meaning = data
             new_reading += data_reading
             new_meaning += data_meaning
-        self.add(word, new_reading, new_meaning, new_position)
+        self.add(word, new_reading, new_meaning)
 
-        self._sort_dict()
+    def update_kanji_meaning(self, kanji: str, meaning: str):
+        kanji_index = self._find_kanji_index(kanji)
+        if kanji_index != -1:
+            _, reading, _ = self[kanji_index]
+            self[kanji_index] = (kanji, reading, meaning)
+            self.model.modify_reading_meaning(kanji_index, reading, meaning)
+        else:
+            raise IndexError
 
+    
     def _model_is_modified(self, item):
-        """Modify its own dictionnary to fit with modifications.
-        Key: kanji
-        Item: reading, meaning, position"""
+        """Modify its own list to fit with modifications."""
 
         index = self.model.indexFromItem(item)
-        if index.column() != 0:  # If reading or meaning is modified
-            kanji = self.model.item(index.row(), 0).text()
-            print(kanji)
-            print(self)
-
-            if index.column() == 1: # Modify reading
-                self[kanji] = (
-                    item.text(),
-                    self[kanji][1],
-                    index.row(),
-                )
-            else:  # Modify meaning / index.column == 2
-                self[kanji] = (
-                    self[kanji][0],
-                    item.text(),
-                    index.row(),
-                )
-        else:  # If kanji is modified
-            kanji_to_del = [
-                item for item, v in self.items() if v[2] == index.row()
-            ]
-            self[item.text()] = self[kanji_to_del[0]]
-            del self[kanji_to_del[0]]
-
+        kanji = self.model.item(index.row(), 0).text()
+        reading = self.model.item(index.row(), 1).text()
+        meaning = self.model.item(index.row(), 2).text()
+        
+        self[index.row()] = (kanji, reading, meaning)
         self.sentence._update_position_kanji()
 
     def set_model(self, new_model):
@@ -136,7 +131,8 @@ class KanjiData(dict):
 
     def clone(self):
         new_kanji_data = KanjiData()
-        for key, value in (self.items()):
-            new_kanji_data[key] = value
+        for data in (self):
+            kanji, reading, meaning = data
+            new_kanji_data.add(kanji, reading, meaning)
         new_kanji_data.set_model(self.model.get_a_copy())
         return new_kanji_data

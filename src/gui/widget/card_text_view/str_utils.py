@@ -32,10 +32,8 @@ def show_transcription(view, event, sentence_len, position_kanji, kanji_data):
 
         
         if cursor.position() - 1 in position_kanji.keys(): # TODO: Add "and is_kanji(char) ?"
-            pass
-            
             kanji = position_kanji[cursor.position() - 1]
-            kana_transcription, _, _ = kanji_data[kanji]
+            kana_transcription, _, _ = kanji_data.get_data_by_kanji(kanji)
 
             print_furigana(view, cursor, kana_transcription)
         else:
@@ -46,7 +44,7 @@ def show_transcription(view, event, sentence_len, position_kanji, kanji_data):
 
         if is_kanji(word):
             try:
-                kana_transcription, _, _ = kanji_data[word]
+                kana_transcription, _, _ = kanji_data.get_data_by_kanji(kanji)
                 print_furigana(view, cursor, kana_transcription)
             except:
                 QToolTip.hideText()
