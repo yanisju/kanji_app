@@ -9,5 +9,5 @@ class DeleteOneKanjiAction(QAction):
 
     def _action(self):
         self.parent().parent().kanji_data.remove_by_row(self.parent().row)
-        # self.parent().parent().parent().sentence_attributes_widget.word1_combobox.add_empty_row()
-        # self.parent().parent().parent().sentence_attributes_widget.word2_combobox.add_empty_row()
+        self.parent().parent().parent().sentence_attributes_widget.word1_combobox.delete_row(self.parent().row)
+        self.parent().parent().parent().sentence_attributes_widget.word2_combobox.delete_row(self.parent().row)

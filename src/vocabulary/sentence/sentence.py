@@ -51,7 +51,7 @@ class Sentence():
         
         if word2:
             index = kanji_data._find_kanji_index(word2)
-            word2_reading, word2_meaning = kanji_data[index]
+            _, word2_reading, word2_meaning = kanji_data[index]
             self.word2_data = (word2, word2_reading, word2_meaning)
         else:
             self.word2_data = None  

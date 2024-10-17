@@ -40,7 +40,6 @@ class KanjiData(list):
             return self.pop(index) # /!\ TODO: Return kanji as well
         else:
             raise IndexError
-        self.model.remove()
 
     def remove_by_row(self, row):
         self.model.remove(row)

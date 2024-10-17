@@ -71,7 +71,7 @@ class SentenceAttributesWidget(QWidget):
             self.attributes_value[i] = sentence.attributes[i]
             self.widget_list[i].setText(sentence.attributes[i])
 
-        self.widget_list[2].insert_new(sentence.kanji_data)
+        self.widget_list[2].update_to_kanji_data(sentence.kanji_data)
         if sentence.word1_data == None:
             self.widget_list[2].set_to_empty_value()
         else:
@@ -80,7 +80,7 @@ class SentenceAttributesWidget(QWidget):
             self.widget_list[2].setCurrentIndex(word1_index)
         self.attributes_value[2] = self.widget_list[2].itemData(self.widget_list[2].currentIndex())
 
-        self.widget_list[3].insert_new(sentence.kanji_data)
+        self.widget_list[3].update_to_kanji_data(sentence.kanji_data)
         if sentence.word2_data == None:
             self.widget_list[3].set_to_empty_value()
         else:

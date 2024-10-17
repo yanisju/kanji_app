@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QMenu
 from .action.add_kanji import AddKanjiAction
+from .action.look_up_on_jisho import LookupOnJishoAction
 from .action.delete_one_kanji import DeleteOneKanjiAction
 from .action.delete_all_kanjis import DeleteAllKanjisAction
 
@@ -16,6 +17,9 @@ class KanjiTableViewMenu(QMenu):
         """Set actions data and behaviors."""
         self.add_kanji_action = AddKanjiAction(self)
         self.addAction(self.add_kanji_action)
+
+        self.look_up_on_jisho_action = LookupOnJishoAction(self)
+        self.addAction(self.look_up_on_jisho_action)
 
         self.addSeparator()
 

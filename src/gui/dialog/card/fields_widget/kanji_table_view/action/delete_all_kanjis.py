@@ -9,5 +9,5 @@ class DeleteAllKanjisAction(QAction):
 
     def _action(self):
         self.parent().parent().kanji_data.clear()
-        self.parent().parent().parent().sentence_attributes_widget.word1_combobox.clear()
-        self.parent().parent().parent().sentence_attributes_widget.word2_combobox.clear()
+        self.parent().parent().parent().sentence_attributes_widget.word1_combobox.delete_all_rows()
+        self.parent().parent().parent().sentence_attributes_widget.word2_combobox.delete_all_rows()

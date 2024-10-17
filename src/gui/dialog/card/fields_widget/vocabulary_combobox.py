@@ -13,14 +13,14 @@ class VocabularyComboBox(QComboBox):
             kanji_data_model.itemChanged.disconnect(self.is_kanji_data_model_modified)
         kanji_data_model.itemChanged.connect(self.is_kanji_data_model_modified)
 
-    def insert_new(self, kanji_data):
+    def update_to_kanji_data(self, kanji_data):
         self.clear()
-        # sorted_kanji_data = sorted(kanji_data, key=lambda item: item[3])
 
         index = 0
         for data in kanji_data:
             self.add_row(data, index)
             index += 1
+
         if self.add_empty_value:
             self._add_empty_value()
     
@@ -31,12 +31,20 @@ class VocabularyComboBox(QComboBox):
     def add_empty_row(self):
         data = ("", "", "")
         if self.add_empty_value:
+            to_replace = False
+            if self.currentIndex() == (self.count() - 1):
+                to_replace = True
             self.removeItem(self.count() - 1)
             self.add_row(data, self.count())
             self._add_empty_value()
+            if to_replace:
+                self.setCurrentIndex(self.count() - 1)
         else:
             self.add_row(data, self.count())
 
+    def delete_row(self, row):
+        self.removeItem(row)
+        self.update_text_row_numbers()
 
     def get_text(self, data: tuple, row):
         kanji, _, meaning = data
@@ -60,6 +68,17 @@ class VocabularyComboBox(QComboBox):
         self.removeItem(row)
         self.insertItem(row, text, QVariant(data))
 
+    def update_text_row_numbers(self):
+        row_count = self.count()
+        if self.add_empty_value:
+            row_count -= 1
+        for i in range(row_count):
+            text = self.itemText(i)
+            decimals = (i // 10) + 1
+            text = text[decimals:]
+            text = str(i + 1) + text
+            self.setItemText(i, text)
+
     def is_kanji_data_model_modified(self, item):
         index_row, index_column = item.row(), item.column()
         previous_index = self.currentIndex()
@@ -73,7 +92,7 @@ class VocabularyComboBox(QComboBox):
     def set_to_empty_value(self):
         self.setCurrentIndex(self.count() - 1)
 
-    def clear(self):
-        super().clear()
+    def delete_all_rows(self):
+        self.clear()
         if self.add_empty_value:
             self._add_empty_value()
