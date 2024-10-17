@@ -100,7 +100,10 @@ class Sentence():
             A new Sentence instance with the same attributes as the original.
         """
         vocabulary, sentence, translation, kanji_data, word1_data, word2_data = self.vocabulary, self.sentence, self.translation, self.kanji_data, self.word1_data, self.word2_data
-        word1, *_ = word1_data
+        if word1_data:
+            word1, *_ = word1_data
+        else:
+            word1 = None
         if word2_data:
             word2, *_ = word2_data
         else:
