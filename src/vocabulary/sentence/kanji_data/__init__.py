@@ -16,10 +16,17 @@ class KanjiData(list):
                 return index
         return -1
     
-    def get_data_by_kanji(self, kanji: str):
+    def get_kanji(self, kanji: str):
         index = self._find_kanji_index(kanji)
-        _, reading, meaning = self[index]
-        return (reading, meaning, index)
+        if index == -1:
+            return None
+        else:
+            return self[index]
+    
+    # def get_data_by_kanji(self, kanji: str):
+    #     index = self._find_kanji_index(kanji)
+    #     _, reading, meaning = self[index]
+    #     return (reading, meaning, index)
 
     def add(self, kanji, reading, meaning):
         kanji_index = self._find_kanji_index(kanji)
@@ -29,6 +36,11 @@ class KanjiData(list):
             self.model.add_row(new_kanji)
         else:
             raise IndexError
+        
+    def add_empty(self):
+        new_kanji = Kanji("", "", "")
+        self.append(new_kanji)
+        self.model.add_row(new_kanji)
 
     def remove(self, kanji):
         #TODO: check if kanji already exists + remove from model
