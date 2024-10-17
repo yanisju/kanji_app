@@ -1,5 +1,6 @@
 from .str_utils import *
 from .kanji_data_model import KanjiDataModel
+from .kanji import Kanji
 
 class KanjiData(list):
     def __init__(self) -> None:
@@ -9,9 +10,9 @@ class KanjiData(list):
         self.sentence = sentence
         self.model.itemChanged.connect(self._model_is_modified)
 
-    def _find_kanji_index(self, kanji):
-        for index, (k, *_) in enumerate(self):
-            if k == kanji:
+    def _find_kanji_index(self, word):
+        for index, kanji in enumerate(self):
+            if kanji.word == word:
                 return index
         return -1
     
@@ -23,14 +24,11 @@ class KanjiData(list):
     def add(self, kanji, reading, meaning):
         kanji_index = self._find_kanji_index(kanji)
         if kanji_index == -1:
-            self.model.add_row(kanji, reading, meaning)
-            self.append((kanji, reading, meaning))
+            new_kanji = Kanji(kanji, reading, meaning)
+            self.append(new_kanji)
+            self.model.add_row(new_kanji)
         else:
             raise IndexError
-
-    def add_empty(self):
-        self.append(("", "", "", ""))
-        self.model.add_row("", "", "")
 
     def remove(self, kanji):
         #TODO: check if kanji already exists + remove from model
@@ -107,9 +105,8 @@ class KanjiData(list):
     def update_kanji_meaning(self, kanji: str, meaning: str):
         kanji_index = self._find_kanji_index(kanji)
         if kanji_index != -1:
-            _, reading, _ = self[kanji_index]
-            self[kanji_index] = (kanji, reading, meaning)
-            self.model.modify_reading_meaning(kanji_index, reading, meaning)
+            self[kanji_index].meaning = meaning
+            self.model.modify_row(kanji_index, self[kanji_index])
         else:
             raise IndexError
 
@@ -122,7 +119,7 @@ class KanjiData(list):
         reading = self.model.item(index.row(), 1).text()
         meaning = self.model.item(index.row(), 2).text()
         
-        self[index.row()] = (kanji, reading, meaning)
+        self[index.row()].update_attributes(kanji, reading, meaning)
         self.sentence._update_position_kanji()
 
     def set_model(self, new_model):

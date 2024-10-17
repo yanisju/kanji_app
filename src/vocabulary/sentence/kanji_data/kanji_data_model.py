@@ -19,8 +19,13 @@ class KanjiDataModel(QStandardItemModel):
         self.setHeaderData(1, PyQt6.QtCore.Qt.Orientation.Horizontal, "Reading")
         self.setHeaderData(2, PyQt6.QtCore.Qt.Orientation.Horizontal, "Meanings")
 
-    def add_row(self, kanji, reading, meaning):
-        self.appendRow([QStandardItem(kanji), QStandardItem(reading), QStandardItem(meaning)])
+    def add_row(self, kanji):
+        self.appendRow(kanji.get_item())
+
+    def modify_row(self, row, kanji):
+        item = kanji.get_item()
+        for i in range(len(item)):
+            self.setItem(row, i, item[i])
 
     def modify_reading_meaning(self, row, reading, meaning):
         kanji = self.item(row, 0).text()

@@ -17,7 +17,7 @@ def check_word_contains_kana(word: str):
 def is_word_in_list(kanji_data, word: str):
     is_in_list = False
     for i in range(len(kanji_data)):
-        if word == kanji_data[i][0]:
+        if word == kanji_data[i].word:
             is_in_list = True
     return is_in_list
 
