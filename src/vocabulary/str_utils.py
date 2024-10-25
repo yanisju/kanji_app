@@ -5,7 +5,7 @@ def get_position_kanji_sentence(sentence, kanji_data):
 
     dict = {}
     for word in kanjis_sorted:
-        if word in sentence:
+        if word != "" and word in sentence:
             while(sentence.find(word) != -1):
                 for i in range(sentence.find(word), sentence.find(word) + len(word)):
                     dict[i] = word

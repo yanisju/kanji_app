@@ -1,6 +1,8 @@
 from PyQt6.QtWidgets import QComboBox
 from PyQt6.QtCore import QVariant
 
+from .....vocabulary.sentence.kanji_data.kanji import Kanji
+
 class VocabularyComboBox(QComboBox):
     """Class defining ComboBox for words in CardDialog."""
 
@@ -29,7 +31,7 @@ class VocabularyComboBox(QComboBox):
         self.addItem(text, QVariant(data))
 
     def add_empty_row(self):
-        data = ("", "", "")
+        data = Kanji("", "", "")
         if self.add_empty_value:
             to_replace = False
             if self.currentIndex() == (self.count() - 1):
@@ -63,7 +65,7 @@ class VocabularyComboBox(QComboBox):
             kanji, _, meaning = data
             reading = item_modified.text()
         
-        data = (kanji, reading, meaning)
+        data = Kanji(kanji, reading, meaning)
         text = self.get_text(data, row)
         self.removeItem(row)
         self.insertItem(row, text, QVariant(data))

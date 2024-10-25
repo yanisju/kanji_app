@@ -3,6 +3,7 @@ from .kanji_data_model import KanjiDataModel
 from .kanji import Kanji
 
 class KanjiData(list):
+    # List containing Kanjis(kanjis, reading, meaning)
     def __init__(self) -> None:
         self.model = KanjiDataModel()
     
@@ -22,11 +23,7 @@ class KanjiData(list):
             return None
         else:
             return self[index]
-    
-    # def get_data_by_kanji(self, kanji: str):
-    #     index = self._find_kanji_index(kanji)
-    #     _, reading, meaning = self[index]
-    #     return (reading, meaning, index)
+
 
     def add(self, kanji, reading, meaning):
         kanji_index = self._find_kanji_index(kanji)

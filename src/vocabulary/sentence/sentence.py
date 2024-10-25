@@ -42,21 +42,7 @@ class Sentence():
 
         self.word1_data = kanji_data.get_kanji(word)
         self.word2_data = kanji_data.get_kanji(word2)
-        # if bool(kanji_data) is False: # If kanji_data is empty
-        #     word1_reading, word1_meaning = "", ""
-        # elif is_word_in_list(kanji_data, word):
-        #     index = kanji_data._find_kanji_index(word)
-        #     _, word1_reading, word1_meaning = kanji_data[index]
-        # else: # If word does not appear in kanji_data, takes first element
-        #     _, word1_reading, word1_meaning = kanji_data[0]
-        # self.word1_data = (word, word1_reading, word1_meaning)
-        
-        # if word2:
-        #     index = kanji_data._find_kanji_index(word2)
-        #     _, word2_reading, word2_meaning = kanji_data[index]
-        #     self.word2_data = (word2, word2_reading, word2_meaning)
-        # else:
-        #     self.word2_data = None  
+
         self.attributes = (sentence, translation, self.word1_data, self.word2_data)
 
         self.standard_item = None # QStandardItem in order to be inserted in the model
