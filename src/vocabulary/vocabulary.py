@@ -43,8 +43,7 @@ class Vocabulary:
         
         sentences_count = len(sentences)
         for i in range(0, sentences_count):
-            if check_word_contains_kana(self.word) or find_kanjis_in_dict(kanjis_data[i], self.word) is not None:
-                self.sentence_manager.append_from_sentence_data(sentences[i], translations[i], kanjis_data[i])
+            self.sentence_manager.append_from_sentence_data(sentences[i], translations[i], kanjis_data[i])
 
     def remove_one_sentence(self, row):
         """

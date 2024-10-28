@@ -6,13 +6,14 @@ from ....vocabulary.sentence.sentence import Sentence
 class CardDialog(QDialog):
     """Pop-up window for creating and editing a Anki card and its field. """
 
-    def __init__(self, central_widget, main_card_view):
+    def __init__(self, central_widget, main_card_view, vocabulary_manager):
         super().__init__(central_widget) 
         self.setWindowTitle("Anki Card Editor")
 
         self.resize(int(central_widget.parent().width() * 0.7), int(central_widget.parent().height() * 0.7))
 
         self.main_card_view = main_card_view
+        self.vocabulary_manager = vocabulary_manager
         self._init_layout()
     
     def _init_layout(self):

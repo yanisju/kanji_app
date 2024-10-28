@@ -5,6 +5,7 @@ from .action.add_kanji import AddKanjiAction
 from .action.look_up_on_jisho import LookupOnJishoAction
 from .action.delete_one_kanji import DeleteOneKanjiAction
 from .action.delete_all_kanjis import DeleteAllKanjisAction
+from .action.add_to_vocabulary_list import AddToVocabularyListAction
 
 
 class KanjiTableViewMenu(QMenu):
@@ -27,6 +28,9 @@ class KanjiTableViewMenu(QMenu):
 
         self.add_kanji_action = AddKanjiAction(self)
         self.addAction(self.add_kanji_action)
+
+        self.add_to_vocabulary_list_action = AddToVocabularyListAction(self)
+        self.addAction(self.add_to_vocabulary_list_action)
 
         self.look_up_on_jisho_action = LookupOnJishoAction(self)
         self.addAction(self.look_up_on_jisho_action)

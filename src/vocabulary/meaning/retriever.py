@@ -1,5 +1,6 @@
 from requests_html import HTMLSession
 import json
+import re
 
 def retrieve_json_meaning(word):
     http_request = "https://jisho.org/api/v1/search/words?keyword=" + word
@@ -12,17 +13,23 @@ def retrieve_json_meaning_quick_init(word):
         meanings = file.read()
     return json.loads(meanings)
 
+def extract_kanjis(word):
+    kanjis = re.findall(r'[\u4e00-\u9faf]', word)
+    return ''.join(kanjis)
+
 def find_data_index(word, data):
     """Find the accurate number in data JSON."""
-    index = 0
+    index = -1
     found = False
     while(index < len(data) and found == False):
-        if word == data[index].get("slug"):
+        index += 1
+        slug = extract_kanjis(data[index].get("slug"))
+        if word == slug:
             found = True
-    if found == True:
+    if found:
         return index
     else:
-        return -1
+        return 0
     
 def deserialize_meaning_part_of_speech(word, json_data):
     meanings = [] # Every differents meanings of the word

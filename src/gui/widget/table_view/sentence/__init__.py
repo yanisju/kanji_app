@@ -18,7 +18,7 @@ class SentenceTableView(QTableView):
         self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
         self.menu = SentenceTableViewMenu(self, vocabulary_manager, is_added_sentence)
-        self.card_dialog = CardDialog(central_widget, main_card_view)
+        self.card_dialog = CardDialog(central_widget, main_card_view, vocabulary_manager)
 
         self.clicked.connect(self.clicked_action)
         self.doubleClicked.connect(self.double_clicked_action)
