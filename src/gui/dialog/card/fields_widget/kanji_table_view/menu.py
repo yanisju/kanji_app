@@ -26,14 +26,16 @@ class KanjiTableViewMenu(QMenu):
 
         self.addSeparator()
 
-        self.add_kanji_action = AddKanjiAction(self)
-        self.addAction(self.add_kanji_action)
-
         self.add_to_vocabulary_list_action = AddToVocabularyListAction(self)
         self.addAction(self.add_to_vocabulary_list_action)
 
         self.look_up_on_jisho_action = LookupOnJishoAction(self)
         self.addAction(self.look_up_on_jisho_action)
+
+        self.addSeparator()
+
+        self.add_kanji_action = AddKanjiAction(self)
+        self.addAction(self.add_kanji_action)
 
         self.addSeparator()
 

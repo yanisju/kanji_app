@@ -21,15 +21,15 @@ def find_data_index(word, data):
     """Find the accurate number in data JSON."""
     index = -1
     found = False
-    while(index < len(data) and found == False):
+    while(index < len(data) - 1 and found == False):
         index += 1
         slug = extract_kanjis(data[index].get("slug"))
         if word == slug:
             found = True
     if found:
         return index
-    else:
-        return 0
+    else: # Can't find word in meaning data
+        return 0 #TODO: open DialogError
     
 def deserialize_meaning_part_of_speech(word, json_data):
     meanings = [] # Every differents meanings of the word
