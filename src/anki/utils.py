@@ -6,8 +6,8 @@ def get_word_anki_format(word_reading):
 def get_sentence_anki_format(sentence_str, kanji_data):
     sentence_anki_format = sentence_str
     added_word_index = 0
-    for word, word_data in kanji_data.items():
-        word_reading, *_  = word_data
+    for word_data in kanji_data:
+        word, word_reading, *_  = word_data
         word_position = sentence_anki_format.find(word)
         if word_position != -1:
             word_anki_format = get_word_anki_format(word_reading)
@@ -29,7 +29,7 @@ def get_fields_as_list(sentence):
     fields_list.append(sentence.translation)
     
     if sentence.word1_data:
-        word1, word1_reading, word1_meaning, _ = sentence.word1_data
+        word1, word1_reading, word1_meaning = sentence.word1_data
         fields_list.append(get_word_n_anki_format(word1, word1_reading))
         fields_list.append(word1_meaning)
     else: 
@@ -37,7 +37,7 @@ def get_fields_as_list(sentence):
         fields_list.append("")
 
     if sentence.word2_data:
-        word2, word2_reading, word2_meaning, _ = sentence.word2_data
+        word2, word2_reading, word2_meaning = sentence.word2_data
         fields_list.append(get_word_n_anki_format(word2, word2_reading))
         fields_list.append(word2_meaning)
     else: 

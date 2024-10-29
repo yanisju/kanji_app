@@ -56,12 +56,22 @@ class SentenceTableViewMenu(QMenu):
             if self.parent().model().rowCount() == 0:
                 self.del_all_sentence_action.setEnabled(False)
                 self.open_card_editor_action.setEnabled(False)
+                if not self.is_added_sentence:
+                    self.add_sentence_to_deck_action.setEnabled(False)
             else:
                 self.del_all_sentence_action.setEnabled(True)
                 self.open_card_editor_action.setEnabled(True)
+                if not self.is_added_sentence:
+                    self.add_sentence_to_deck_action.setEnabled(True)
                 
 
         if(row == -1):
             self.del_one_sentence_action.setEnabled(False)
+            self.open_card_editor_action.setEnabled(False)
+            if not self.is_added_sentence:
+                    self.add_sentence_to_deck_action.setEnabled(False)
         else:
             self.del_one_sentence_action.setEnabled(True)
+            self.del_one_sentence_action.setEnabled(True)
+            if not self.is_added_sentence:
+                    self.add_sentence_to_deck_action.setEnabled(True)

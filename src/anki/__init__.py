@@ -1,10 +1,11 @@
 from .notes import Notes
 import genanki 
 
-class AnkiManager():
+class AnkiManager:
     def __init__(self):
         self._model = self._get_model()
-        self._deck = self._get_deck(1301981488, 'Test_Kanjis')
+        self._deck_id = 1301981488
+        self._deck_name = 'Test_Kanjis'
         self.notes = Notes(self._model)
         
     def _get_model(self):
@@ -44,17 +45,10 @@ class AnkiManager():
         return deck
 
     def generate_deck(self, sentence_manager):
+        self.notes.clear()
+        deck = self._get_deck(self._deck_id, self._deck_name)
         for sentence in sentence_manager:
             note = self.notes.add(sentence)
-            self._deck.add_note(note)
+            deck.add_note(note)
 
-        genanki.Package(self._deck).write_to_file('D:/Workspace/kanji_app/data/output/output.apkg')
-
-    def add_sentence(self, sentence):
-        self.notes.add(sentence)
-
-    def modify_sentence(self, sentence, row):
-        self.notes.modify(sentence, row)
-
-    def delete_sentence(self, sentence_row):
-        pass 
+        genanki.Package(deck).write_to_file('E:/Workspace/kanji_app/data/output/output.apkg')
