@@ -12,7 +12,7 @@ class DeleteAllVocabulariesAction(QAction):
 
     def _action(self):
         self.vocabulary_manager.delete_all_vocabularies()
-        self.sentence_table_view.model().clear()
         self.sentence_rendering_widget.card_text_view.clear()
+        self.sentence_table_view.setModel(None)
 
         

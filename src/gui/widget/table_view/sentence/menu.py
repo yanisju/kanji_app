@@ -53,6 +53,7 @@ class SentenceTableViewMenu(QMenu):
             for action in self._actions:
                 action.setEnabled(False)
         else:
+            self.add_empty_sentence_action.setEnabled(True)
             if self.parent().model().rowCount() == 0:
                 self.del_all_sentence_action.setEnabled(False)
                 self.open_card_editor_action.setEnabled(False)

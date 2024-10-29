@@ -3,7 +3,6 @@ from .meaning.meaning import VocabularyMeaning
 
 from PyQt6.QtGui import QStandardItem
 
-from .data_retriever import find_kanjis_in_dict,  check_word_contains_kana
 
 class Vocabulary:
     """
