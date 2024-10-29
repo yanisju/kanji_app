@@ -15,7 +15,7 @@ class SentenceManager(list):
         new_sentence = Sentence(self.vocabulary, sentence_str, translation_str, kanjis_data, self.vocabulary.word)
         super().append(new_sentence)
         self.sentences_model.append_sentence(new_sentence)
-
+        
     def append_empty_sentence(self):
         if self.vocabulary != None:
             word = self.vocabulary.word
@@ -23,6 +23,7 @@ class SentenceManager(list):
             word = None
         empty_sentence = Sentence(self.vocabulary, "", "", dict(), word)
         self.append(empty_sentence)
+        
 
     def pop(self, index):
         """

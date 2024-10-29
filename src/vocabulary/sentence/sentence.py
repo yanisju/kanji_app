@@ -1,7 +1,5 @@
 from PyQt6.QtGui import QStandardItem
 from ..str_utils import *
-from ..data_retriever.kanji_data import is_word_in_list
-from .kanji_data import KanjiData
 
 class Sentence():
     """

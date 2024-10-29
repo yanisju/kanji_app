@@ -1,5 +1,6 @@
 from PyQt6.QtGui import QStandardItemModel
 import PyQt6.QtCore
+from PyQt6.QtCore import pyqtSignal
 
 class SentenceModel(QStandardItemModel):
     """
@@ -26,6 +27,8 @@ class SentenceModel(QStandardItemModel):
     remove_row(row):
         Removes a sentence from the model and its corresponding row.
     """
+
+    modified = pyqtSignal()
 
     def __init__(self, sentence_manager):
         """
@@ -57,6 +60,7 @@ class SentenceModel(QStandardItemModel):
         """
         sentence.compute_standard_item()
         self.appendRow(sentence.standard_item)
+        self.modified.emit()
 
     def modify_row(self, sentence, row):
         """
@@ -104,6 +108,8 @@ class SentenceModel(QStandardItemModel):
             The index of the row to be removed.
         """
         self.removeRow(row)
+        self.modified.emit()
 
     def remove_all_rows(self):
         self.removeRows(0, self.rowCount())
+        self.modified.emit()

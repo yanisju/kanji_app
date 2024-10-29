@@ -32,7 +32,7 @@ class KanjiData(list):
             self.append(new_kanji)
             self.model.add_row(new_kanji)
         else:
-            raise IndexError
+            pass # TODO: change ?
         
     def add_empty(self):
         new_kanji = Kanji("", "", "")

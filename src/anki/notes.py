@@ -2,7 +2,7 @@ import genanki
 
 from .utils import *
 
-class Notes():
+class Notes(list):
     """A class representing notes within an Anki deck, containing individual cards."""
 
     def __init__(self, model):
@@ -10,13 +10,6 @@ class Notes():
         self._notes = []
         self._sort_number = 0
 
-    def __get_item__(self, index):
-        return self._notes[index]
-    
-    def __iter__(self):
-        for note in self._notes:
-            yield note
-            
     def add(self, sentence):
         """Add a single note to the deck. """
         note_field = get_fields_as_list(sentence)
@@ -28,6 +21,7 @@ class Notes():
         
         self._notes.append(note)
         self._sort_number += 1
+        return note
 
     def modify(self, sentence, row):
         note_field = get_fields_as_list(sentence)
@@ -41,7 +35,8 @@ class Notes():
         self._notes.pop(row)
 
     def clear(self):
-        self._notes.clear()
+        super().clear()
+        self._sort_number = 0
 
     
 

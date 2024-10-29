@@ -21,13 +21,15 @@ class VocabularyManager:
         A model for managing sentences that are supposed to be added to Anki deck.
     """
 
-    def __init__(self):
+    def __init__(self, anki_manager):
         self.data_retriever = DataRetriever(5, "jpn", "eng")
         
         self.vocabularies = dict() # Dictionnary of vocabularies instance
         
         self.vocabulary_model = VocabularyModel() # Model for retrieved words
         self.sentence_added_to_deck = SentenceManager()
+
+        self.anki_manager = anki_manager
     
     def add_word(self, word):
         """
@@ -78,3 +80,6 @@ class VocabularyManager:
     
     def get_word(self, index):
         return list(self.vocabularies.keys())[index]
+    
+    def generate_deck(self):
+        self.anki_manager.generate_deck(self.sentence_added_to_deck)

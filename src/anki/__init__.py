@@ -43,8 +43,9 @@ class AnkiManager():
             name)
         return deck
 
-    def generate_deck(self):
-        for note in self.notes:
+    def generate_deck(self, sentence_manager):
+        for sentence in sentence_manager:
+            note = self.notes.add(sentence)
             self._deck.add_note(note)
 
         genanki.Package(self._deck).write_to_file('D:/Workspace/kanji_app/data/output/output.apkg')

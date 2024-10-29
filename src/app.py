@@ -11,7 +11,7 @@ class App(QApplication):
     def __init__(self):
         super().__init__(sys.argv)
         anki_manager = AnkiManager()
-        self.vocabulary_manager = VocabularyManager()
+        self.vocabulary_manager = VocabularyManager(anki_manager)
 
         font = QFont()
         font.setPointSize(11)
