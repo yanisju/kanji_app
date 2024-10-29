@@ -1,6 +1,8 @@
 from .sentence import Sentence
 from ..model.sentence import SentenceModel
 
+from .kanji_data import KanjiData
+
 class SentenceManager(list):
     def __init__(self, vocabulary = None) -> None:
         super().__init__()
@@ -21,7 +23,7 @@ class SentenceManager(list):
             word = self.vocabulary.word
         else:
             word = None
-        empty_sentence = Sentence(self.vocabulary, "", "", dict(), word)
+        empty_sentence = Sentence(self.vocabulary, "", "", KanjiData(), word)
         self.append(empty_sentence)
         
 

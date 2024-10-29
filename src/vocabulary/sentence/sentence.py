@@ -1,6 +1,8 @@
 from PyQt6.QtGui import QStandardItem
 from ..str_utils import *
 
+from .kanji_data import KanjiData
+
 class Sentence():
     """
     Represents a single sentence in the context of vocabulary learning.
@@ -28,7 +30,7 @@ class Sentence():
     standard_item : list or None
         A list of QStandardItems representing the sentence data for insertion into a model, or None if not yet computed.
     """
-    def __init__(self, vocabulary, sentence, translation, kanji_data, word, word2 = None):
+    def __init__(self, vocabulary, sentence, translation, kanji_data : KanjiData, word, word2 = None):
         self.vocabulary = vocabulary
         self.word = word
         self.sentence = sentence

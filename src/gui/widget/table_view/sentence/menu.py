@@ -12,30 +12,36 @@ class SentenceTableViewMenu(QMenu):
         self.row = -1
         self.column = -1
         self.is_added_sentence = is_added_sentence
+        self._actions = []
         self._set_actions(vocabulary_manager)
 
     def _set_actions(self, vocabulary_manager):
         """Set actions data and behaviors."""
 
         self.open_card_editor_action = OpenMeaningEditorAction(self)
+        self._actions.append(self.open_card_editor_action)
         self.addAction(self.open_card_editor_action)
 
 
         if not self.is_added_sentence:
             self.add_sentence_to_deck_action = AddSentenceToDeckAction(self, vocabulary_manager)
+            self._actions.append(self.add_sentence_to_deck_action)
             self.addAction(self.add_sentence_to_deck_action)
 
         self.addSeparator()
 
         self.add_empty_sentence_action = AddEmptySentenceAction(self, vocabulary_manager)
+        self._actions.append(self.add_empty_sentence_action)
         self.addAction(self.add_empty_sentence_action)
 
         self.addSeparator()
 
         self.del_one_sentence_action = DeleteOneSentenceAction(self)
+        self._actions.append(self.del_one_sentence_action)
         self.addAction(self.del_one_sentence_action)
 
         self.del_all_sentence_action = DeleteAllSentenceAction(self)
+        self._actions.append(self.del_all_sentence_action)
         self.addAction(self.del_all_sentence_action)
         
 
@@ -43,10 +49,16 @@ class SentenceTableViewMenu(QMenu):
         self.row = row
         self.column = column
 
-        if self.parent().model().rowCount() == 0:
-            self.del_all_sentence_action.setEnabled(False)
+        if self.parent().model() == None:
+            for action in self._actions:
+                action.setEnabled(False)
         else:
-            self.del_all_sentence_action.setEnabled(True)
+            if self.parent().model().rowCount() == 0:
+                self.del_all_sentence_action.setEnabled(False)
+                self.open_card_editor_action.setEnabled(False)
+            else:
+                self.del_all_sentence_action.setEnabled(True)
+                self.open_card_editor_action.setEnabled(True)
                 
 
         if(row == -1):
