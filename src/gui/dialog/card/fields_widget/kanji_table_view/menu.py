@@ -56,8 +56,10 @@ class KanjiTableViewMenu(QMenu):
             self.set_as_word1_action.setEnabled(False)
             self.set_as_word2_action.setEnabled(False)
             self.look_up_on_jisho_action.setEnabled(False)
+            self.add_to_vocabulary_list_action.setEnabled(False)
         else:
             self.remove_kanji_action.setEnabled(True)
             self.set_as_word1_action.setEnabled(True)
             self.set_as_word2_action.setEnabled(True)
             self.look_up_on_jisho_action.setEnabled(True)
+            self.add_to_vocabulary_list_action.setEnabled(True)
