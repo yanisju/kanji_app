@@ -22,7 +22,7 @@ class VocabularyManager:
     """
 
     def __init__(self, anki_manager):
-        self.data_retriever = DataRetriever(5, "jpn", "eng")
+        self.data_retriever = DataRetriever(10, "jpn", "eng")
         
         self.vocabularies = dict() # Dictionnary of vocabularies instance
         

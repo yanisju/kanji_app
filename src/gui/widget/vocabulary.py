@@ -1,10 +1,12 @@
-from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtCore import QSize
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy
 from ...vocabulary.manager import VocabularyManager
 from .table_view.vocabulary import VocabularyTableView
 
-from .action import AddWordWidget
+from .button.add_word import AddWordWidget
+
+from .button.add_word import AddWordWidget
 
 class VocabularyWidget(QWidget):
     def __init__(self, parent: QWidget, vocabulary_manager: VocabularyManager, sentence_rendering_widget, sentence_table_view) -> None:
