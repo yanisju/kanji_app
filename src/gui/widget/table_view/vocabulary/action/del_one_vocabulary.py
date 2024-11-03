@@ -12,9 +12,9 @@ class DeleteVocabularyAction(QAction):
 
     def _action(self):
         """Delete vocabulary from vocabulary and check if one of the sentences of the vocabylary is currently printed in card text view."""
-        self.vocabulary_manager.delete_vocabulary(self.parent().row)
-
         word = self.vocabulary_manager[(self.parent().row)]
         if self.sentence_table_view.model() == word.sentence_manager.sentences_model:
             self.sentence_table_view.setModel(None)
+
+        self.vocabulary_manager.delete_vocabulary(self.parent().row)
         
