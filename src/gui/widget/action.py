@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QVBoxLayout, QPushButton, QWidget, QSizePolicy
 from ...vocabulary.manager import VocabularyManager
-from .button.add_one_word import AddOneWordLayout
+from .button.add_word import AddWordWidget
 from .button.choose_file import ChooseFileButton
 from .button.add_to_anki_list import AddToAnkiListButton
 from .button.create_package import CreatePackageButton
@@ -13,7 +13,7 @@ class ActionWiget(QWidget):
         layout = QVBoxLayout(self)
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
 
-        layout.addLayout(AddOneWordLayout(vocabulary_manager))
+        layout.addWidget(AddWordWidget(vocabulary_manager))
         layout.addWidget(ChooseFileButton(parent, vocabulary_manager))
         add_to_anki_list_button = AddToAnkiListButton(sentence_widget.sentence_table_view, vocabulary_manager)
         layout.addWidget(add_to_anki_list_button)

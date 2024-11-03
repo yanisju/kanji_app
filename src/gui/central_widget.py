@@ -1,7 +1,6 @@
 from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QWidget
 
 from .widget.vocabulary import VocabularyWidget
-from .widget.action import ActionWiget
 from .widget.sentence import SentenceWidget
 from .widget.sentence_rendering import SentenceRenderingWidget
 
@@ -15,7 +14,6 @@ class CentralWidget(QWidget):
         
         vocabulary_layout = QHBoxLayout()
         vocabulary_layout.addWidget(VocabularyWidget(self, vocabulary_manager, sentence_rendering_widget, sentence_widget.sentence_table_view))
-        vocabulary_layout.addWidget(ActionWiget(self, vocabulary_manager, sentence_widget, anki_manager))
         layout.addLayout(vocabulary_layout)
 
         sentence_layout = QHBoxLayout()
