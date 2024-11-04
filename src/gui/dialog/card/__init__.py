@@ -35,11 +35,18 @@ class CardDialog(QDialog):
 
     def _init_buttons_layout(self, layout):
         self.confirm_button = QPushButton("Confirm")
+        self.confirm_and_add_button = QPushButton("Confirm and Add to Deck")
         cancel_button = QPushButton("Cancel")
         layout.addWidget(self.confirm_button)
+        layout.addWidget(self.confirm_and_add_button)
         layout.addWidget(cancel_button)
+        self.confirm_and_add_button.clicked.connect(self._confirm_and_add_to_deck_clicked) 
         self.confirm_button.clicked.connect(self._confirm_button_clicked) 
         cancel_button.clicked.connect(self.reject)
+
+    def _confirm_and_add_to_deck_clicked(self):
+        self.vocabulary_manager.add_sentence_to_deck(self.sentence)
+        self._confirm_button_clicked()
 
     def _confirm_button_clicked(self):
         self._update_sentence_attributes()
