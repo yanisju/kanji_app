@@ -22,6 +22,7 @@ class AddWordWidget(QWidget):
 
         self.line_edit.textEdited.connect(self.get_text)
         
+        self.line_edit.returnPressed.connect(self.add_word_to_manager)
         self.button.clicked.connect(self.add_word_to_manager) # Add word to manager
         self.button.clicked.connect(vocabulary_list_view.scrollToBottom) # Scroll to bottom 
 
