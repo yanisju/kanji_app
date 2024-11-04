@@ -96,15 +96,13 @@ class VocabularyTableView(QTableView):
         Modifies the selected vocabulary item's meaning and updates the table view.
         """
         row = self.currentIndex().row()
-        self.vocabulary_manager[row].set_meaning_standard_item(model)  # Modify the StandardItemModel of the vocabulary
+        meaning_row = current_selection - 1
 
-        # Update the current selection for the meaning object
+        meaning, part_of_speech = model.item(meaning_row, 0).text(), model.item(meaning_row, 1).text()
+        self.vocabulary_manager[row].meaning_object[meaning_row] = (meaning, part_of_speech)
         self.vocabulary_manager[row].meaning_object.current_selection = current_selection
-        new_meaning = model.data(model.index(current_selection - 1, 0))
-        new_part_of_speech = model.data(model.index(current_selection - 1, 1))
+        self.vocabulary_manager[row].set_standard_item()
 
-        # Update the vocabulary model in the table view
-        self.vocabulary_manager.vocabulary_model.modify_row(row, new_meaning, new_part_of_speech)
 
     def _selection_changed_action(self):
         selection_row = self.currentIndex().row()

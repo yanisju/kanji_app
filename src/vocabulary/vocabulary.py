@@ -2,9 +2,12 @@ from .sentence.manager import SentenceManager
 from .meaning.meaning import VocabularyMeaning
 
 from PyQt6.QtGui import QStandardItem
+from PyQt6.QtCore import QObject
+
+from PyQt6.QtCore import pyqtSignal
 
 
-class Vocabulary:
+class Vocabulary(QObject):
     """
     Represents a single vocabulary word and its associated example sentences.
 
@@ -18,17 +21,21 @@ class Vocabulary:
         TODO: complete
     """
 
+    standard_item_modified = pyqtSignal(str, list)
+
     def __init__(self, word, sentence_retriever, quick_init = False):
+        super().__init__()
         self.word = word
         self.meaning_object = VocabularyMeaning(word)
         self.meaning_object.fetch_from_jisho(quick_init)
 
         self.sentence_retriever = sentence_retriever
         self.sentence_manager = SentenceManager(self)
+        self.sentence_manager.sentences_model.modified.connect(self.set_standard_item)
 
         self._get_data(quick_init)
 
-        self.item = [QStandardItem(self.word), QStandardItem(self.meaning_object.meaning), QStandardItem(self.meaning_object.part_of_speech)]
+        self.standard_item = [QStandardItem(self.word), QStandardItem(self.meaning_object.meaning), QStandardItem(self.meaning_object.part_of_speech), QStandardItem(str(len(self.sentence_manager)))]
 
     def _get_data(self, quick_init):
         """
@@ -60,5 +67,6 @@ class Vocabulary:
         self.sentences.clear()
         self.sentences_model.remove_all_rows()
 
-    def set_meaning_standard_item(self, model):
-        self.meaning_object.standard_item_model = model
+    def set_standard_item(self):
+        self.standard_item = [QStandardItem(self.word), QStandardItem(self.meaning_object.meaning), QStandardItem(self.meaning_object.part_of_speech), QStandardItem(str(len(self.sentence_manager)))]
+        self.standard_item_modified.emit(self.word, self.standard_item)

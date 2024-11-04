@@ -41,14 +41,16 @@ class VocabularyManager:
             The vocabulary word to be added.
         """
         vocabulary = Vocabulary(word, self.data_retriever)
+        vocabulary.standard_item_modified.connect(self._change_vocabulary_model_item)
         self.vocabularies.update({word : vocabulary})
-        self.vocabulary_model.append_vocabulary(word, vocabulary.item)
+        self.vocabulary_model.append_vocabulary(word, vocabulary.standard_item)
 
 
     def add_word_quick_init(self, word):
         vocabulary = Vocabulary(word, self.data_retriever, quick_init=True)
+        vocabulary.standard_item_modified.connect(self._change_vocabulary_model_item)
         self.vocabularies.update({word : vocabulary})
-        self.vocabulary_model.append_vocabulary(word, vocabulary.item)
+        self.vocabulary_model.append_vocabulary(word, vocabulary.standard_item)
 
     def add_sentence_to_deck(self, sentence):
         sentence_to_add = sentence.clone()
@@ -63,9 +65,9 @@ class VocabularyManager:
         row : int
             The index of the vocabulary word to be deleted in the vocabulary model.
         """
-        word = self.vocabulary_model.item(row, 0).text()
-        self.vocabulary_model.removeRow(row)
+        word = self.get_word(row)
         self.vocabularies[word].sentence_manager.clear()
+        self.vocabulary_model.removeRow(row)
         del self.vocabularies[word]
 
     def delete_all_vocabularies(self):
@@ -81,5 +83,12 @@ class VocabularyManager:
     def get_word(self, index):
         return list(self.vocabularies.keys())[index]
     
+    def get_index_by_word(self, word):
+        return list(self.vocabularies).index(word)
+    
     def generate_deck(self):
         self.anki_manager.generate_deck(self.sentence_added_to_deck)
+
+    def _change_vocabulary_model_item(self, word, standard_item):
+        index = self.get_index_by_word(word)
+        self.vocabulary_model.modify_row(index, standard_item)

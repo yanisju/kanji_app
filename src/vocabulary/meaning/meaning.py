@@ -118,7 +118,7 @@ class VocabularyMeaning:
         """
         return tuple([self._meanings[index], self._part_of_speech[index]])
 
-    def __setitem__(self, index, meaning, part_of_speech):
+    def __setitem__(self, index, meaning_part_of_speech):
         """
         Updates the meaning and part of speech at the specified index.
 
@@ -131,9 +131,11 @@ class VocabularyMeaning:
         part_of_speech : str
             The new part of speech to be set.
         """
+        meaning, part_of_speech = meaning_part_of_speech
         self._meanings[index] = meaning
         self._part_of_speech[index] = part_of_speech
-        self.standard_item_model.setItem(index, [QStandardItem(meaning), QStandardItem(part_of_speech)])
+        self.standard_item_model.setItem(index, 0, QStandardItem(meaning))
+        self.standard_item_model.setItem(index, 1, QStandardItem(part_of_speech))
 
     @property
     def meaning(self):
