@@ -33,11 +33,11 @@ class Vocabulary(QObject):
         self.sentence_manager = SentenceManager(self)
         self.sentence_manager.sentences_model.modified.connect(self.set_standard_item)
 
-        self._get_data(quick_init)
+        self._get_data()
 
         self.standard_item = [QStandardItem(self.word), QStandardItem(self.meaning_object.meaning), QStandardItem(self.meaning_object.part_of_speech), QStandardItem(str(len(self.sentence_manager)))]
 
-    def _get_data(self, quick_init):
+    def _get_data(self):
         """
         Retrieves data associated with the vocabulary word.
 
@@ -45,11 +45,11 @@ class Vocabulary(QObject):
         kanji data, the meaning of the word, and parts of speech. It then populates
         the sentences attribute with Sentence objects."""
 
-        sentences, translations, kanjis_data = self.sentence_retriever.get_data(self.word, self.meaning_object, quick_init) # Retrieve sentences from DataRetriever
+        sentences_data = self.sentence_retriever.get_data(self.word, self.meaning_object) # Retrieve sentences from DataRetriever
         
-        sentences_count = len(sentences)
-        for i in range(0, sentences_count):
-            self.sentence_manager.append_from_sentence_data(sentences[i], translations[i], kanjis_data[i])
+        for one_sentence_data in sentences_data:
+            sentence, translation, transcription, kanji_data = one_sentence_data
+            self.sentence_manager.append_from_sentence_data(sentence, translation, kanji_data)
 
     def remove_one_sentence(self, row):
         """

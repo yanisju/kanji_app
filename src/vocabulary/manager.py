@@ -1,4 +1,4 @@
-from .data_retriever import DataRetriever
+from .data_retriever import *
 from .vocabulary import Vocabulary
 from .sentence.manager import SentenceManager
 from .model.vocabulary import VocabularyModel
@@ -22,7 +22,7 @@ class VocabularyManager:
     """
 
     def __init__(self, anki_manager):
-        self.data_retriever = DataRetriever(10, "jpn", "eng")
+        self.data_retriever = DataRetriever("jpn", "eng", RetrieverMode.LOCAL)
         
         self.vocabularies = dict() # Dictionnary of vocabularies instance
         

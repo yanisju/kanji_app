@@ -1,6 +1,13 @@
 from .kanji_data import *
 from ..meaning.retriever import *
-from .sentence import *
+from .http.sentence import *
+from .local.sentence import SentenceLocalRetriever
+
+from enum import Enum
+
+class RetrieverMode(Enum):
+    HTTP = 1
+    LOCAL = 2
 
 class DataRetriever():
     """
@@ -12,14 +19,10 @@ class DataRetriever():
 
     Attributes:
     -----------
-    sentence_desired_count : int
-        The number of example sentences desired for each word.
     lang_from : str
         The source language code for retrieving data (e.g., 'jpn' for Japanese).
     lang_to : str
         The target language code for retrieving data (e.g., 'eng' for English).
-    sentences : list
-        A list to store the retrieved sentences.
 
     Methods:
     --------
@@ -28,93 +31,36 @@ class DataRetriever():
         kanji readings, meanings, and positions within sentences.
     """
 
-
-    def __init__(self, sentence_desired_count, lang_from, lang_to):
-        self.sentences = []
-        self.sentence_desired_count = sentence_desired_count # Number of sentences desired
+    def __init__(self, lang_from, lang_to, mode: RetrieverMode):
         self.lang_from = lang_from
         self.lang_to = lang_to
+        self.mode = mode
+        self.sentence_local_retriever = SentenceLocalRetriever()
 
-    def get_data(self, word, word_meaning_object, quick_init):
-        """
-        Retrieves data for a given word, including example sentences, translations, kanji readings, 
-        meanings, and positions within sentences.
-
-        Args:
-        -----
-        word : str
-            The vocabulary word for which data is to be retrieved.
-        word_meaning : VocabularyMeaning
-            The initial meaning of the word (may be updated by the method).
-
-        Returns:
-        --------
-        tuple
-            A tuple containing the following elements:
-            - sentences : list of str
-                Example sentences containing the word in the source language.
-            - sentences_lang_to : list of str
-                Translations of the example sentences in the target language.
-            - kanji_data : tuple of dict
-                Kanji data including readings, meanings, and positions within the sentences.
-            - word_meaning : str
-                The meaning of the word.
-            - word_part_of_speech : str
-                The part of speech for the word (e.g., noun, verb).
-        """
-
-        sentences, sentences_lang_to, transcriptions = get_sentences(word, self.lang_from, self.lang_to, self.sentence_desired_count, quick_init)
+    def get_data(self, word, word_meaning_object):
+        if self.mode == RetrieverMode.HTTP:
+            data = get_sentences_http(word, self.lang_from, self.lang_to)
+        elif self.mode == RetrieverMode.LOCAL:
+            data = self.sentence_local_retriever.get_sentences_local(word)
+        
         word_meaning = word_meaning_object.meaning
         word_part_of_speech = word_meaning_object.part_of_speech
-        kanji_data = self._get_kanji_data(transcriptions, word, word_meaning)
-        
-        return (sentences, sentences_lang_to, kanji_data)
+        for sentence_data in data:
+            transcription = sentence_data[2]
+            kanji_data = self._get_kanji_data(transcription, word, word_meaning)
+            sentence_data.append(kanji_data)
+        return data
     
-    def _get_kanji_data(self, transcriptions, word: str, word_meaning: str):
-        """
-        Retrieve kanji data for each sentence, returning a dictionary where kanji are the keys and their readings, 
-        meanings, and positions in the sentence are the values.
+    def _get_kanji_data(self, transcription, word: str, word_meaning: str):
+        kanji_data = get_kanji_reading_meaning_position(transcription)
 
-        This method processes a list of sentence transcriptions and generates kanji data for each sentence.
-        It handles cases where the word does not appear exactly as written in the kanji data by updating the 
-        dictionary when kana is involved. The final kanji data includes the reading, meaning, and position of the 
-        word in the sentence.
+        if not is_word_in_list(kanji_data, word): # Check if the word appears in the kanji data
+            if check_word_contains_kana(word): # If the word contains kana, update the kanji data accordingly
+                kanji_data.update_data_kanji_kana(word)
+            else:
+                kanji_data.update_data_only_kanji(word)
 
-        Args:
-        -----
-        transcriptions : list of str
-            List of transcriptions for the sentences containing the word.
-        word : str
-            The target word whose kanji data needs to be processed.
-        word_meaning : str
-            The meaning of the word, used to update the kanji data if necessary.
+        if is_word_in_list(kanji_data, word): # Check again if the word appears in the updated kanji data
+            kanji_data.update_kanji_meaning(word, word_meaning) # Update the word's reading, meaning, and position
 
-        Returns:
-        --------
-        tuple of dict
-            A tuple where each element is a dictionary representing kanji data for a sentence. The dictionary has kanji 
-            characters as keys and their values as a tuple of (reading, meaning, position).
-        """
-
-        sentences_kanji_data = []
-
-        for transcription in transcriptions:
-            kanji_data = get_kanji_reading_meaning_position(transcription)
-
-            # Check if the word appears in the kanji data
-            if not is_word_in_list(kanji_data, word):
-                # If the word contains kana, update the kanji data accordingly
-                if check_word_contains_kana(word):
-                    kanji_data.update_data_kanji_kana(word)
-                else:
-                    kanji_data.update_data_only_kanji(word)
-
-            # Check again if the word appears in the updated kanji data
-            if is_word_in_list(kanji_data, word):
-                # Update the word's reading, meaning, and position
-                kanji_data.update_kanji_meaning(word, word_meaning)
-
-            # Add the kanji data to the list of sentence kanji data
-            sentences_kanji_data.append(kanji_data)
-
-        return tuple(sentences_kanji_data)
+        return kanji_data

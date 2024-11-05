@@ -56,22 +56,6 @@ def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
         return None
 
 def get_kanji_reading_meaning_position(sentence: str): 
-    """
-    Returns a dictionary containing kanji as keys and a tuple (reading, meaning, position) as values.
-
-    This function extracts kanji data (reading, meaning, position) from a sentence transcription
-    and returns it as a dict.
-
-    Args:
-    -----
-    sentence : str
-        The sentence containing the kanji to extract.
-
-    Returns:
-    --------
-    dict
-        A dictionary where kanji characters are keys and values are tuples of (reading, meaning, position).
-    """
     pattern = r'\[([^\|\[\]]+)\|([^\[\]]+)\]'
     result = re.findall(pattern, sentence) 
     kanji_data = KanjiData()
