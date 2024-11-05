@@ -3,6 +3,9 @@ from .vocabulary import Vocabulary
 from .sentence.manager import SentenceManager
 from .model.vocabulary import VocabularyModel
 
+class VocabularyAlreadyExists(Exception):
+    pass
+
 class VocabularyManager:
     """
     Manages a collection of vocabulary words and their associated example sentences.
@@ -40,17 +43,15 @@ class VocabularyManager:
         word : str
             The vocabulary word to be added.
         """
-        vocabulary = Vocabulary(word, self.data_retriever)
-        vocabulary.standard_item_modified.connect(self._change_vocabulary_model_item)
-        self.vocabularies.update({word : vocabulary})
-        self.vocabulary_model.append_vocabulary(word, vocabulary.standard_item)
-
-
-    def add_word_quick_init(self, word):
-        vocabulary = Vocabulary(word, self.data_retriever, quick_init=True)
-        vocabulary.standard_item_modified.connect(self._change_vocabulary_model_item)
-        self.vocabularies.update({word : vocabulary})
-        self.vocabulary_model.append_vocabulary(word, vocabulary.standard_item)
+        try: 
+            self.get_index_by_word(word)
+        except ValueError: 
+            vocabulary = Vocabulary(word, self.data_retriever)
+            vocabulary.standard_item_modified.connect(self._change_vocabulary_model_item)
+            self.vocabularies.update({word : vocabulary})
+            self.vocabulary_model.append_vocabulary(word, vocabulary.standard_item)
+        else:
+            raise VocabularyAlreadyExists(word)
 
     def add_sentence_to_deck(self, sentence):
         sentence_to_add = sentence.clone()
