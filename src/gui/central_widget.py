@@ -4,13 +4,17 @@ from .widget.vocabulary import VocabularyWidget
 from .widget.sentence import SentenceWidget
 from .widget.sentence_rendering import SentenceRenderingWidget
 
+from .dialog.card import CardDialog
+
 class CentralWidget(QWidget):
-    def __init__(self, parent: QWidget, vocabulary_manager, anki_manager) -> None:
+    def __init__(self, parent: QWidget, vocabulary_manager) -> None:
         super().__init__(parent)
         layout = QVBoxLayout(self)
 
-        sentence_rendering_widget = SentenceRenderingWidget(self)
-        sentence_widget = SentenceWidget(self, "Sentence List", vocabulary_manager, sentence_rendering_widget.card_text_view)
+        card_dialog = CardDialog(self, vocabulary_manager)
+        sentence_rendering_widget = SentenceRenderingWidget(self, card_dialog)
+        card_dialog.sentence_modified.connect(sentence_rendering_widget.card_text_view.set_card_view)
+        sentence_widget = SentenceWidget(self, "Sentence List", vocabulary_manager, sentence_rendering_widget.card_text_view, card_dialog)
         
         vocabulary_layout = QHBoxLayout()
         vocabulary_layout.addWidget(VocabularyWidget(self, vocabulary_manager, sentence_rendering_widget, sentence_widget.sentence_table_view))

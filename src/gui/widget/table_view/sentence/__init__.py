@@ -1,24 +1,18 @@
-from PyQt6.QtWidgets import QTableView
-
+from PyQt6.QtWidgets import QTableView, QHeaderView
 from .menu import SentenceTableViewMenu
-
-from ....dialog.card import CardDialog
-
-from PyQt6.QtWidgets import QHeaderView
-
 
 class SentenceTableView(QTableView):
     """Table view for the different sentences of one vocabulary."""
     
-    def __init__(self, central_widget, vocabulary_manager, main_card_view = None, is_added_sentence = False):
+    def __init__(self, central_widget, vocabulary_manager, card_text_view, card_dialog, is_added_sentence = False):
         super().__init__(central_widget)
-        self.card_text_view = main_card_view
         
         self.setEditTriggers(self.EditTrigger.NoEditTriggers) # Disable editing
         self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
         self.menu = SentenceTableViewMenu(self, vocabulary_manager, is_added_sentence)
-        self.card_dialog = CardDialog(central_widget, main_card_view, vocabulary_manager)
+        self.card_text_view = card_text_view
+        self.card_dialog = card_dialog
 
         self.clicked.connect(self.clicked_action)
         self.doubleClicked.connect(self.double_clicked_action)
@@ -40,13 +34,13 @@ class SentenceTableView(QTableView):
 
     def clicked_action(self):
         """When a sentence is double-clicked, update card view."""
-        sentence_clicked = self.model().get_sentence_by_row(self.currentIndex().row())
+        row = self.currentIndex().row()
+        sentence_clicked = self.model().get_sentence_by_row(row)
         self.card_text_view.set_card_view(sentence_clicked)
+
+        self.card_dialog.sentence_changed(self.model(), sentence_clicked, row)
     
     def double_clicked_action(self):
         """When a sentence is double-clicked, opens a new CardDialog to edit its fields."""
-        row = self.currentIndex().row()
-        sentence = self.model().get_sentence_by_row(row)
-
-        self.card_dialog.open(self.model(), sentence, row)
+        self.card_dialog.open()
 

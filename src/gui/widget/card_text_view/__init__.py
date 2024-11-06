@@ -8,10 +8,11 @@ from .sentences import *
 class CardTextView(QTextEdit):
     """Text view of the card in Anki."""
 
-    def __init__(self, is_main_window: bool) -> None:
+    def __init__(self, is_main_window: bool, card_dialog = None) -> None:
         super().__init__()
         self.is_main_window = is_main_window
         self.sentence = None
+        self.card_dialog = card_dialog
 
         self.setReadOnly(True)
         self.setMouseTracking(True)
@@ -43,5 +44,9 @@ class CardTextView(QTextEdit):
         if self.sentence is not None:
             show_transcription(self, event, len(self.sentence.attributes[0]), self.sentence.position_kanji, self.sentence.kanji_data)
     
+    def mouseDoubleClickEvent(self, mouse_event):
+        if self.is_main_window:
+            self.card_dialog.open()
+
     def sizeHint(self):
         return QSize(int(self.parent().width() / 2), int(self.parent().height()))

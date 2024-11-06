@@ -16,7 +16,7 @@ class App(QApplication):
         font = QFont()
         font.setPointSize(11)
         self.setFont(font)
-        self.main_window = MainWindow(self.vocabulary_manager, anki_manager)
+        self.main_window = MainWindow(self.vocabulary_manager)
 
     def start(self):
         self.main_window.show()

@@ -5,14 +5,14 @@ from .central_widget import CentralWidget
 from .action.import_from_file import ImportFromFileAction
 
 class MainWindow(QMainWindow):
-    def __init__(self, vocabulary_manager, anki_manager):
+    def __init__(self, vocabulary_manager):
         super().__init__(None)
         self.setWindowTitle("Vocanki")
         self._resize_and_center()
 
         self.vocabulary_manager = vocabulary_manager
         
-        centralWidget = CentralWidget(self, vocabulary_manager, anki_manager) 
+        centralWidget = CentralWidget(self, vocabulary_manager) 
         self.setCentralWidget(centralWidget)
     
         self._createMenu()

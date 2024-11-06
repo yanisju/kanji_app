@@ -6,7 +6,7 @@ from ...vocabulary.manager import VocabularyManager
 from .table_view.sentence import SentenceTableView
 
 class SentenceWidget(QWidget):
-    def __init__(self, parent: QWidget, label_name : str, vocabulary_manager: VocabularyManager, card_text_view, is_added_sentence = False) -> None:
+    def __init__(self, parent: QWidget, label_name : str, vocabulary_manager: VocabularyManager, card_text_view, card_dialog, is_added_sentence = False) -> None:
         super().__init__(parent)
         self.vocabulary_manager = vocabulary_manager
 
@@ -29,7 +29,7 @@ class SentenceWidget(QWidget):
 
         layout.addLayout(up_layout)
 
-        self.sentence_table_view = SentenceTableView(parent, vocabulary_manager, card_text_view, is_added_sentence)
+        self.sentence_table_view = SentenceTableView(parent, vocabulary_manager, card_text_view, card_dialog, is_added_sentence)
         if is_added_sentence:
             self.sentence_table_view.setModel(vocabulary_manager.sentence_added_to_deck.sentences_model)
         

@@ -3,16 +3,19 @@ from ...widget.card_text_view import CardTextView
 from .fields_widget import FieldsWidget
 from ....vocabulary.sentence.sentence import Sentence
 
+from PyQt6.QtCore import pyqtSignal
+
 class CardDialog(QDialog):
     """Pop-up window for creating and editing a Anki card and its field. """
 
-    def __init__(self, central_widget, main_card_view, vocabulary_manager):
+    sentence_modified = pyqtSignal(Sentence)
+
+    def __init__(self, central_widget, vocabulary_manager):
         super().__init__(central_widget) 
         self.setWindowTitle("Anki Card Editor")
 
         self.resize(int(central_widget.parent().width() * 0.7), int(central_widget.parent().height() * 0.7))
 
-        self.main_card_view = main_card_view
         self.vocabulary_manager = vocabulary_manager
         self._init_layout()
     
@@ -58,19 +61,19 @@ class CardDialog(QDialog):
                                         self.fields_widget.kanji_table_view.model())
         self.sentences_model.modify_row(self.sentence, self.sentence_row)
         if hasattr(self, "sentence"): # Update CardView from Main Application as well
-            self.main_card_view.set_card_view(self.sentence)
+            self.sentence_modified.emit(self.sentence)
+            # self.main_card_view.set_card_view(self.sentence)
         
-
-    def open(self, sentences_model, sentence: Sentence, sentence_row):
-        """If Dialog is opened, dialog view and fields must be updated 
-        to the current sentence."""
-
+    def sentence_changed(self, sentences_model, sentence: Sentence, sentence_row):
         self.sentence = sentence.clone()
         self.sentence_row = sentence_row # Row number in the view
         self.sentences_model = sentences_model
-        
-        self.fields_widget.set_to_new_sentence(self.sentence)
 
+    def open(self):
+        """If Dialog is opened, dialog view and fields must be updated 
+        to the current sentence."""
+
+        self.fields_widget.set_to_new_sentence(self.sentence)
         self.card_view.set_card_view(self.sentence) # Init card view with card fields
         
         super().open()

@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QSizePolicy
 from ..widget.card_text_view import CardTextView
 
 class SentenceRenderingWidget(QWidget):
-    def __init__(self, parent: QWidget) -> None:
+    def __init__(self, parent: QWidget, card_dialog) -> None:
         super().__init__(parent)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
@@ -17,7 +17,7 @@ class SentenceRenderingWidget(QWidget):
         label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         layout.addWidget(label)
 
-        self.card_text_view = CardTextView(True) # View for retrieved words
+        self.card_text_view = CardTextView(True, card_dialog) # View for retrieved words
         layout.addWidget(self.card_text_view)
 
     def sizeHint(self):
