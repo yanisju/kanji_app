@@ -22,7 +22,7 @@ class CentralWidget(QWidget):
 
         sentence_layout = QHBoxLayout()
         sentence_layout.addWidget(sentence_widget)
-        added_sentence_widget = SentenceWidget(self, "Added Sentence List", vocabulary_manager, sentence_rendering_widget.card_text_view, True)
+        added_sentence_widget = SentenceWidget(self, "Added Sentence List", vocabulary_manager, sentence_rendering_widget.card_text_view, card_dialog, True)
         sentence_layout.addWidget(added_sentence_widget)
         layout.addLayout(sentence_layout)
 

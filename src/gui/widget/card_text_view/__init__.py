@@ -45,8 +45,15 @@ class CardTextView(QTextEdit):
             show_transcription(self, event, len(self.sentence.attributes[0]), self.sentence.position_kanji, self.sentence.kanji_data)
     
     def mouseDoubleClickEvent(self, mouse_event):
-        if self.is_main_window:
+        if self.is_main_window and self.sentence is not None:
             self.card_dialog.open()
+
+    def clear(self):
+        self.sentence = None
+        self.sentence_attributes = None
+        self.attributes_values = None
+        super().clear()
+
 
     def sizeHint(self):
         return QSize(int(self.parent().width() / 2), int(self.parent().height()))

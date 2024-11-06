@@ -15,6 +15,7 @@ class DeleteVocabularyAction(QAction):
         word = self.vocabulary_manager[(self.parent().row)]
         if self.sentence_table_view.model() == word.sentence_manager.sentences_model:
             self.sentence_table_view.setModel(None)
+            self.sentence_rendering_widget.card_text_view.clear()
 
         self.vocabulary_manager.delete_vocabulary(self.parent().row)
         
