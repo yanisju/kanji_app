@@ -4,13 +4,13 @@ from .menu import SentenceTableViewMenu
 class SentenceTableView(QTableView):
     """Table view for the different sentences of one vocabulary."""
     
-    def __init__(self, central_widget, vocabulary_manager, card_text_view, card_dialog, is_added_sentence = False):
+    def __init__(self, central_widget, vocabulary_manager, card_text_view, card_dialog, sentence_widget_mode):
         super().__init__(central_widget)
         
         self.setEditTriggers(self.EditTrigger.NoEditTriggers) # Disable editing
         self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
 
-        self.menu = SentenceTableViewMenu(self, vocabulary_manager, is_added_sentence)
+        self.menu = SentenceTableViewMenu(self, vocabulary_manager, card_text_view, sentence_widget_mode)
         self.card_text_view = card_text_view
         self.card_dialog = card_dialog
 

@@ -5,8 +5,10 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSizePoli
 from ...vocabulary.manager import VocabularyManager
 from .table_view.sentence import SentenceTableView
 
+from ..constants.constants import SentenceWidgetMode
+
 class SentenceWidget(QWidget):
-    def __init__(self, parent: QWidget, label_name : str, vocabulary_manager: VocabularyManager, card_text_view, card_dialog, is_added_sentence = False) -> None:
+    def __init__(self, parent: QWidget, label_name : str, vocabulary_manager: VocabularyManager, card_text_view, card_dialog, mode : SentenceWidgetMode) -> None:
         super().__init__(parent)
         self.vocabulary_manager = vocabulary_manager
 
@@ -20,7 +22,7 @@ class SentenceWidget(QWidget):
         label.setAlignment(Qt.AlignmentFlag.AlignLeft)
         up_layout.addWidget(label)
 
-        if is_added_sentence:
+        if mode == SentenceWidgetMode.ADDED_SENTENCE:
             self.generate_deck_button = QPushButton("Generate Deck")
             self.generate_deck_button.setEnabled(False)
             self.generate_deck_button.clicked.connect(vocabulary_manager.generate_deck)
@@ -29,8 +31,8 @@ class SentenceWidget(QWidget):
 
         layout.addLayout(up_layout)
 
-        self.sentence_table_view = SentenceTableView(parent, vocabulary_manager, card_text_view, card_dialog, is_added_sentence)
-        if is_added_sentence:
+        self.sentence_table_view = SentenceTableView(parent, vocabulary_manager, card_text_view, card_dialog, mode)
+        if mode == SentenceWidgetMode.ADDED_SENTENCE:
             self.sentence_table_view.setModel(vocabulary_manager.sentence_added_to_deck.sentences_model)
         
         layout.addWidget(self.sentence_table_view)

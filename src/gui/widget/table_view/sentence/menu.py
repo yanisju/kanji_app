@@ -5,25 +5,27 @@ from .action.delete_one_sentence import DeleteOneSentenceAction
 from .action.delete_all_sentences import DeleteAllSentenceAction
 from .action.add_empty_sentence import AddEmptySentenceAction
 
+from ....constants.constants import SentenceWidgetMode
+
 class SentenceTableViewMenu(QMenu):
     """Menu displayed when user right-clicks on sentence table view. """
-    def __init__(self, parent, vocabulary_manager, is_added_sentence):
+    def __init__(self, parent, vocabulary_manager, card_text_view, sentence_widget_mode):
         super().__init__(parent)
         self.row = -1
         self.column = -1
-        self.is_added_sentence = is_added_sentence
+        self.sentence_widget_mode = sentence_widget_mode
         self._actions = []
-        self._set_actions(vocabulary_manager)
+        self._set_actions(vocabulary_manager, card_text_view)
 
-    def _set_actions(self, vocabulary_manager):
+    def _set_actions(self, vocabulary_manager, card_text_view):
         """Set actions data and behaviors."""
-
+        
         self.open_card_editor_action = OpenMeaningEditorAction(self)
         self._actions.append(self.open_card_editor_action)
         self.addAction(self.open_card_editor_action)
 
 
-        if not self.is_added_sentence:
+        if self.sentence_widget_mode == SentenceWidgetMode.VOCABULARY_SENTENCE:
             self.add_sentence_to_deck_action = AddSentenceToDeckAction(self, vocabulary_manager)
             self._actions.append(self.add_sentence_to_deck_action)
             self.addAction(self.add_sentence_to_deck_action)
@@ -36,11 +38,11 @@ class SentenceTableViewMenu(QMenu):
 
         self.addSeparator()
 
-        self.del_one_sentence_action = DeleteOneSentenceAction(self)
+        self.del_one_sentence_action = DeleteOneSentenceAction(self, card_text_view)
         self._actions.append(self.del_one_sentence_action)
         self.addAction(self.del_one_sentence_action)
 
-        self.del_all_sentence_action = DeleteAllSentenceAction(self)
+        self.del_all_sentence_action = DeleteAllSentenceAction(self, card_text_view)
         self._actions.append(self.del_all_sentence_action)
         self.addAction(self.del_all_sentence_action)
         
@@ -57,22 +59,22 @@ class SentenceTableViewMenu(QMenu):
             if self.parent().model().rowCount() == 0:
                 self.del_all_sentence_action.setEnabled(False)
                 self.open_card_editor_action.setEnabled(False)
-                if not self.is_added_sentence:
+                if self.sentence_widget_mode == SentenceWidgetMode.VOCABULARY_SENTENCE:
                     self.add_sentence_to_deck_action.setEnabled(False)
             else:
                 self.del_all_sentence_action.setEnabled(True)
                 self.open_card_editor_action.setEnabled(True)
-                if not self.is_added_sentence:
+                if self.sentence_widget_mode == SentenceWidgetMode.VOCABULARY_SENTENCE:
                     self.add_sentence_to_deck_action.setEnabled(True)
                 
 
         if(row == -1):
             self.del_one_sentence_action.setEnabled(False)
             self.open_card_editor_action.setEnabled(False)
-            if not self.is_added_sentence:
+            if self.sentence_widget_mode == SentenceWidgetMode.VOCABULARY_SENTENCE:
                     self.add_sentence_to_deck_action.setEnabled(False)
         else:
             self.del_one_sentence_action.setEnabled(True)
             self.del_one_sentence_action.setEnabled(True)
-            if not self.is_added_sentence:
+            if self.sentence_widget_mode == SentenceWidgetMode.VOCABULARY_SENTENCE:
                     self.add_sentence_to_deck_action.setEnabled(True)
