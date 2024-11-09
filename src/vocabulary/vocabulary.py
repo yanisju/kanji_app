@@ -50,6 +50,7 @@ class Vocabulary(QObject):
         for one_sentence_data in sentences_data:
             sentence, translation, transcription, kanji_data = one_sentence_data
             self.sentence_manager.append_from_sentence_data(sentence, translation, kanji_data)
+        self.sentence_manager.sort_by_sentence_length()
 
     def remove_one_sentence(self, row):
         """

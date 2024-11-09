@@ -30,7 +30,7 @@ class Sentence():
     standard_item : list or None
         A list of QStandardItems representing the sentence data for insertion into a model, or None if not yet computed.
     """
-    def __init__(self, vocabulary, sentence, translation, kanji_data : KanjiData, word, word2 = None):
+    def __init__(self, vocabulary: str, sentence: str, translation: str, kanji_data : KanjiData, word, word2 = None):
         self.vocabulary = vocabulary
         self.word = word
         self.sentence = sentence

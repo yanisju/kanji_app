@@ -25,7 +25,12 @@ class SentenceManager(list):
             word = None
         empty_sentence = Sentence(self.vocabulary, "", "", KanjiData(), word)
         self.append(empty_sentence)
-        
+    
+    def sort_by_sentence_length(self):
+        self.sentences_model.remove_all_rows()
+        self.sort(key=lambda sentence: len(sentence.sentence))
+        for sentence in self:
+            self.sentences_model.append_sentence(sentence)
 
     def pop(self, index):
         """
