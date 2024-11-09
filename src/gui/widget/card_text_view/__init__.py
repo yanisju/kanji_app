@@ -41,6 +41,7 @@ class CardTextView(QTextEdit):
 
     def mouseMoveEvent(self, event):
         """Show transcription when mouse howers a kanji."""
+        super().mouseMoveEvent(event)
         if self.sentence is not None:
             show_transcription(self, event, len(self.sentence.attributes[0]), self.sentence.position_kanji, self.sentence.kanji_data)
     
