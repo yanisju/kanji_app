@@ -1,5 +1,5 @@
-from PyQt6.QtWidgets import QTableView
-from PyQt6.QtWidgets import QHeaderView
+from PyQt6.QtWidgets import QTableView, QHeaderView
+from PyQt6.QtCore import QItemSelectionModel
 
 from .menu import KanjiTableViewMenu
 
@@ -23,8 +23,13 @@ class KanjiTableView(QTableView):
         event : QContextMenuEvent
             The event object containing the position of the mouse click.
         """
-        row = self.rowAt(event.pos().y())
-        column = self.columnAt(event.pos().x())
 
-        self.menu.set_current_position(row, column)
+        rows_columns = self._get_selected_rows_columns()
+        self.menu.set_current_position(rows_columns)
         self.menu.exec(event.globalPos())
+    
+    def _get_selected_rows_columns(self):
+        model_indexes = self.selectionModel().selectedIndexes()
+        row_column_pairs = [(index.row(), index.column()) for index in model_indexes]
+        row_column_pairs.sort(key=lambda pair: pair[0])  # Trie par ligne
+        return row_column_pairs

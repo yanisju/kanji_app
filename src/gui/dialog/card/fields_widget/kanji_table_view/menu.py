@@ -6,14 +6,14 @@ from .action.look_up_on_jisho import LookupOnJishoAction
 from .action.delete_one_kanji import DeleteOneKanjiAction
 from .action.delete_all_kanjis import DeleteAllKanjisAction
 from .action.add_to_vocabulary_list import AddToVocabularyListAction
+from .action.merge_kanjis import MergeKanjisAction
 
 
 class KanjiTableViewMenu(QMenu):
     """Menu displayed when user right-clicks on sentence table view. """
     def __init__(self, parent):
         super().__init__(parent)
-        self.row = -1
-        self.column = -1
+        self.rows_columns = []
         self._set_actions()
 
     def _set_actions(self):
@@ -25,6 +25,11 @@ class KanjiTableViewMenu(QMenu):
         self.addAction(self.set_as_word2_action)
 
         self.addSeparator()
+
+        self.merge_kanjis_action = MergeKanjisAction(self)
+        self.addAction(self.merge_kanjis_action)
+
+        self.addSeparator
 
         self.add_to_vocabulary_list_action = AddToVocabularyListAction(self)
         self.addAction(self.add_to_vocabulary_list_action)
@@ -47,19 +52,27 @@ class KanjiTableViewMenu(QMenu):
 
 
 
-    def set_current_position(self, row: int, column: int):
-        self.row = row
-        self.column = column
+    def set_current_position(self, rows_columns: list):
+        self.rows_columns = rows_columns
 
-        if(row == -1):
+        if(len(rows_columns) == 0):
             self.remove_kanji_action.setEnabled(False)
             self.set_as_word1_action.setEnabled(False)
             self.set_as_word2_action.setEnabled(False)
             self.look_up_on_jisho_action.setEnabled(False)
             self.add_to_vocabulary_list_action.setEnabled(False)
+            self.merge_kanjis_action.setEnabled(False)
+        elif(len(rows_columns) == 1):
+            self.remove_kanji_action.setEnabled(True)
+            self.set_as_word1_action.setEnabled(True)
+            self.set_as_word2_action.setEnabled(True)
+            self.look_up_on_jisho_action.setEnabled(True)
+            self.add_to_vocabulary_list_action.setEnabled(True)
+            self.merge_kanjis_action.setEnabled(False)
         else:
             self.remove_kanji_action.setEnabled(True)
             self.set_as_word1_action.setEnabled(True)
             self.set_as_word2_action.setEnabled(True)
             self.look_up_on_jisho_action.setEnabled(True)
             self.add_to_vocabulary_list_action.setEnabled(True)
+            self.merge_kanjis_action.setEnabled(True)

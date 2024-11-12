@@ -5,7 +5,7 @@ from .kanji import Kanji
 class KanjiData(list):
     # List containing Kanjis(kanjis, reading, meaning)
     def __init__(self) -> None:
-        self.model = KanjiDataModel()
+        self.model = KanjiDataModel(self)
     
     def bound_to_sentence(self, sentence):
         self.sentence = sentence
@@ -39,6 +39,11 @@ class KanjiData(list):
         self.append(new_kanji)
         self.model.add_row(new_kanji)
 
+    def insert(self, row, kanji, reading, meaning):
+        new_kanji = Kanji(kanji, reading, meaning)
+        super().insert(row, new_kanji)
+        self.model.insertRow(row, new_kanji.get_item())
+
     def remove(self, kanji):
         #TODO: check if kanji already exists + remove from model
         index = self._find_kanji_index(kanji)
@@ -50,7 +55,7 @@ class KanjiData(list):
 
     def remove_by_row(self, row):
         self.model.remove(row)
-        self.pop(row)
+        return self.pop(row)
 
     def clear(self):
         super().clear()
@@ -118,7 +123,16 @@ class KanjiData(list):
             self.model.modify_row(kanji_index, self[kanji_index])
         else:
             raise IndexError
+        
+    def merge_kanjis(self, rows):
+        kanji_merged_data = ["", "", ""]
+        for i in range(len(rows)):
+            kanji = self.remove_by_row(rows[i] - i)
+            for j, kanji_data in enumerate(kanji):
+                kanji_merged_data[j] += kanji_data
 
+        row_to_insert = rows[0]
+        self.insert(row_to_insert, kanji_merged_data[0], kanji_merged_data[1], kanji_merged_data[2])
     
     def _model_is_modified(self, item):
         """Modify its own list to fit with modifications."""
@@ -139,5 +153,5 @@ class KanjiData(list):
         for data in (self):
             kanji, reading, meaning = data
             new_kanji_data.add(kanji, reading, meaning)
-        new_kanji_data.set_model(self.model.get_a_copy())
+        new_kanji_data.set_model(self.model.get_a_copy(new_kanji_data))
         return new_kanji_data
