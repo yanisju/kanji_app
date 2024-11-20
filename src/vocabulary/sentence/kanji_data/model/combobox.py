@@ -3,6 +3,7 @@ from ..kanji_data import KanjiData
 
 from .....constants import KanjiDataComboBoxModelMode
 
+
 class KanjiDataComboBoxModel(QStandardItemModel):
     def __init__(self, mode):
         super().__init__()
@@ -16,15 +17,15 @@ class KanjiDataComboBoxModel(QStandardItemModel):
     def _get_text(self, row: int, kanji_data: KanjiData):
         text = f"{row + 1}: {kanji_data.word} - {kanji_data.meaning}"
         return text
-    
+
     def appendRowText(self, text: str):
         if self.mode == KanjiDataComboBoxModelMode.FIRST_COMBO_BOX:
             row = self.rowCount()
         else:
             row = self.rowCount() - 1
         super().insertRow(row, QStandardItem(text))
-    
-    def insertRow(self, row: int,  kanji_data: KanjiData):
+
+    def insertRow(self, row: int, kanji_data: KanjiData):
         text = self._get_text(row, kanji_data)
         item_to_insert = QStandardItem(text)
         super().insertRow(row, item_to_insert)
@@ -63,13 +64,8 @@ class KanjiDataComboBoxModel(QStandardItemModel):
     def actualize_items_text(self):
         for i in range(self.rowCount()):
             item = self.item(i)
-            if item:  
+            if item:
                 text = item.text()
                 if ": " in text:
                     _, string_part = text.split(": ", 1)
                     item.setText(f"{i + 1}: {string_part}")
-
-
-
-        
-    

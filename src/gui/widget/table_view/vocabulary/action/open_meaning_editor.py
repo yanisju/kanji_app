@@ -1,5 +1,6 @@
 from PyQt6.QtGui import QAction, QIcon
 
+
 class OpenMeaningEditorAction(QAction):
     def __init__(self, parent, table_view) -> None:
         super().__init__(parent)
@@ -10,4 +11,3 @@ class OpenMeaningEditorAction(QAction):
 
     def _action(self):
         self.table_view._double_clicked()
-        

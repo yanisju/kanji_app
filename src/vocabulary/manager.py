@@ -3,8 +3,10 @@ from .vocabulary import Vocabulary
 from .sentence.manager import SentenceManager
 from .model.vocabulary import VocabularyModel
 
+
 class VocabularyAlreadyExists(Exception):
     pass
+
 
 class VocabularyManager:
     """
@@ -26,14 +28,14 @@ class VocabularyManager:
 
     def __init__(self, anki_manager):
         self.data_retriever = DataRetriever("jpn", "eng", RetrieverMode.LOCAL)
-        
-        self.vocabularies = {} # Dictionnary of vocabularies instance
-        
-        self.vocabulary_model = VocabularyModel() # Model for retrieved words
+
+        self.vocabularies = {}  # Dictionnary of vocabularies instance
+
+        self.vocabulary_model = VocabularyModel()  # Model for retrieved words
         self.sentence_added_to_deck = SentenceManager()
 
         self.anki_manager = anki_manager
-    
+
     def add_word(self, word):
         """
         Adds a vocabulary word to the dictionary and to the vocabulary model.
@@ -43,13 +45,15 @@ class VocabularyManager:
         word : str
             The vocabulary word to be added.
         """
-        try: 
+        try:
             self.get_index_by_word(word)
-        except ValueError: 
+        except ValueError:
             vocabulary = Vocabulary(word, self.data_retriever)
-            vocabulary.standard_item_modified.connect(self._change_vocabulary_model_item)
-            self.vocabularies.update({word : vocabulary})
-            self.vocabulary_model.append_vocabulary(word, vocabulary.standard_item)
+            vocabulary.standard_item_modified.connect(
+                self._change_vocabulary_model_item)
+            self.vocabularies.update({word: vocabulary})
+            self.vocabulary_model.append_vocabulary(
+                word, vocabulary.standard_item)
         else:
             raise VocabularyAlreadyExists(word)
 
@@ -80,13 +84,13 @@ class VocabularyManager:
 
     def __getitem__(self, index):
         return list(self.vocabularies.values())[index]
-    
+
     def get_word(self, index):
         return list(self.vocabularies.keys())[index]
-    
+
     def get_index_by_word(self, word):
         return list(self.vocabularies).index(word)
-    
+
     def generate_deck(self):
         self.anki_manager.generate_deck(self.sentence_added_to_deck)
 

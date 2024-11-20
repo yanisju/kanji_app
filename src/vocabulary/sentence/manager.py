@@ -3,8 +3,9 @@ from ..model.sentence import SentenceModel
 
 from .kanji_data import KanjiData
 
+
 class SentenceManager(list):
-    def __init__(self, vocabulary = None) -> None:
+    def __init__(self, vocabulary=None) -> None:
         super().__init__()
         self.vocabulary = vocabulary
         self.sentences_model = SentenceModel(self)
@@ -12,20 +13,29 @@ class SentenceManager(list):
     def append(self, sentence):
         super().append(sentence)
         self.sentences_model.append_sentence(sentence)
-        
-    def append_from_sentence_data(self, sentence_str, translation_str, kanjis_data):
-        new_sentence = Sentence(self.vocabulary, sentence_str, translation_str, kanjis_data, self.vocabulary.word)
+
+    def append_from_sentence_data(
+            self,
+            sentence_str,
+            translation_str,
+            kanjis_data):
+        new_sentence = Sentence(
+            self.vocabulary,
+            sentence_str,
+            translation_str,
+            kanjis_data,
+            self.vocabulary.word)
         super().append(new_sentence)
         self.sentences_model.append_sentence(new_sentence)
-        
+
     def append_empty_sentence(self):
-        if self.vocabulary != None:
+        if self.vocabulary is not None:
             word = self.vocabulary.word
         else:
             word = None
         empty_sentence = Sentence(self.vocabulary, "", "", KanjiData(), word)
         self.append(empty_sentence)
-    
+
     def sort_by_sentence_length(self):
         self.sentences_model.remove_all_rows()
         self.sort(key=lambda sentence: len(sentence.sentence))
@@ -47,4 +57,3 @@ class SentenceManager(list):
     def clear(self):
         super().clear()
         self.sentences_model.remove_all_rows()
-        

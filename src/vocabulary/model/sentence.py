@@ -2,6 +2,7 @@ from PyQt6.QtGui import QStandardItemModel
 import PyQt6.QtCore
 from PyQt6.QtCore import pyqtSignal
 
+
 class SentenceModel(QStandardItemModel):
     """
     A model that manages and displays sentences with their associated data.
@@ -42,11 +43,17 @@ class SentenceModel(QStandardItemModel):
         """
         Configures the model headers to label each column.
         """
-        self.setHeaderData(0, PyQt6.QtCore.Qt.Orientation.Horizontal, "Sentence")
-        self.setHeaderData(1, PyQt6.QtCore.Qt.Orientation.Horizontal, "Meaning")
+        self.setHeaderData(
+            0,
+            PyQt6.QtCore.Qt.Orientation.Horizontal,
+            "Sentence")
+        self.setHeaderData(
+            1,
+            PyQt6.QtCore.Qt.Orientation.Horizontal,
+            "Meaning")
         self.setHeaderData(2, PyQt6.QtCore.Qt.Orientation.Horizontal, "Word 1")
         self.setHeaderData(3, PyQt6.QtCore.Qt.Orientation.Horizontal, "Word 2")
-        
+
     def append_sentence(self, sentence):
         """
         Adds a new sentence to the model.
@@ -79,7 +86,7 @@ class SentenceModel(QStandardItemModel):
         for j in range(len(sentence.standard_item)):
             sentence.compute_standard_item()
             self.setItem(row, j, sentence.standard_item[j])
-            
+
     def get_sentence_by_row(self, row):
         """
         Retrieves a sentence by its row index in the model.
@@ -95,7 +102,7 @@ class SentenceModel(QStandardItemModel):
             The Sentence object corresponding to the given row index.
         """
         return self.sentence_manager[row]
-    
+
     def remove_row(self, row):
         """
         Removes a sentence from the model and its corresponding row.

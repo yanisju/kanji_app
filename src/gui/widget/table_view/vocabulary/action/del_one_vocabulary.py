@@ -1,7 +1,13 @@
 from PyQt6.QtGui import QAction, QIcon
 
+
 class DeleteVocabularyAction(QAction):
-    def __init__(self, parent, vocabulary_manager, sentence_rendering_widget, sentence_table_view) -> None:
+    def __init__(
+            self,
+            parent,
+            vocabulary_manager,
+            sentence_rendering_widget,
+            sentence_table_view) -> None:
         super().__init__(parent)
         self.vocabulary_manager = vocabulary_manager
         self.sentence_rendering_widget = sentence_rendering_widget
@@ -18,4 +24,3 @@ class DeleteVocabularyAction(QAction):
             self.sentence_rendering_widget.card_text_view.clear()
 
         self.vocabulary_manager.delete_vocabulary(self.parent().row)
-        

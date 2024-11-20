@@ -1,7 +1,8 @@
 from PyQt6.QtGui import QStandardItem
-from ..str_utils import *
 
+from ..str_utils import *
 from .kanji_data import KanjiData
+
 
 class Sentence():
     """
@@ -30,32 +31,53 @@ class Sentence():
     standard_item : list or None
         A list of QStandardItems representing the sentence data for insertion into a model, or None if not yet computed.
     """
-    def __init__(self, vocabulary: str, sentence: str, translation: str, kanji_data : KanjiData, word, word2 = None):
+
+    def __init__(
+            self,
+            vocabulary: str,
+            sentence: str,
+            translation: str,
+            kanji_data: KanjiData,
+            word,
+            word2=None):
         self.vocabulary = vocabulary
         self.word = word
         self.sentence = sentence
         self.translation = translation
         self.kanji_data = kanji_data
         self.kanji_data.bound_to_sentence(self)
-        self.position_kanji = dict() # Dict containg positions in text as keys and kanjis as values.
+        # Dict containg positions in text as keys and kanjis as values.
+        self.position_kanji = {}
         self._update_position_kanji()
 
         self.word1_data = kanji_data.get_kanji(word)
         self.word2_data = kanji_data.get_kanji(word2)
 
-        self.attributes = (sentence, translation, self.word1_data, self.word2_data)
+        self.attributes = (
+            sentence,
+            translation,
+            self.word1_data,
+            self.word2_data)
 
-        self.standard_item = None # QStandardItem in order to be inserted in the model
-        self.compute_standard_item() # TODO: class does not contain standard item, but method return it directly
+        self.standard_item = None  # QStandardItem in order to be inserted in the model
+        # TODO: class does not contain standard item, but method return it
+        # directly
+        self.compute_standard_item()
 
     def compute_standard_item(self):
         """Update standard item to insert in Sentence model, based on current sentences attributes. """
         word1_kanji, word2_kanji = None, None
-        if self.word1_data != None:
+        if self.word1_data is not None:
             word1_kanji = self.word1_data.word
-        if self.word2_data != None:
+        if self.word2_data is not None:
             word2_kanji = self.word2_data.word
-        self.standard_item = [QStandardItem(self.sentence), QStandardItem(self.translation), QStandardItem(word1_kanji), QStandardItem(word2_kanji)] 
+        self.standard_item = [
+            QStandardItem(
+                self.sentence),
+            QStandardItem(
+                self.translation),
+            QStandardItem(word1_kanji),
+            QStandardItem(word2_kanji)]
 
     def update_attributes(self, attributes: list):
         """
@@ -70,10 +92,12 @@ class Sentence():
         self.sentence, self.translation, self.word1_data, self.word2_data = attributes
         self.attributes = attributes
 
-        self.position_kanji = get_position_kanji_sentence(self.sentence, self.kanji_data)
+        self.position_kanji = get_position_kanji_sentence(
+            self.sentence, self.kanji_data)
 
     def _update_position_kanji(self):
-        self.position_kanji = get_position_kanji_sentence(self.sentence, self.kanji_data)
+        self.position_kanji = get_position_kanji_sentence(
+            self.sentence, self.kanji_data)
 
     def clone(self):
         """
@@ -94,5 +118,11 @@ class Sentence():
         else:
             word2 = None
         new_kanji_data = kanji_data.clone()
-        new_sentence = Sentence(vocabulary, sentence, translation, new_kanji_data, word1, word2)
+        new_sentence = Sentence(
+            vocabulary,
+            sentence,
+            translation,
+            new_kanji_data,
+            word1,
+            word2)
         return new_sentence

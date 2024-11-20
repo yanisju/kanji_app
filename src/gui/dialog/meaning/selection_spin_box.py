@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QSpinBox, QWidget
 
+
 class SelectionSpinBox(QSpinBox):
     def __init__(self) -> None:
         super().__init__(None)

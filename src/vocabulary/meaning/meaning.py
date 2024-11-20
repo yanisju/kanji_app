@@ -1,12 +1,13 @@
 from .retriever import get_meaning
 from PyQt6.QtGui import QStandardItem, QStandardItemModel
 
+
 class VocabularyMeaning:
     """
     A class to represent the meanings and part-of-speech information for a vocabulary word.
 
     This class stores multiple meanings and parts of speech for a given word, allowing users to
-    add, remove, and manage these meanings. 
+    add, remove, and manage these meanings.
 
     Attributes:
     -----------
@@ -27,25 +28,25 @@ class VocabularyMeaning:
     --------
     add(meaning: str, part_of_speech: str):
         Adds a new meaning and part of speech to the word.
-    
+
     remove(index: int):
         Removes the meaning and part of speech at the specified index.
-    
+
     remove_all():
         Removes all meanings and parts of speech for the word.
-    
+
     __getitem__(index: int) -> tuple:
         Returns the meaning and part of speech at the specified index.
-    
+
     __setitem__(index: int, meaning: str, part_of_speech: str):
         Updates the meaning and part of speech at the specified index.
-    
+
     meaning -> str:
         Returns the currently selected meaning based on `current_selection`.
-    
+
     part_of_speech -> str:
         Returns the part of speech corresponding to the current selection.
-    
+
     fetch_from_jisho(quick_init: bool):
         Fetches meanings and part-of-speech data from an external source (Jisho) for the word.
     """
@@ -60,7 +61,7 @@ class VocabularyMeaning:
             The vocabulary word for which meanings and part-of-speech information will be stored.
         """
         self.word = word
-        self.count = 0 
+        self.count = 0
         self._meanings = []
         self._part_of_speech = []
         self.current_selection = 1
@@ -79,7 +80,8 @@ class VocabularyMeaning:
         """
         self._meanings.append(meaning)
         self._part_of_speech.append(part_of_speech)
-        self.standard_item_model.appendRow([QStandardItem(meaning), QStandardItem(part_of_speech)])
+        self.standard_item_model.appendRow(
+            [QStandardItem(meaning), QStandardItem(part_of_speech)])
 
     def remove(self, index):
         """
@@ -135,7 +137,8 @@ class VocabularyMeaning:
         self._meanings[index] = meaning
         self._part_of_speech[index] = part_of_speech
         self.standard_item_model.setItem(index, 0, QStandardItem(meaning))
-        self.standard_item_model.setItem(index, 1, QStandardItem(part_of_speech))
+        self.standard_item_model.setItem(
+            index, 1, QStandardItem(part_of_speech))
 
     @property
     def meaning(self):

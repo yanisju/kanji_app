@@ -33,6 +33,7 @@ class App(QApplication):
                 self.vocabulary_manager.add_word_quick_init(line)
         self.start()
 
+
 if __name__ == "__main__":
     app = App()
     if len(sys.argv) > 1 and sys.argv[1] == "--quick-init":

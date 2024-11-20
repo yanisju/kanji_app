@@ -1,5 +1,6 @@
 from PyQt6.QtGui import QAction, QIcon
 
+
 class AddSentenceToDeckAction(QAction):
     def __init__(self, parent, vocabulary_manager):
         super().__init__(parent)

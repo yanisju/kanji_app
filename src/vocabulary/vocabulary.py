@@ -4,6 +4,7 @@ from PyQt6.QtCore import QObject, pyqtSignal
 from .sentence.manager import SentenceManager
 from .meaning.meaning import VocabularyMeaning
 
+
 class Vocabulary(QObject):
     """
     Represents a single vocabulary word and its associated example sentences.
@@ -20,7 +21,7 @@ class Vocabulary(QObject):
 
     standard_item_modified = pyqtSignal(str, list)
 
-    def __init__(self, word, sentence_retriever, quick_init = False):
+    def __init__(self, word, sentence_retriever, quick_init=False):
         super().__init__()
         self.word = word
         self.meaning_object = VocabularyMeaning(word)
@@ -28,11 +29,15 @@ class Vocabulary(QObject):
 
         self.sentence_retriever = sentence_retriever
         self.sentence_manager = SentenceManager(self)
-        self.sentence_manager.sentences_model.modified.connect(self.set_standard_item)
+        self.sentence_manager.sentences_model.modified.connect(
+            self.set_standard_item)
 
         self._get_data()
 
-        self.standard_item = [QStandardItem(self.word), QStandardItem(self.meaning_object.meaning), QStandardItem(self.meaning_object.part_of_speech), QStandardItem(str(len(self.sentence_manager)))]
+        self.standard_item = [QStandardItem(self.word),
+                              QStandardItem(self.meaning_object.meaning),
+                              QStandardItem(self.meaning_object.part_of_speech),
+                              QStandardItem(str(len(self.sentence_manager)))]
 
     def _get_data(self):
         """
@@ -42,11 +47,13 @@ class Vocabulary(QObject):
         kanji data, the meaning of the word, and parts of speech. It then populates
         the sentences attribute with Sentence objects."""
 
-        sentences_data = self.sentence_retriever.get_data(self.word, self.meaning_object) # Retrieve sentences from DataRetriever
+        sentences_data = self.sentence_retriever.get_data(
+            self.word, self.meaning_object)  # Retrieve sentences from DataRetriever
 
         for one_sentence_data in sentences_data:
             sentence, translation, transcription, kanji_data = one_sentence_data
-            self.sentence_manager.append_from_sentence_data(sentence, translation, kanji_data)
+            self.sentence_manager.append_from_sentence_data(
+                sentence, translation, kanji_data)
         self.sentence_manager.sort_by_sentence_length()
 
     def remove_one_sentence(self, row):
@@ -66,5 +73,8 @@ class Vocabulary(QObject):
         self.sentences_model.remove_all_rows()
 
     def set_standard_item(self):
-        self.standard_item = [QStandardItem(self.word), QStandardItem(self.meaning_object.meaning), QStandardItem(self.meaning_object.part_of_speech), QStandardItem(str(len(self.sentence_manager)))]
+        self.standard_item = [QStandardItem(self.word),
+                              QStandardItem(self.meaning_object.meaning),
+                              QStandardItem(self.meaning_object.part_of_speech),
+                              QStandardItem(str(len(self.sentence_manager)))]
         self.standard_item_modified.emit(self.word, self.standard_item)

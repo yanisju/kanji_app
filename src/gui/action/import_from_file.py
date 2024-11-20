@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QFileDialog, QMessageBox
 
 from .message_box.importation_error_message_box import ImportationErrorMessageBox
 
+
 class ImportFromFileAction(QAction):
     def __init__(self, parent, vocabulary_manager):
         super().__init__(parent)
@@ -14,25 +15,24 @@ class ImportFromFileAction(QAction):
 
     def _action(self):
         file_selecter = QFileDialog(self.parent())
-        file = file_selecter.getOpenFileName(filter = "*.txt")
+        file = file_selecter.getOpenFileName(filter="*.txt")
         file_location = file[0]
-        
-        if(file_location == ""):
+
+        if (file_location == ""):
             QMessageBox.critical(self.parent(), "Error", "No file selected.")
         else:
             words = self._read_words_from_file(file_location)
-            
+
             bad_words = []
             for word in words:
                 try:
                     self.vocabulary_manager.add_word(word)
-                except:
+                except BaseException:
                     bad_words += word
-            
+
             if len(bad_words) > 0:
                 ImportationErrorMessageBox(self.parent()).exec(bad_words)
 
-            
     def _read_words_from_file(self, file_location):
         words = []
         with open(file_location, encoding="utf8") as file:

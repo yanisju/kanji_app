@@ -1,11 +1,12 @@
 from PyQt6.QtWidgets import QComboBox
 
+
 class VocabularyComboBox(QComboBox):
     """Class defining ComboBox for words in CardDialog."""
 
     def __init__(self) -> None:
         super().__init__()
-        
+
     def set_kanji_data_model(self, kanji_data_model):
         self.setModel(kanji_data_model)
 

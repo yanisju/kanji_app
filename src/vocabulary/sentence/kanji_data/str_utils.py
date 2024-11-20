@@ -3,9 +3,11 @@ def check_char_is_kana(char):
         return True
     else:
         return False
-    
+
+
 def is_word_in_dict(kanji_data: dict, word: str):
     return word in kanji_data.keys()
+
 
 def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
     """
@@ -20,12 +22,12 @@ def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
 
     Returns:
     --------
-    tuple 
+    tuple
         A tuple of kanji characters found in the dictionary, or None if not found.
     """
     merged_keys = ""
     kanjis = [k for k, *_ in kanjis_data]
-    for key in kanjis: # Merge all kanjis in one string
+    for key in kanjis:  # Merge all kanjis in one string
         merged_keys += key
     if kanji_to_find in merged_keys:
         position_start = merged_keys.index(kanji_to_find)

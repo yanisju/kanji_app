@@ -1,5 +1,6 @@
 from PyQt6.QtGui import QAction, QIcon
 
+
 class DeleteAllSentenceAction(QAction):
     def __init__(self, parent, card_text_view):
         super().__init__(parent)

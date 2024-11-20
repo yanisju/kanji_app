@@ -11,6 +11,7 @@ from .action.merge_kanjis import MergeKanjisAction
 
 class KanjiTableViewMenu(QMenu):
     """Menu displayed when user right-clicks on sentence table view. """
+
     def __init__(self, parent):
         super().__init__(parent)
         self.rows_columns = []
@@ -50,19 +51,17 @@ class KanjiTableViewMenu(QMenu):
         self.delete_all_kanjis_action = DeleteAllKanjisAction(self)
         self.addAction(self.delete_all_kanjis_action)
 
-
-
     def set_current_position(self, rows_columns: list):
         self.rows_columns = rows_columns
 
-        if(len(rows_columns) == 0):
+        if (len(rows_columns) == 0):
             self.remove_kanji_action.setEnabled(False)
             self.set_as_word1_action.setEnabled(False)
             self.set_as_word2_action.setEnabled(False)
             self.look_up_on_jisho_action.setEnabled(False)
             self.add_to_vocabulary_list_action.setEnabled(False)
             self.merge_kanjis_action.setEnabled(False)
-        elif(len(rows_columns) == 1):
+        elif (len(rows_columns) == 1):
             row = rows_columns[0][0]
             self.remove_kanji_action.setEnabled(True)
             if self.parent().parent().sentence_attributes_widget.word1_combobox.currentIndex() == row:

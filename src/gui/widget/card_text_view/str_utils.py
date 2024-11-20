@@ -1,14 +1,16 @@
 from PyQt6.QtGui import QTextCursor
 from PyQt6.QtWidgets import QToolTip
 
+
 def get_color(tag):
-    colors = {"h": "blue", 
-              "n": "orange", 
+    colors = {"h": "blue",
+              "n": "orange",
               "o": "green",
               "a": "red",
               "k": "purple"
               }
     return colors.get(tag[0], "black")  # Default black if tag not found
+
 
 def colorize_transcription(match):
     kanji = match.group(1)
@@ -16,22 +18,28 @@ def colorize_transcription(match):
     color = get_color(tag)
     return f'<span style="color:{color}">{kanji}</span>'
 
+
 def is_kanji(text):
     return any("\u4e00" <= char <= "\u9faf" for char in text)
+
 
 def show_transcription(view, event, sentence_len, position_kanji, kanji_data):
     """Show a QToolTip containing furigana of the howered kanji. """
 
-    cursor = view.cursorForPosition(event.pos()) # Get cursor for position
-    char_position = cursor.position() # Get the position of the character under the cursor
+    cursor = view.cursorForPosition(event.pos())  # Get cursor for position
+    # Get the position of the character under the cursor
+    char_position = cursor.position()
 
     if char_position <= sentence_len:
-        cursor.setPosition(char_position) # Place the cursor at this position and select the character
-        cursor.movePosition(QTextCursor.MoveOperation.Right, QTextCursor.MoveMode.KeepAnchor, 1)
+        # Place the cursor at this position and select the character
+        cursor.setPosition(char_position)
+        cursor.movePosition(
+            QTextCursor.MoveOperation.Right,
+            QTextCursor.MoveMode.KeepAnchor,
+            1)
         char = cursor.selectedText()
 
-        
-        if cursor.position() - 1 in position_kanji.keys(): # TODO: Add "and is_kanji(char) ?"
+        if cursor.position() - 1 in position_kanji.keys():  # TODO: Add "and is_kanji(char) ?"
             kanji = position_kanji[cursor.position() - 1]
             kana_transcription = kanji_data.get_kanji(kanji).reading
 
@@ -46,10 +54,11 @@ def show_transcription(view, event, sentence_len, position_kanji, kanji_data):
             try:
                 kana_transcription = kanji_data.get_kanji(word).reading
                 print_furigana(view, cursor, kana_transcription)
-            except:
+            except BaseException:
                 QToolTip.hideText()
         else:
             QToolTip.hideText()
+
 
 def print_furigana(view, cursor, kana_transcription):
     cursor_rect = view.cursorRect(cursor)

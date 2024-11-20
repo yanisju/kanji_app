@@ -3,6 +3,7 @@ from .str_utils import *
 import re
 from bs4 import BeautifulSoup
 
+
 def remove_spaces_outside_spans(soup):
     new_contents = []
     for content in soup.contents:
@@ -11,6 +12,7 @@ def remove_spaces_outside_spans(soup):
         else:
             new_contents.append(str(content))
     return ''.join(new_contents)
+
 
 def get_sentence_from(text):
     """Get sentence in japanese."""
@@ -22,6 +24,7 @@ def get_sentence_from(text):
     result = remove_spaces_outside_spans(soup)
 
     return result
+
 
 def get_sentence_meaning(word1_data, word2_data):
     """
@@ -38,11 +41,11 @@ def get_sentence_meaning(word1_data, word2_data):
     if word1_data is not None:
         word1, _, word1_meaning, *_ = word1_data
         result += f"<b>{word1}</b> - <i>{word1_meaning}</i>"
-    
+
     if word2_data is not None:
         word2, _, word2_meaning, *_ = word2_data
         result += f"<br><b>{word2}</b> - <i>{word2_meaning}</i>"
-    
+
     return result
 
 
@@ -63,11 +66,14 @@ def get_text(sentence_fields):
     sentence, translation, word1_data, word2_data = sentence_fields
 
     # Build the sentence and translation sections
-    card_text = f"<div class='sentence'><span>{get_sentence_from(sentence)}</span></div>"
+    card_text = f"<div class='sentence'><span>{
+        get_sentence_from(sentence)}</span></div>"
     card_text += "<hr>"
     card_text += f"<div class='translation'>{translation}</div><br>"
-    
+
     # Append word meanings
-    card_text += f"<div class='word-meanings'>{get_sentence_meaning(word1_data, word2_data)}</div>"
+    card_text += f"<div class='word-meanings'>{
+        get_sentence_meaning(
+            word1_data, word2_data)}</div>"
 
     return card_text

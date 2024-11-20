@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QTableView, QHeaderView
 from .menu import VocabularyTableViewMenu
 from ....dialog.meaning import MeaningDialog
 
+
 class VocabularyTableView(QTableView):
     """
     A custom QTableView for displaying and managing vocabulary items in a table format.
@@ -18,20 +19,25 @@ class VocabularyTableView(QTableView):
         The context menu for interacting with table items.
     meaning_dialog : MeaningDialog
         A dialog for viewing and modifying vocabulary meanings.
-    
+
     Methods:
     --------
     contextMenuEvent(event):
         Displays a context menu at the position of the mouse event.
-    
+
     _double_clicked():
         Opens the `MeaningDialog` when a row in the table is double-clicked.
-    
+
     _meaning_dialog_confirm_action(model: QStandardItemModel, current_selection: int):
         Updates the vocabulary item based on the confirmed selection from the `MeaningDialog`.
     """
 
-    def __init__(self, parent, vocabulary_manager, sentence_rendering_widget, sentence_table_view) -> None:
+    def __init__(
+            self,
+            parent,
+            vocabulary_manager,
+            sentence_rendering_widget,
+            sentence_table_view) -> None:
         """
         Initializes the VocabularyTableView instance with the given vocabulary manager.
 
@@ -41,21 +47,28 @@ class VocabularyTableView(QTableView):
             The manager responsible for providing the vocabulary data model and operations.
         """
         super().__init__(parent)
-        self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.ResizeToContents)
 
         self.vocabulary_manager = vocabulary_manager
         self.sentence_table_view = sentence_table_view
         self.setModel(vocabulary_manager.vocabulary_model)
         self.setEditTriggers(self.EditTrigger.NoEditTriggers)
 
-        self.menu = VocabularyTableViewMenu(self, vocabulary_manager, sentence_rendering_widget, sentence_table_view)
+        self.menu = VocabularyTableViewMenu(
+            self,
+            vocabulary_manager,
+            sentence_rendering_widget,
+            sentence_table_view)
         self.meaning_dialog = MeaningDialog(parent)
-        self.meaning_dialog.confirm_button_clicked_signal.connect(self._meaning_dialog_confirm_action)
+        self.meaning_dialog.confirm_button_clicked_signal.connect(
+            self._meaning_dialog_confirm_action)
         self.doubleClicked.connect(self._double_clicked)
 
         # Change sentence view when a different word is selected
         view_item_selection = self.selectionModel()
-        view_item_selection.selectionChanged.connect(self._selection_changed_action)
+        view_item_selection.selectionChanged.connect(
+            self._selection_changed_action)
 
     def contextMenuEvent(self, event):
         """
@@ -75,7 +88,7 @@ class VocabularyTableView(QTableView):
     def _double_clicked(self):
         """
         Handles the event when a table row is double-clicked.
-        
+
         Opens the `MeaningDialog` to allow editing of the vocabulary item's meaning.
         """
         row = self.currentIndex().row()
@@ -92,19 +105,22 @@ class VocabularyTableView(QTableView):
             The data model containing the updated meanings.
         current_selection : int
             The index of the selected meaning from the dialog.
-        
+
         Modifies the selected vocabulary item's meaning and updates the table view.
         """
         row = self.currentIndex().row()
         meaning_row = current_selection - 1
 
-        meaning, part_of_speech = model.item(meaning_row, 0).text(), model.item(meaning_row, 1).text()
-        self.vocabulary_manager[row].meaning_object[meaning_row] = (meaning, part_of_speech)
+        meaning, part_of_speech = model.item(
+            meaning_row, 0).text(), model.item(
+            meaning_row, 1).text()
+        self.vocabulary_manager[row].meaning_object[meaning_row] = (
+            meaning, part_of_speech)
         self.vocabulary_manager[row].meaning_object.current_selection = current_selection
         self.vocabulary_manager[row].set_standard_item()
 
-
     def _selection_changed_action(self):
         selection_row = self.currentIndex().row()
-        vocabulary_sentences_model = self.vocabulary_manager[selection_row].sentence_manager.sentences_model
+        vocabulary_sentences_model = self.vocabulary_manager[
+            selection_row].sentence_manager.sentences_model
         self.sentence_table_view.setModel(vocabulary_sentences_model)

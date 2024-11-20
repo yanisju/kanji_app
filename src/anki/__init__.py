@@ -1,5 +1,6 @@
 from .notes import Notes
-import genanki 
+import genanki
+
 
 class AnkiManager:
     def __init__(self):
@@ -7,14 +8,20 @@ class AnkiManager:
         self.deck_id = 1301981488
         self.deck_name = 'Test_Kanjis'
         self.notes = Notes(self._model)
-        
+
     def _get_model(self):
         # TODO: Modify and set as parameters
-        file_template_front = open("data/parameters/template_front.txt", "r", encoding='utf-8')
-        file_template_back = open("data/parameters/template_back.txt", "r", encoding='utf-8')
+        file_template_front = open(
+            "data/parameters/template_front.txt",
+            "r",
+            encoding='utf-8')
+        file_template_back = open(
+            "data/parameters/template_back.txt",
+            "r",
+            encoding='utf-8')
         template_front = file_template_front.read()
         template_back = file_template_back.read()
-        
+
         model = genanki.Model(
             1422169361,
             'Sentence_test',
@@ -33,11 +40,10 @@ class AnkiManager:
                     'name': 'Sentence',
                     'qfmt': template_front,
                     'afmt': template_back,
-                }, # TODO: Add "style" field / else won't display card correctly
+                },  # TODO: Add "style" field / else won't display card correctly
             ])
         return model
-        
-         
+
     def _get_deck(self, id, name):
         deck = genanki.Deck(
             id,
@@ -51,4 +57,5 @@ class AnkiManager:
             note = self.notes.add(sentence)
             deck.add_note(note)
 
-        genanki.Package(deck).write_to_file('E:/Workspace/kanji_app/data/output/output.apkg')
+        genanki.Package(deck).write_to_file(
+            'E:/Workspace/kanji_app/data/output/output.apkg')

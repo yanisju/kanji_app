@@ -1,18 +1,21 @@
 from .str_utils import *
-from .model.kanji_data_model import KanjiDataModel
-from .model.combobox_model import KanjiDataComboBoxModel
+from .model.kanji_data import KanjiDataModel
+from .model.combobox import KanjiDataComboBoxModel
 from .kanji_data import KanjiData
 
 from ....constants import KanjiDataComboBoxModelMode
+
 
 class KanjiDataList(list):
     # List containing Kanjis(kanjis, reading, meaning)
 
     def __init__(self) -> None:
         self.model = KanjiDataModel()
-        self.first_combobox_model = KanjiDataComboBoxModel(KanjiDataComboBoxModelMode.FIRST_COMBO_BOX)
-        self.second_combobox_model = KanjiDataComboBoxModel(KanjiDataComboBoxModelMode.SECOND_COMBO_BOX)
-    
+        self.first_combobox_model = KanjiDataComboBoxModel(
+            KanjiDataComboBoxModelMode.FIRST_COMBO_BOX)
+        self.second_combobox_model = KanjiDataComboBoxModel(
+            KanjiDataComboBoxModelMode.SECOND_COMBO_BOX)
+
     def bound_to_sentence(self, sentence):
         self.sentence = sentence
         self.model.itemChanged.connect(self._model_is_modified)
@@ -22,13 +25,12 @@ class KanjiDataList(list):
             if kanji.word == word:
                 return index
         return -1
-    
+
     def get_kanji(self, kanji: str):
         index = self._find_kanji_index(kanji)
         if index == -1:
             return None
-        else:
-            return self[index]
+        return self[index]
 
     def add(self, kanji: str, reading: str, meaning: str):
         kanji_index = self._find_kanji_index(kanji)
@@ -39,8 +41,8 @@ class KanjiDataList(list):
             self.first_combobox_model.appendRow(new_kanji)
             self.second_combobox_model.appendRow(new_kanji)
         else:
-            pass # TODO: change ?
-        
+            pass  # TODO: change ?
+
     def add_empty(self):
         new_kanji = KanjiData("", "", "")
         self.append(new_kanji)
@@ -65,7 +67,7 @@ class KanjiDataList(list):
         return row_deleted
 
     def remove(self, kanji: str):
-        #TODO: check if kanji already exists + remove from model
+        # TODO: check if kanji already exists + remove from model
         row = self._find_kanji_index(kanji)
         if row != -1:
             self.remove_by_row(row)
@@ -84,18 +86,18 @@ class KanjiDataList(list):
         first_kanji = True
         word_meaning = ""
 
-        for i in range(len(word)): # For each char of word
+        for i in range(len(word)):  # For each char of word
             if check_char_is_kana(word[i]):
                 word_reading += word[i]
             else:
                 try:
                     _, reading, meaning = self.remove(word[i])
-                    
+
                     word_reading += reading
                     if first_kanji:
                         word_meaning = meaning
                         first_kanji = False
-                except: # Sometimes, word doesn't appear completely in sentence
+                except BaseException:  # Sometimes, word doesn't appear completely in sentence
                     pass
         self.add(word, word_reading, word_meaning)
 
@@ -114,7 +116,7 @@ class KanjiDataList(list):
         --------
         dict
             An updated and sorted dictionary with merged kanji data for the specified word.
-        
+
         Raises:
         -------
         Exception
@@ -125,7 +127,7 @@ class KanjiDataList(list):
         data_to_merge = []
         for kanji in kanjis:
             data_to_merge.append(self.remove(kanji))
-        
+
         new_reading, new_meaning = "", ""
         for data in data_to_merge:
             _, data_reading, data_meaning = data
@@ -142,7 +144,7 @@ class KanjiDataList(list):
             self.second_combobox_model.modify_row(row, self[row])
         else:
             raise IndexError
-        
+
     def merge_kanjis(self, rows):
         kanji_merged_data = ["", "", ""]
         for i in range(len(rows)):
@@ -151,10 +153,14 @@ class KanjiDataList(list):
                 kanji_merged_data[j] += kanji_data
 
         row_to_insert = rows[0]
-        self.insert(row_to_insert, kanji_merged_data[0], kanji_merged_data[1], kanji_merged_data[2])
+        self.insert(
+            row_to_insert,
+            kanji_merged_data[0],
+            kanji_merged_data[1],
+            kanji_merged_data[2])
         self.first_combobox_model.actualize_items_text()
         self.second_combobox_model.actualize_items_text()
-    
+
     def _model_is_modified(self, item):
         """Modify its own list to fit with modifications."""
 
@@ -162,7 +168,7 @@ class KanjiDataList(list):
         kanji = self.model.item(row, 0).text()
         reading = self.model.item(row, 1).text()
         meaning = self.model.item(row, 2).text()
-              
+
         self[row].update_attributes(kanji, reading, meaning)
         self.sentence._update_position_kanji()
 
@@ -170,7 +176,11 @@ class KanjiDataList(list):
         self.first_combobox_model.modify_row(row, kanji_data)
         self.second_combobox_model.modify_row(row, kanji_data)
 
-    def set_models(self, kanji_data_model: KanjiDataModel, first_combobox_model: KanjiDataComboBoxModelMode, second_combobox_model: KanjiDataComboBoxModelMode):
+    def set_models(
+            self,
+            kanji_data_model: KanjiDataModel,
+            first_combobox_model: KanjiDataComboBoxModelMode,
+            second_combobox_model: KanjiDataComboBoxModelMode):
         self.model = kanji_data_model
         self.first_combobox_model = first_combobox_model
         self.second_combobox_model = second_combobox_model
@@ -180,5 +190,8 @@ class KanjiDataList(list):
         for data in (self):
             kanji, reading, meaning = data
             new_kanji_data_list.add(kanji, reading, meaning)
-        new_kanji_data_list.set_models(self.model.clone(), self.first_combobox_model.clone(), self.second_combobox_model.clone())
+        new_kanji_data_list.set_models(
+            self.model.clone(),
+            self.first_combobox_model.clone(),
+            self.second_combobox_model.clone())
         return new_kanji_data_list
