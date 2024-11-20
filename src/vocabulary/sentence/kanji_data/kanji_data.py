@@ -1,7 +1,7 @@
 from PyQt6.QtGui import QStandardItem
 
-class Kanji():
-    def __init__(self, word, reading, meaning ) -> None:
+class KanjiData():
+    def __init__(self, word, reading, meaning) -> None:
         self.word = word
         self.reading = reading
         self.meaning = meaning

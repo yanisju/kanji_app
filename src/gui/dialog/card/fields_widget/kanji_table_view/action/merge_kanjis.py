@@ -13,4 +13,4 @@ class MergeKanjisAction(QAction):
         rows = []
         for i in range(len(rows_columns)):
             rows.append(rows_columns[i][0])
-        self.parent().parent().model().kanji_data.merge_kanjis(rows)
+        self.parent().parent().kanji_data.merge_kanjis(rows)

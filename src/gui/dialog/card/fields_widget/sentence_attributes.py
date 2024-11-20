@@ -32,12 +32,12 @@ class SentenceAttributesWidget(QWidget):
         form_layout.addRow(attributes_name[1], line_edit)
         line_edit.textEdited.connect(self._is_translation_attribute_modified)
 
-        self.word1_combobox = VocabularyComboBox(False)
+        self.word1_combobox = VocabularyComboBox()
         widget_list.append(self.word1_combobox)
         form_layout.addRow(attributes_name[2], self.word1_combobox)
         self.word1_combobox.currentIndexChanged.connect(self._is_word1_attribute_modified)
 
-        self.word2_combobox = VocabularyComboBox(True)
+        self.word2_combobox = VocabularyComboBox()
         widget_list.append(self.word2_combobox)
         form_layout.addRow(attributes_name[3], self.word2_combobox)
         self.word2_combobox.currentIndexChanged.connect(self._is_word2_attribute_modified)
@@ -55,42 +55,60 @@ class SentenceAttributesWidget(QWidget):
         self.card_view.set_card_view_from_attributes_values(self.attributes_value)
     
     def _is_word1_attribute_modified(self):
-        data = self.widget_list[2].itemData(self.widget_list[2].currentIndex())
-        self.attributes_value[2] = data
+        try:
+            word1_row = self.widget_list[2].currentIndex()
+            kanji1_data = self.sentence.kanji_data[word1_row]
+            self.attributes_value[2] = kanji1_data
+        except:
+            self.attributes_value[2] = None
         self.card_view.set_card_view_from_attributes_values(self.attributes_value)
+        self.widget_list[3].hide_and_change_index(self.widget_list[2].currentIndex())
     
     def _is_word2_attribute_modified(self):
-        data = self.widget_list[3].itemData(self.widget_list[3].currentIndex())
-        self.attributes_value[3] = data
+        try:
+            kanji2_row = self.widget_list[3].currentIndex()
+            if kanji2_row == len(self.sentence.kanji_data): # If word2 selection is set to None
+                kanji2_data = None
+            else:
+                kanji2_data = self.sentence.kanji_data[kanji2_row]
+            self.attributes_value[3] = kanji2_data
+        except:
+            self.attributes_value[3] = None
+        self.card_view.set_card_view_from_attributes_values(self.attributes_value)
+
+        self.widget_list[3].hide_and_change_index(self.widget_list[2].currentIndex())
+    
+    def _kanji_data_model_is_modified(self):
         self.card_view.set_card_view_from_attributes_values(self.attributes_value)
     
-    
     def set_to_new_sentence(self, sentence):
+        if hasattr(self, "sentence"):
+            pass
+            # self.sentence.kanji_data.model.itemChanged.disconnect()
+        self.sentence = sentence
+        self.sentence.kanji_data.model.itemChanged.connect(self._kanji_data_model_is_modified)
         self.attributes_value = [None, None, None, None]
         for i in range(2):
             self.attributes_value[i] = sentence.attributes[i]
             self.widget_list[i].setText(sentence.attributes[i])
 
-        self.widget_list[2].update_to_kanji_data(sentence.kanji_data)
+        self.word1_combobox.set_kanji_data_model(sentence.kanji_data.first_combobox_model)
+        self.word2_combobox.set_kanji_data_model(sentence.kanji_data.second_combobox_model)
+
         if sentence.word1_data == None:
             self.widget_list[2].set_to_empty_value()
         else:
             word1_kanji = sentence.word1_data.word
             word1_index = sentence.kanji_data._find_kanji_index(word1_kanji)
             self.widget_list[2].setCurrentIndex(word1_index)
-        self.attributes_value[2] = self.widget_list[2].itemData(self.widget_list[2].currentIndex())
+            self._is_word1_attribute_modified()
 
-        self.widget_list[3].update_to_kanji_data(sentence.kanji_data)
         if sentence.word2_data == None:
             self.widget_list[3].set_to_empty_value()
         else:
             word2_kanji = sentence.word2_data.word
             word2_index = sentence.kanji_data._find_kanji_index(word2_kanji)
             self.widget_list[3].setCurrentIndex(word2_index)
-        self.attributes_value[3] = self.widget_list[3].itemData(self.widget_list[3].currentIndex())
 
-        self.word1_combobox.set_kanji_data_model(sentence.kanji_data.model)
-        self.word2_combobox.set_kanji_data_model(sentence.kanji_data.model)
-        
-        
-    
+        self.sentence.kanji_data.model.row_deleted.connect(self._is_word1_attribute_modified)
+        self.sentence.kanji_data.model.row_deleted.connect(self._is_word2_attribute_modified)

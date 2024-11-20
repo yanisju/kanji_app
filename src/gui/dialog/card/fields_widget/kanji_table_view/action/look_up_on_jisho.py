@@ -11,6 +11,9 @@ class LookupOnJishoAction(QAction):
         self.triggered.connect(self._action)
 
     def _action(self):
-        word = self.parent().parent().model().item(self.parent().row, 0).text()
-        url = "https://jisho.org/search/" + word
-        webbrowser.open(url, 0)
+        for row, _ in self.parent().rows_columns:
+            word = self.parent().parent().model().item(row, 0).text()
+            if word != "":
+                url = "https://jisho.org/search/" + word
+                webbrowser.open(url, 0)
+        

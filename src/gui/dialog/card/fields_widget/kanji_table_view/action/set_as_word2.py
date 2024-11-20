@@ -8,5 +8,5 @@ class SetAsWord2Action(QAction):
         self.triggered.connect(self._action)
 
     def _action(self):
-        current_row = self.parent().row
-        self.parent().parent().parent().sentence_attributes_widget.word2_combobox.setCurrentIndex(current_row)
+        row, _ = self.parent().rows_columns[0]
+        self.parent().parent().parent().sentence_attributes_widget.word2_combobox.setCurrentIndex(row)

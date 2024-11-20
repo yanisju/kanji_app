@@ -31,5 +31,5 @@ class KanjiTableView(QTableView):
     def _get_selected_rows_columns(self):
         model_indexes = self.selectionModel().selectedIndexes()
         row_column_pairs = [(index.row(), index.column()) for index in model_indexes]
-        row_column_pairs.sort(key=lambda pair: pair[0])  # Trie par ligne
+        row_column_pairs.sort(key=lambda pair: pair[0]) 
         return row_column_pairs

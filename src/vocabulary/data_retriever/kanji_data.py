@@ -1,6 +1,6 @@
 import re
 
-from ..sentence.kanji_data import KanjiData
+from ..sentence.kanji_data import KanjiDataList
 
 def check_char_is_kana(char):
     if ord(char) >= 12352 and ord(char) <= 12543:
@@ -58,7 +58,7 @@ def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
 def get_kanji_reading_meaning_position(sentence: str): 
     pattern = r'\[([^\|\[\]]+)\|([^\[\]]+)\]'
     result = re.findall(pattern, sentence) 
-    kanji_data = KanjiData()
+    kanji_data = KanjiDataList()
     for match in result:
             kanji, reading = match
             reading = reading.replace('|', '')

@@ -57,7 +57,7 @@ class Sentence():
             word2_kanji = self.word2_data.word
         self.standard_item = [QStandardItem(self.sentence), QStandardItem(self.translation), QStandardItem(word1_kanji), QStandardItem(word2_kanji)] 
 
-    def update_attributes(self, attributes: tuple, new_kanji_data_model):
+    def update_attributes(self, attributes: list):
         """
         Updates the sentence attributes.
 
@@ -65,14 +65,11 @@ class Sentence():
         -----
         attributes : tuple
             A tuple containing the sentence, translation, word1_data, and word2_data.
-        kanji_data : dict
-            A dictionary containing kanji as keys and their readings, meanings, and positions as values.
         """
 
         self.sentence, self.translation, self.word1_data, self.word2_data = attributes
         self.attributes = attributes
-        
-        self.kanji_data.set_model(new_kanji_data_model)
+
         self.position_kanji = get_position_kanji_sentence(self.sentence, self.kanji_data)
 
     def _update_position_kanji(self):

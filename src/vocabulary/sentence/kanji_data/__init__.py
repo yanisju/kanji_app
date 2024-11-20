@@ -1,11 +1,17 @@
 from .str_utils import *
-from .kanji_data_model import KanjiDataModel
-from .kanji import Kanji
+from .model.kanji_data_model import KanjiDataModel
+from .model.combobox_model import KanjiDataComboBoxModel
+from .kanji_data import KanjiData
 
-class KanjiData(list):
+from ....constants import KanjiDataComboBoxModelMode
+
+class KanjiDataList(list):
     # List containing Kanjis(kanjis, reading, meaning)
+
     def __init__(self) -> None:
-        self.model = KanjiDataModel(self)
+        self.model = KanjiDataModel()
+        self.first_combobox_model = KanjiDataComboBoxModel(KanjiDataComboBoxModelMode.FIRST_COMBO_BOX)
+        self.second_combobox_model = KanjiDataComboBoxModel(KanjiDataComboBoxModelMode.SECOND_COMBO_BOX)
     
     def bound_to_sentence(self, sentence):
         self.sentence = sentence
@@ -24,42 +30,53 @@ class KanjiData(list):
         else:
             return self[index]
 
-
-    def add(self, kanji, reading, meaning):
+    def add(self, kanji: str, reading: str, meaning: str):
         kanji_index = self._find_kanji_index(kanji)
         if kanji_index == -1:
-            new_kanji = Kanji(kanji, reading, meaning)
+            new_kanji = KanjiData(kanji, reading, meaning)
             self.append(new_kanji)
             self.model.add_row(new_kanji)
+            self.first_combobox_model.appendRow(new_kanji)
+            self.second_combobox_model.appendRow(new_kanji)
         else:
             pass # TODO: change ?
         
     def add_empty(self):
-        new_kanji = Kanji("", "", "")
+        new_kanji = KanjiData("", "", "")
         self.append(new_kanji)
         self.model.add_row(new_kanji)
+        self.first_combobox_model.append_empty_row()
+        self.second_combobox_model.append_empty_row()
 
-    def insert(self, row, kanji, reading, meaning):
-        new_kanji = Kanji(kanji, reading, meaning)
-        super().insert(row, new_kanji)
-        self.model.insertRow(row, new_kanji.get_item())
+    def insert(self, row: int, kanji: str, reading: str, meaning: str):
+        kanji_data = KanjiData(kanji, reading, meaning)
+        super().insert(row, kanji_data)
+        self.model.insertRow(row, kanji_data.get_item())
+        self.first_combobox_model.insertRow(row, kanji_data)
+        self.second_combobox_model.insertRow(row, kanji_data)
 
-    def remove(self, kanji):
+    def remove_by_row(self, row: int):
+        row_deleted = self.pop(row)
+        self.model.remove(row)
+        self.first_combobox_model.takeRow(row)
+        self.first_combobox_model.actualize_items_text()
+        self.second_combobox_model.takeRow(row)
+        self.second_combobox_model.actualize_items_text()
+        return row_deleted
+
+    def remove(self, kanji: str):
         #TODO: check if kanji already exists + remove from model
-        index = self._find_kanji_index(kanji)
-        if index != -1:
-            self.model.remove(index)
-            return self.pop(index) # /!\ TODO: Return kanji as well
+        row = self._find_kanji_index(kanji)
+        if row != -1:
+            self.remove_by_row(row)
         else:
             raise IndexError
-
-    def remove_by_row(self, row):
-        self.model.remove(row)
-        return self.pop(row)
 
     def clear(self):
         super().clear()
         self.model.clear()
+        self.first_combobox_model.clear()
+        self.second_combobox_model.clear()
 
     def update_data_kanji_kana(self, word: str):
         """Update dictionnary if word contains both kanjis and kanas."""
@@ -117,10 +134,12 @@ class KanjiData(list):
         self.add(word, new_reading, new_meaning)
 
     def update_kanji_meaning(self, kanji: str, meaning: str):
-        kanji_index = self._find_kanji_index(kanji)
-        if kanji_index != -1:
-            self[kanji_index].meaning = meaning
-            self.model.modify_row(kanji_index, self[kanji_index])
+        row = self._find_kanji_index(kanji)
+        if row != -1:
+            self[row].meaning = meaning
+            self.model.modify_row(row, self[row])
+            self.first_combobox_model.modify_row(row, self[row])
+            self.second_combobox_model.modify_row(row, self[row])
         else:
             raise IndexError
         
@@ -133,25 +152,33 @@ class KanjiData(list):
 
         row_to_insert = rows[0]
         self.insert(row_to_insert, kanji_merged_data[0], kanji_merged_data[1], kanji_merged_data[2])
+        self.first_combobox_model.actualize_items_text()
+        self.second_combobox_model.actualize_items_text()
     
     def _model_is_modified(self, item):
         """Modify its own list to fit with modifications."""
 
-        index = self.model.indexFromItem(item)
-        kanji = self.model.item(index.row(), 0).text()
-        reading = self.model.item(index.row(), 1).text()
-        meaning = self.model.item(index.row(), 2).text()
-        
-        self[index.row()].update_attributes(kanji, reading, meaning)
+        row = self.model.indexFromItem(item).row()
+        kanji = self.model.item(row, 0).text()
+        reading = self.model.item(row, 1).text()
+        meaning = self.model.item(row, 2).text()
+              
+        self[row].update_attributes(kanji, reading, meaning)
         self.sentence._update_position_kanji()
 
-    def set_model(self, new_model):
-        self.model = new_model
+        kanji_data = KanjiData(kanji, reading, meaning)
+        self.first_combobox_model.modify_row(row, kanji_data)
+        self.second_combobox_model.modify_row(row, kanji_data)
+
+    def set_models(self, kanji_data_model: KanjiDataModel, first_combobox_model: KanjiDataComboBoxModelMode, second_combobox_model: KanjiDataComboBoxModelMode):
+        self.model = kanji_data_model
+        self.first_combobox_model = first_combobox_model
+        self.second_combobox_model = second_combobox_model
 
     def clone(self):
-        new_kanji_data = KanjiData()
+        new_kanji_data_list = KanjiDataList()
         for data in (self):
             kanji, reading, meaning = data
-            new_kanji_data.add(kanji, reading, meaning)
-        new_kanji_data.set_model(self.model.get_a_copy(new_kanji_data))
-        return new_kanji_data
+            new_kanji_data_list.add(kanji, reading, meaning)
+        new_kanji_data_list.set_models(self.model.clone(), self.first_combobox_model.clone(), self.second_combobox_model.clone())
+        return new_kanji_data_list

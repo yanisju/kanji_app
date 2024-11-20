@@ -9,5 +9,3 @@ class AddKanjiAction(QAction):
 
     def _action(self):
         self.parent().parent().kanji_data.add_empty()
-        self.parent().parent().parent().sentence_attributes_widget.word1_combobox.add_empty_row()
-        self.parent().parent().parent().sentence_attributes_widget.word2_combobox.add_empty_row()

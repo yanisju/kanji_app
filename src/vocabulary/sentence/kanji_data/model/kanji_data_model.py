@@ -1,17 +1,18 @@
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
-from ...str_utils import *
+from ....str_utils import *
 
 import PyQt6.QtCore
 
+from PyQt6.QtCore import pyqtSignal
+
 class KanjiDataModel(QStandardItemModel):
     """Model containg kanjis, theirs readings and theirs meanings for TableView.
-    self.kanji_data is a dictionnary containing in real time the data about kanjis: theirs readings / meanings / positions in view.
     """
 
-    def __init__(self, kanji_data):
+    row_deleted = pyqtSignal(int)
+
+    def __init__(self):
         super().__init__(0, 3)
-        self.kanji_data = kanji_data
-        self.modified_rows = dict()
         self._configure()
         
 
@@ -35,8 +36,8 @@ class KanjiDataModel(QStandardItemModel):
         for i in range(3):
             self.setItem(row, i, data[i])
 
-    def get_a_copy(self, kanji_data):
-        new_model = KanjiDataModel(kanji_data)
+    def clone(self):
+        new_model = KanjiDataModel()
         for row_index in range(self.rowCount()):
             row = [self.item(row_index,c).clone() for c in range(self.columnCount())]
             new_model.appendRow(row)
@@ -50,6 +51,7 @@ class KanjiDataModel(QStandardItemModel):
     
     def remove(self, row):
         self.removeRow(row)
+        self.row_deleted.emit(row)
     
     def clear(self):
         super().clear()

@@ -57,15 +57,22 @@ class CardDialog(QDialog):
 
     def _update_sentence_attributes(self): # TODO: put it in another class
         """Update current sentence with modified attributes in view. """
-        self.sentence.update_attributes(tuple(self.fields_widget.sentence_attributes_widget.attributes_value), 
-                                        self.fields_widget.kanji_table_view.model())
+        self.sentence.update_attributes(self.fields_widget.sentence_attributes_widget.attributes_value)
         self.sentences_model.modify_row(self.sentence, self.sentence_row)
         if hasattr(self, "sentence"): # Update CardView from Main Application as well
             self.sentence_modified.emit(self.sentence)
             # self.main_card_view.set_card_view(self.sentence)
+
+    def _sentence_attributes_changed(self):
+        self.card_view.set_card_view_from_attributes_values(self.fields_widget.sentence_attributes_widget.attributes_value)
         
-    def sentence_changed(self, sentences_model, sentence: Sentence, sentence_row):
+    def sentence_changed(self, sentences_model, sentence: Sentence, sentence_row: int):
+        if hasattr(self, "sentence"):
+            self.sentence.kanji_data.model.itemChanged.disconnect()
         self.sentence = sentence.clone()
+        self.sentence.kanji_data.model.itemChanged.connect(self._sentence_attributes_changed)
+        self.sentence.kanji_data.model.itemChanged.connect(self._sentence_attributes_changed)
+        self.sentence.kanji_data.model.itemChanged.connect(self._sentence_attributes_changed)
         self.sentence_row = sentence_row # Row number in the view
         self.sentences_model = sentences_model
 

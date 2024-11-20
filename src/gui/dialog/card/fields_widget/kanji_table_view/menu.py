@@ -63,16 +63,25 @@ class KanjiTableViewMenu(QMenu):
             self.add_to_vocabulary_list_action.setEnabled(False)
             self.merge_kanjis_action.setEnabled(False)
         elif(len(rows_columns) == 1):
+            row = rows_columns[0][0]
             self.remove_kanji_action.setEnabled(True)
-            self.set_as_word1_action.setEnabled(True)
-            self.set_as_word2_action.setEnabled(True)
-            self.look_up_on_jisho_action.setEnabled(True)
-            self.add_to_vocabulary_list_action.setEnabled(True)
+            if self.parent().parent().sentence_attributes_widget.word1_combobox.currentIndex() == row:
+                self.set_as_word1_action.setEnabled(False)
+                self.set_as_word2_action.setEnabled(False)
+            else:
+                self.set_as_word1_action.setEnabled(True)
+                self.set_as_word2_action.setEnabled(True)
+            if self.parent().model().item(row, 0).text() == "":
+                self.look_up_on_jisho_action.setEnabled(False)
+                self.add_to_vocabulary_list_action.setEnabled(False)
+            else:
+                self.look_up_on_jisho_action.setEnabled(True)
+                self.add_to_vocabulary_list_action.setEnabled(True)
             self.merge_kanjis_action.setEnabled(False)
         else:
             self.remove_kanji_action.setEnabled(True)
-            self.set_as_word1_action.setEnabled(True)
-            self.set_as_word2_action.setEnabled(True)
+            self.set_as_word1_action.setEnabled(False)
+            self.set_as_word2_action.setEnabled(False)
             self.look_up_on_jisho_action.setEnabled(True)
             self.add_to_vocabulary_list_action.setEnabled(True)
             self.merge_kanjis_action.setEnabled(True)

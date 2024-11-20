@@ -36,7 +36,7 @@ class AddWordWidget(QWidget):
             self.button.setEnabled(True)
     
     def add_word_to_manager(self):
-        try:
-            self.vocabulary_manager.add_word(self.text)
-        except:
-            QMessageBox.critical(self.parent(), "Error", f"{self.text} has already been imported.")
+        # try:
+        self.vocabulary_manager.add_word(self.text)
+        # except:
+        #     QMessageBox.critical(self.parent(), "Error", f"{self.text} has already been imported.")
