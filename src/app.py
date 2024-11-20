@@ -1,11 +1,12 @@
-from .vocabulary.manager import VocabularyManager
-from .gui.main_window import MainWindow
-from PyQt6.QtWidgets import QApplication
-from .anki import AnkiManager
+import sys
 
 from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import QApplication
 
-import sys
+from .vocabulary.manager import VocabularyManager
+from .gui.main_window import MainWindow
+from .anki import AnkiManager
+
 
 class App(QApplication):
     def __init__(self):
@@ -31,7 +32,6 @@ class App(QApplication):
                     line = line[:-1]
                 self.vocabulary_manager.add_word_quick_init(line)
         self.start()
-        
 
 if __name__ == "__main__":
     app = App()
@@ -39,10 +39,3 @@ if __name__ == "__main__":
         app.quick_init(sys.argv[2])
     else:
         app.start()
-
-    
-    
-    
-        
-    
-    

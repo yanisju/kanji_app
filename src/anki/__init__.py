@@ -4,8 +4,8 @@ import genanki
 class AnkiManager:
     def __init__(self):
         self._model = self._get_model()
-        self._deck_id = 1301981488
-        self._deck_name = 'Test_Kanjis'
+        self.deck_id = 1301981488
+        self.deck_name = 'Test_Kanjis'
         self.notes = Notes(self._model)
         
     def _get_model(self):
@@ -46,7 +46,7 @@ class AnkiManager:
 
     def generate_deck(self, sentence_manager):
         self.notes.clear()
-        deck = self._get_deck(self._deck_id, self._deck_name)
+        deck = self._get_deck(self.deck_id, self.deck_name)
         for sentence in sentence_manager:
             note = self.notes.add(sentence)
             deck.add_note(note)

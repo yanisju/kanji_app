@@ -1,11 +1,8 @@
+from PyQt6.QtGui import QStandardItem
+from PyQt6.QtCore import QObject, pyqtSignal
+
 from .sentence.manager import SentenceManager
 from .meaning.meaning import VocabularyMeaning
-
-from PyQt6.QtGui import QStandardItem
-from PyQt6.QtCore import QObject
-
-from PyQt6.QtCore import pyqtSignal
-
 
 class Vocabulary(QObject):
     """
@@ -46,7 +43,7 @@ class Vocabulary(QObject):
         the sentences attribute with Sentence objects."""
 
         sentences_data = self.sentence_retriever.get_data(self.word, self.meaning_object) # Retrieve sentences from DataRetriever
-        
+
         for one_sentence_data in sentences_data:
             sentence, translation, transcription, kanji_data = one_sentence_data
             self.sentence_manager.append_from_sentence_data(sentence, translation, kanji_data)

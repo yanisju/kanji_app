@@ -4,6 +4,7 @@ from PyQt6.QtCore import QSize
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSizePolicy, QPushButton
 from ...vocabulary.manager import VocabularyManager
 from .table_view.sentence import SentenceTableView
+from .button.deck_options import DeckOptionsButtons
 
 from ..constants.constants import SentenceWidgetMode
 
@@ -27,7 +28,10 @@ class SentenceWidget(QWidget):
             self.generate_deck_button.setEnabled(False)
             self.generate_deck_button.clicked.connect(vocabulary_manager.generate_deck)
             vocabulary_manager.sentence_added_to_deck.sentences_model.modified.connect(self.enable_disable_generate_deck_button)
-            up_layout.addWidget(self.generate_deck_button)    
+            up_layout.addWidget(self.generate_deck_button)
+
+            self.deck_options_button = DeckOptionsButtons(self, vocabulary_manager.anki_manager)
+            up_layout.addWidget(self.deck_options_button)
 
         layout.addLayout(up_layout)
 

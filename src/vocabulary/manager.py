@@ -27,7 +27,7 @@ class VocabularyManager:
     def __init__(self, anki_manager):
         self.data_retriever = DataRetriever("jpn", "eng", RetrieverMode.LOCAL)
         
-        self.vocabularies = dict() # Dictionnary of vocabularies instance
+        self.vocabularies = {} # Dictionnary of vocabularies instance
         
         self.vocabulary_model = VocabularyModel() # Model for retrieved words
         self.sentence_added_to_deck = SentenceManager()
