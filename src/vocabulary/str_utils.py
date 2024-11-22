@@ -1,3 +1,10 @@
+from re import match
+
+def is_word_romaji_kana_or_kanji(word: str) -> bool: 
+    pattern = r'^[\u0041-\u005A\u0061-\u007A\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uFF66-\uFF9F]+$'
+    
+    return bool(match(pattern, word))
+
 def get_position_kanji_sentence(sentence, kanji_data):
     """Return a dictionnary containing kanjis positions in sentence as keys, and kanjis as values."""
     kanjis = [k for k, *_ in kanji_data]

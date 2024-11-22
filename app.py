@@ -3,9 +3,9 @@ import sys
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QApplication
 
-from .vocabulary.manager import VocabularyManager
-from .gui.main_window import MainWindow
-from .anki import AnkiManager
+from src.vocabulary.manager import VocabularyManager
+from src.gui.main_window import MainWindow
+from src.anki import AnkiManager
 
 
 class App(QApplication):

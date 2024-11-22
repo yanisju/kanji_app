@@ -1,6 +1,6 @@
 import genanki
 
-from .utils import *
+from .utils import get_fields_as_list
 
 
 class Notes(list):

@@ -2,11 +2,9 @@ from .data_retriever import *
 from .vocabulary import Vocabulary
 from .sentence.manager import SentenceManager
 from .model.vocabulary import VocabularyModel
+from ..constants.exceptions import VocabularyAlreadyExists, VocabularyIsNotValid
 
-
-class VocabularyAlreadyExists(Exception):
-    pass
-
+from .str_utils import is_word_romaji_kana_or_kanji
 
 class VocabularyManager:
     """
@@ -45,6 +43,8 @@ class VocabularyManager:
         word : str
             The vocabulary word to be added.
         """
+        if not is_word_romaji_kana_or_kanji(word):
+            raise VocabularyIsNotValid(word)
         try:
             self.get_index_by_word(word)
         except ValueError:

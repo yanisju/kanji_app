@@ -1,6 +1,6 @@
-from .notes import Notes
 import genanki
 
+from .notes import Notes
 
 class AnkiManager:
     def __init__(self):
@@ -11,16 +11,10 @@ class AnkiManager:
 
     def _get_model(self):
         # TODO: Modify and set as parameters
-        file_template_front = open(
-            "data/parameters/template_front.txt",
-            "r",
-            encoding='utf-8')
-        file_template_back = open(
-            "data/parameters/template_back.txt",
-            "r",
-            encoding='utf-8')
-        template_front = file_template_front.read()
-        template_back = file_template_back.read()
+        with open("data/parameters/template_front.txt", "r", encoding='utf-8') as file_template_front:
+            template_front = file_template_front.read()
+        with open("data/parameters/template_back.txt", "r", encoding='utf-8') as file_template_back:
+            template_back = file_template_back.read()
 
         model = genanki.Model(
             1422169361,
@@ -44,10 +38,10 @@ class AnkiManager:
             ])
         return model
 
-    def _get_deck(self, id, name):
+    def _get_deck(self, deck_id, deck_name):
         deck = genanki.Deck(
-            id,
-            name)
+            deck_id,
+            deck_name)
         return deck
 
     def generate_deck(self, sentence_manager):

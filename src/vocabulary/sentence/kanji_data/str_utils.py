@@ -41,4 +41,4 @@ def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str):
             current_position += len(key)
         return tuple(kanjis_in_dict)
     else:
-        return None
+        raise KeyError

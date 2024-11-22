@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QSizePolicy
-
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QFormLayout, QLineEdit, QPushButton, QMessageBox
 
+from ....constants.exceptions import VocabularyAlreadyExists, VocabularyIsNotValid
 
 class AddWordWidget(QWidget):
     """Button to add a single word."""
@@ -41,7 +41,11 @@ class AddWordWidget(QWidget):
             self.button.setEnabled(True)
 
     def add_word_to_manager(self):
-        # try:
-        self.vocabulary_manager.add_word(self.text)
-        # except:
-        #     QMessageBox.critical(self.parent(), "Error", f"{self.text} has already been imported.")
+        try:
+            self.vocabulary_manager.add_word(self.text)
+        except VocabularyAlreadyExists as exception:
+            QMessageBox.critical(self.parent(), "Importation Error", f"{exception}")
+        except VocabularyIsNotValid as exception:
+            QMessageBox.critical(self.parent(), "Importation Error", f"{exception}")
+        except Exception as e:
+            QMessageBox.critical(self.parent(), "Importation Error", f"An exception has occured: {e}")

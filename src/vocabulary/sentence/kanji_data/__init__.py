@@ -122,18 +122,21 @@ class KanjiDataList(list):
         Exception
             If the word is not found in the kanji data.
         """
-        kanjis = find_kanjis_in_dict(self, word)
+        try:
+            kanjis = find_kanjis_in_dict(self, word)
+        except KeyError:
+            pass
+        else:
+            data_to_merge = []
+            for kanji in kanjis:
+                data_to_merge.append(self.remove(kanji))
 
-        data_to_merge = []
-        for kanji in kanjis:
-            data_to_merge.append(self.remove(kanji))
-
-        new_reading, new_meaning = "", ""
-        for data in data_to_merge:
-            _, data_reading, data_meaning = data
-            new_reading += data_reading
-            new_meaning += data_meaning
-        self.add(word, new_reading, new_meaning)
+            new_reading, new_meaning = "", ""
+            for data in data_to_merge:
+                _, data_reading, data_meaning = data
+                new_reading += data_reading
+                new_meaning += data_meaning
+            self.add(word, new_reading, new_meaning)
 
     def update_kanji_meaning(self, kanji: str, meaning: str):
         row = self._find_kanji_index(kanji)
