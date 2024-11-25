@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QComboBox
+from PyQt6.QtCore import QSize
+from PyQt6.QtWidgets import QComboBox, QSizePolicy
 
 
 class VocabularyComboBox(QComboBox):
@@ -6,6 +7,7 @@ class VocabularyComboBox(QComboBox):
 
     def __init__(self) -> None:
         super().__init__()
+        self.setSizeAdjustPolicy(self.SizeAdjustPolicy.AdjustToContents)
 
     def set_kanji_data_model(self, kanji_data_model):
         self.setModel(kanji_data_model)

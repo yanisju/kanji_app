@@ -14,7 +14,7 @@ def remove_spaces_outside_spans(soup):
     return ''.join(new_contents)
 
 
-def get_sentence_from(text):
+def get_sentence_from(text: str):
     """Get sentence in japanese."""
     pattern = r"(\w+)\[(.*?)\;(.*?)\]"
 
@@ -26,7 +26,7 @@ def get_sentence_from(text):
     return result
 
 
-def get_sentence_meaning(word1_data, word2_data):
+def get_sentence_meaning(word1_data, word2_data) -> str:
     """
     Return the formatted meaning of two words as HTML.
 
@@ -65,15 +65,10 @@ def get_text(sentence_fields):
     # Unpack sentence fields
     sentence, translation, word1_data, word2_data = sentence_fields
 
-    # Build the sentence and translation sections
-    card_text = f"<div class='sentence'><span>{
-        get_sentence_from(sentence)}</span></div>"
+    card_text = get_sentence_from(sentence)
     card_text += "<hr>"
-    card_text += f"<div class='translation'>{translation}</div><br>"
+    card_text += f"{translation}<br><br>"
 
     # Append word meanings
-    card_text += f"<div class='word-meanings'>{
-        get_sentence_meaning(
-            word1_data, word2_data)}</div>"
-
+    card_text += get_sentence_meaning(word1_data, word2_data)
     return card_text

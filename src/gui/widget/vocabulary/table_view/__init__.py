@@ -47,8 +47,11 @@ class VocabularyTableView(QTableView):
             The manager responsible for providing the vocabulary data model and operations.
         """
         super().__init__(parent)
-        self.horizontalHeader().setSectionResizeMode(
-            QHeaderView.ResizeMode.ResizeToContents)
+        
+        self._configure_header_section()
+        
+        with open("styles/table_view.css", "r") as css_file:
+            self.setStyleSheet(css_file.read())
 
         self.vocabulary_manager = vocabulary_manager
         self.sentence_table_view = sentence_table_view
@@ -84,6 +87,20 @@ class VocabularyTableView(QTableView):
 
         self.menu.set_current_position(row, column)
         self.menu.exec(event.globalPos())
+
+    def _configure_header_section(self):
+        self.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.Fixed)
+        
+        self.hideColumn(0)
+        
+        width = self.horizontalHeader().width()
+        self.setColumnWidth(0, int(width * 0.10))
+        self.setColumnWidth(1, int(width * 0.65))
+        self.setColumnWidth(2, int(width * 0.15))
+        self.setColumnWidth(3, int(width * 0.10))
+        
+        self.horizontalHeader().setStretchLastSection(True)
 
     def _double_clicked(self):
         """
@@ -124,3 +141,7 @@ class VocabularyTableView(QTableView):
         vocabulary_sentences_model = self.vocabulary_manager[
             selection_row].sentence_manager.sentences_model
         self.sentence_table_view.setModel(vocabulary_sentences_model)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._configure_header_section()

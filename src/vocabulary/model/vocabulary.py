@@ -20,7 +20,7 @@ class VocabularyModel(QStandardItemModel):
         self.setHeaderData(
             3,
             PyQt6.QtCore.Qt.Orientation.Horizontal,
-            "Sentences Count")
+            "Sentences")
 
     def modify_row(self, row_index: int, standard_item):
         for column_index in range(self.columnCount()):

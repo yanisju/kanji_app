@@ -1,13 +1,20 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout
+from PyQt6.QtWidgets import QVBoxLayout, QGroupBox, QSizePolicy
 from PyQt6.QtCore import QSize
 from .sentence_attributes import SentenceAttributesWidget
 from .kanji_table_view import KanjiTableView
 
 
-class FieldsWidget(QWidget):
+class FieldsWidget(QGroupBox):
     def __init__(self, parent, card_view):
         super().__init__(parent)
         self.card_view = card_view
+
+        with open("styles/fields_group_box.css", "r") as css_file:
+            self.setStyleSheet(css_file.read())
+
+        self.setSizePolicy(
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Expanding)
 
         # All QLineEdit for each fields of the vocabulary.
         self.field_widget_list = []
@@ -32,5 +39,6 @@ class FieldsWidget(QWidget):
         self.sentence_attributes_widget.set_to_new_sentence(sentence)
 
     def sizeHint(self):
-        return QSize(int(self.parent().width() / 2),
-                     int(self.parent().height()))
+        width = int(self.parentWidget().width() * 0.6)
+        height = int(self.parentWidget().height())
+        return QSize(width, height)

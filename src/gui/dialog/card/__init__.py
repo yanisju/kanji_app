@@ -1,10 +1,11 @@
 from PyQt6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QPushButton
+from PyQt6.QtCore import QSize
+from PyQt6.QtCore import pyqtSignal
+
 from ...widget.card_text_view import CardTextView
 from .fields_widget import FieldsWidget
 from ....vocabulary.sentence.sentence import Sentence
-
-from PyQt6.QtCore import pyqtSignal
-
+from ....constants import CardTextViewMode
 
 class CardDialog(QDialog):
     """Pop-up window for creating and editing a Anki card and its field. """
@@ -13,23 +14,19 @@ class CardDialog(QDialog):
 
     def __init__(self, central_widget, vocabulary_manager):
         super().__init__(central_widget)
-        self.setWindowTitle("Anki Card Editor")
-
-        self.resize(int(central_widget.parent().width() * 0.7),
-                    int(central_widget.parent().height() * 0.7))
-
+        self.central_widget = central_widget
         self.vocabulary_manager = vocabulary_manager
+        self.setWindowTitle("Anki Card Editor")
         self._init_layout()
 
     def _init_layout(self):
-        layout = QVBoxLayout(self)  # Main layout of Dialog
-        self.setLayout(layout)
+        layout = QVBoxLayout(self)
 
-        card_layout = QHBoxLayout()  # Layout for card view and attributes
+        card_layout = QHBoxLayout() 
         layout.addLayout(card_layout)
 
         # TextEdit to view current card in Anki
-        self.card_view = CardTextView(False)
+        self.card_view = CardTextView(CardTextViewMode.IS_NOT_MAIN_WINDOW)
         card_layout.addWidget(self.card_view)
 
         # Widget to modify card attributes / Modify card view
@@ -69,7 +66,6 @@ class CardDialog(QDialog):
                 self,
                 "sentence"):  # Update CardView from Main Application as well
             self.sentence_modified.emit(self.sentence)
-            # self.main_card_view.set_card_view(self.sentence)
 
     def _sentence_attributes_changed(self):
         self.card_view.set_card_view_from_attributes_values(
@@ -83,12 +79,9 @@ class CardDialog(QDialog):
         if hasattr(self, "sentence"):
             self.sentence.kanji_data.model.itemChanged.disconnect()
         self.sentence = sentence.clone()
-        self.sentence.kanji_data.model.itemChanged.connect(
-            self._sentence_attributes_changed)
-        self.sentence.kanji_data.model.itemChanged.connect(
-            self._sentence_attributes_changed)
-        self.sentence.kanji_data.model.itemChanged.connect(
-            self._sentence_attributes_changed)
+        self.sentence.kanji_data.model.itemChanged.connect(self._sentence_attributes_changed)
+        self.sentence.kanji_data.model.itemChanged.connect(self._sentence_attributes_changed)
+        self.sentence.kanji_data.model.itemChanged.connect(self._sentence_attributes_changed)
         self.sentence_row = sentence_row  # Row number in the view
         self.sentences_model = sentences_model
 
@@ -96,8 +89,13 @@ class CardDialog(QDialog):
         """If Dialog is opened, dialog view and fields must be updated
         to the current sentence."""
 
-        self.fields_widget.set_to_new_sentence(self.sentence)
         # Init card view with card fields
+        self.fields_widget.set_to_new_sentence(self.sentence)
         self.card_view.set_card_view(self.sentence)
-
+        
         super().open()
+
+    def sizeHint(self):
+        width = int(self.central_widget.parent().width() * 0.7)
+        height = int(self.central_widget.parent().height() * 0.7)
+        return QSize(width, height)

@@ -1,5 +1,6 @@
 from .retriever import get_meaning
 from PyQt6.QtGui import QStandardItem, QStandardItemModel
+import PyQt6.QtCore
 
 
 class VocabularyMeaning:
@@ -176,3 +177,22 @@ class VocabularyMeaning:
         meanings, part_of_speech = get_meaning(self.word, quick_init)
         for one_meaning, one_part_of_speech in zip(meanings, part_of_speech):
             self.add(one_meaning, one_part_of_speech)
+
+    def clone_model(self):
+        new_model = QStandardItemModel(0, 2)
+        new_model.setHeaderData(
+            0,
+            PyQt6.QtCore.Qt.Orientation.Horizontal,
+            "Meanings")
+        new_model.setHeaderData(
+            1,
+            PyQt6.QtCore.Qt.Orientation.Horizontal,
+            "Parts of speech")
+
+        new_row = []
+        for i in range(self.standard_item_model.rowCount()):
+            for j in range(self.standard_item_model.columnCount()):
+                new_row.append(self.standard_item_model.item(i, j).clone())
+            new_model.appendRow(new_row)
+            new_row.clear()
+        return new_model

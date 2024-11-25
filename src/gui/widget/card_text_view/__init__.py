@@ -1,28 +1,30 @@
-from PyQt6.QtWidgets import QTextEdit
+from PyQt6.QtWidgets import QTextEdit, QSizePolicy
 from PyQt6.QtCore import QSize
 
 from ....vocabulary.sentence.sentence import Sentence
 from .sentences import *
 
+from ....constants import CardTextViewMode
+
 
 class CardTextView(QTextEdit):
     """Text view of the card in Anki."""
 
-    def __init__(self, is_main_window: bool, card_dialog=None) -> None:
+    def __init__(self, mode: CardTextViewMode, card_dialog=None) -> None:
         super().__init__()
-        self.is_main_window = is_main_window
+        self.mode = mode
         self.sentence = None
         self.card_dialog = card_dialog
 
         self.setReadOnly(True)
         self.setMouseTracking(True)
 
-        stylesheet_location = (
-            "src/gui/widget/card_text_view/stylesheet.css"  # TODO: Change as parameter
-        )
-        with open(stylesheet_location, "r") as file:
-            stylesheet = file.read()
-        self.setStyleSheet(stylesheet)
+        self.setSizePolicy(
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Expanding)
+
+        with open("styles/card/text_view.css", "r") as css_file:
+            self.setStyleSheet(css_file.read())
 
     def set_card_view(self, sentence: Sentence):
         """Set card view, based on vocabulary fields."""
@@ -50,7 +52,7 @@ class CardTextView(QTextEdit):
                                self.sentence.kanji_data)
 
     def mouseDoubleClickEvent(self, mouse_event):
-        if self.is_main_window and self.sentence is not None:
+        if self.mode == CardTextViewMode.IS_MAIN_WINDOW and self.sentence is not None:
             self.card_dialog.open()
 
     def clear(self):
@@ -60,5 +62,5 @@ class CardTextView(QTextEdit):
         super().clear()
 
     def sizeHint(self):
-        return QSize(int(self.parent().width() / 2),
+        return QSize(int(self.parent().width() * 0.5),
                      int(self.parent().height()))

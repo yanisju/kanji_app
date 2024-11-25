@@ -1,23 +1,16 @@
 from PyQt6.QtWidgets import QTextEdit
 from PyQt6.QtGui import QStandardItemModel
+from PyQt6.QtCore import QSize
 
 
 class MeaningTextView(QTextEdit):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, parent) -> None:
+        super().__init__(parent)
         self.setReadOnly(True)
-        # Set a base font size for the entire text view
-        self.setStyleSheet("font-size: 14px;")
 
     def set_text(self, model: QStandardItemModel):
-        text = """
-        <style>
-            .meaning { font-size: 16px; font-weight: bold; }
-            .part-of-speech { font-size: 14px; font-style: italic;}
-            .index { font-size: 14px; font-weight: bold; }
-            .entry { margin-bottom: 10px; }
-        </style>
-        """
+        with open("styles/meaning/text_view.html", "r") as html_file:
+            text = html_file.read()
 
         for i in range(model.rowCount()):
             meaning = model.item(i, 0).text()
@@ -34,3 +27,8 @@ class MeaningTextView(QTextEdit):
                 <span class='part-of-speech'>({part_of_speech})</span>
             </div>
         """
+    
+    def sizeHint(self):
+        width = int(self.parentWidget().width() * 0.4)
+        height = int(self.parentWidget().height())
+        return QSize(width, height)

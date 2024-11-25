@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QSizePolicy
-from PyQt6.QtWidgets import QWidget, QHBoxLayout, QFormLayout, QLineEdit, QPushButton, QMessageBox
+from PyQt6.QtWidgets import QWidget, QHBoxLayout, QFormLayout, QLineEdit, QPushButton, QMessageBox, QLabel
 
-from ....constants.exceptions import VocabularyAlreadyExists, VocabularyIsNotValid
+from .....constants.exceptions import VocabularyAlreadyExists, VocabularyIsNotValid
 
 class AddWordWidget(QWidget):
     """Button to add a single word."""
@@ -14,8 +14,10 @@ class AddWordWidget(QWidget):
 
         formLayout = QFormLayout()
         self.line_edit = QLineEdit()
-        formLayout.addRow("Enter Kanji:", self.line_edit)
-        self.button = QPushButton("Confirm")
+        label = QLabel("Enter Kanji:")
+        label.setProperty("class", "attributes")
+        formLayout.addRow(label, self.line_edit)
+        self.button = QPushButton("  Confirm  ")
         self.button.setEnabled(False)
 
         layout.addLayout(formLayout)

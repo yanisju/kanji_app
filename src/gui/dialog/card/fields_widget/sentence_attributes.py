@@ -1,15 +1,22 @@
-from PyQt6.QtWidgets import QWidget, QFormLayout, QLineEdit
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QFormLayout, QLineEdit, QLabel
 from .vocabulary_combobox import VocabularyComboBox
 
 
 class SentenceAttributesWidget(QWidget):
     def __init__(self, parent: QWidget, card_view) -> None:
         super().__init__(parent)
-        layout = QFormLayout(self)
-        self.setLayout(layout)
-
         self.card_view = card_view
+        layout = QVBoxLayout(self)
 
+        label = QLabel("Sentence Attributes")
+        label.setProperty("class", "title")
+        layout.addWidget(label)
+
+
+        form_layout = QFormLayout()
+        layout.addLayout(form_layout)
+
+        
         attributes_name = [
             "Sentence:",
             "Meaning:",
@@ -17,31 +24,39 @@ class SentenceAttributesWidget(QWidget):
             "Word 2: ",
         ]
 
-        self.widget_list = self._init_layout(layout, attributes_name)
+        self.widget_list = self._init_layout(form_layout, attributes_name)
         self.attributes_value = []
 
-    def _init_layout(self, form_layout, attributes_name):
+    def _init_layout(self, form_layout: QFormLayout, attributes_name: list):
         widget_list = []
 
+        label_list = []
+        for text in attributes_name:
+            label = QLabel(text)
+            label.setProperty("class", "attributes")
+            label_list.append(label)
+
         line_edit = QLineEdit()
+        line_edit.setProperty("class", "sentence")
         widget_list.append(line_edit)
-        form_layout.addRow(attributes_name[0], line_edit)
+        form_layout.addRow(label_list[0], line_edit)
         line_edit.textEdited.connect(self._is_sentence_attribute_modified)
 
         line_edit = QLineEdit()
+        line_edit.setProperty("class", "translation")
         widget_list.append(line_edit)
-        form_layout.addRow(attributes_name[1], line_edit)
+        form_layout.addRow(label_list[1], line_edit)
         line_edit.textEdited.connect(self._is_translation_attribute_modified)
 
         self.word1_combobox = VocabularyComboBox()
         widget_list.append(self.word1_combobox)
-        form_layout.addRow(attributes_name[2], self.word1_combobox)
+        form_layout.addRow(label_list[2], self.word1_combobox)
         self.word1_combobox.currentIndexChanged.connect(
             self._is_word1_attribute_modified)
 
         self.word2_combobox = VocabularyComboBox()
         widget_list.append(self.word2_combobox)
-        form_layout.addRow(attributes_name[3], self.word2_combobox)
+        form_layout.addRow(label_list[3], self.word2_combobox)
         self.word2_combobox.currentIndexChanged.connect(
             self._is_word2_attribute_modified)
 
@@ -93,9 +108,6 @@ class SentenceAttributesWidget(QWidget):
             self.attributes_value)
 
     def set_to_new_sentence(self, sentence):
-        if hasattr(self, "sentence"):
-            pass
-            # self.sentence.kanji_data.model.itemChanged.disconnect()
         self.sentence = sentence
         self.sentence.kanji_data.model.itemChanged.connect(
             self._kanji_data_model_is_modified)
@@ -103,6 +115,7 @@ class SentenceAttributesWidget(QWidget):
         for i in range(2):
             self.attributes_value[i] = sentence.attributes[i]
             self.widget_list[i].setText(sentence.attributes[i])
+            self.widget_list[i].setCursorPosition(0)
 
         self.word1_combobox.set_kanji_data_model(
             sentence.kanji_data.first_combobox_model)

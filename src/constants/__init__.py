@@ -9,3 +9,7 @@ class SentenceWidgetMode(Enum):
 class KanjiDataComboBoxModelMode(Enum):
     FIRST_COMBO_BOX = 1
     SECOND_COMBO_BOX = 2
+
+class CardTextViewMode(Enum):
+    IS_MAIN_WINDOW = 1
+    IS_NOT_MAIN_WINDOW = 2    

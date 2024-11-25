@@ -5,7 +5,7 @@ from .action.delete_one_sentence import DeleteOneSentenceAction
 from .action.delete_all_sentences import DeleteAllSentenceAction
 from .action.add_empty_sentence import AddEmptySentenceAction
 
-from ....constants.constants import SentenceWidgetMode
+from .....constants import SentenceWidgetMode
 
 
 class SentenceTableViewMenu(QMenu):

@@ -1,5 +1,4 @@
 from PyQt6.QtWidgets import QTableView, QHeaderView
-from PyQt6.QtCore import QItemSelectionModel
 
 from .menu import KanjiTableViewMenu
 
@@ -9,7 +8,20 @@ class KanjiTableView(QTableView):
         super().__init__(parent)
         self.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeMode.ResizeToContents)
+        with open("styles/table_view.css", "r") as css_file:
+            self.setStyleSheet(css_file.read())
         self.menu = KanjiTableViewMenu(self)
+
+    def _configure_header_section(self):
+        self.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.Fixed)
+        
+        width = self.horizontalHeader().width()
+        self.setColumnWidth(0, int(width * 0.15))
+        self.setColumnWidth(1, int(width * 0.15))
+        self.setColumnWidth(2, int(width * 0.7))
+        
+        self.horizontalHeader().setStretchLastSection(True)
 
     def set_to_new_sentence(self, sentence):
         self.kanji_data = sentence.kanji_data
@@ -35,3 +47,7 @@ class KanjiTableView(QTableView):
                             for index in model_indexes]
         row_column_pairs.sort(key=lambda pair: pair[0])
         return row_column_pairs
+    
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._configure_header_section()
