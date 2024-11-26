@@ -21,12 +21,11 @@ class Vocabulary(QObject):
 
     standard_item_modified = pyqtSignal(str, list)
 
-    def __init__(self, word, sentence_retriever, quick_init=False):
+    def __init__(self, word: str, sentence_retriever):
         super().__init__()
         self.word = word
         self.meaning_object = VocabularyMeaning(word)
-        self.meaning_object.fetch_from_jisho(quick_init)
-
+        
         self.sentence_retriever = sentence_retriever
         self.sentence_manager = SentenceManager(self)
         self.sentence_manager.sentences_model.modified.connect(
@@ -56,7 +55,7 @@ class Vocabulary(QObject):
                 sentence, translation, kanji_data)
         self.sentence_manager.sort_by_sentence_length()
 
-    def remove_one_sentence(self, row):
+    def remove_sentence(self, row):
         """
         Deletes a sentence from the sentences list based on its position.
 
@@ -65,12 +64,10 @@ class Vocabulary(QObject):
         row : int
             The index of the sentence to be deleted.
         """
-        self.sentences.pop(row)
-        self.sentences_model.remove_row(row)
+        self.sentence_manager.pop(row)
 
     def remove_all_sentence(self):
-        self.sentences.clear()
-        self.sentences_model.remove_all_rows()
+        self.sentence_manager.clear()
 
     def set_standard_item(self):
         self.standard_item = [QStandardItem(self.word),

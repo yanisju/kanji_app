@@ -16,7 +16,7 @@ class KanjiTableView(QTableView):
         self.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeMode.Fixed)
         
-        width = self.horizontalHeader().width()
+        width = self.parentWidget().width()
         self.setColumnWidth(0, int(width * 0.15))
         self.setColumnWidth(1, int(width * 0.15))
         self.setColumnWidth(2, int(width * 0.7))
@@ -26,6 +26,7 @@ class KanjiTableView(QTableView):
     def set_to_new_sentence(self, sentence):
         self.kanji_data = sentence.kanji_data
         self.setModel(sentence.kanji_data.model)
+        self.resizeEvent(None)
 
     def contextMenuEvent(self, event):
         """

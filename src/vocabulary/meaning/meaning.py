@@ -68,6 +68,21 @@ class VocabularyMeaning:
         self.current_selection = 1
         self.standard_item_model = QStandardItemModel()
 
+        self._fetch_from_jisho()
+
+    def _fetch_from_jisho(self):
+        """
+        Fetches meanings and parts of speech for the word from an external dictionary (Jisho) and adds them to the instance.
+
+        Args:
+        -----
+        quick_init : bool
+            Whether to perform a quick initialization (used to determine how to fetch data).
+        """
+        meanings, part_of_speech = get_meaning(self.word)
+        for one_meaning, one_part_of_speech in zip(meanings, part_of_speech):
+            self.add(one_meaning, one_part_of_speech)
+
     def add(self, meaning, part_of_speech):
         """
         Adds a new meaning and part of speech for the word and updates the GUI model.
@@ -164,19 +179,6 @@ class VocabularyMeaning:
             The part of speech at the index `current_selection - 1`.
         """
         return self._part_of_speech[self.current_selection - 1]
-
-    def fetch_from_jisho(self, quick_init):
-        """
-        Fetches meanings and parts of speech for the word from an external dictionary (Jisho) and adds them to the instance.
-
-        Args:
-        -----
-        quick_init : bool
-            Whether to perform a quick initialization (used to determine how to fetch data).
-        """
-        meanings, part_of_speech = get_meaning(self.word, quick_init)
-        for one_meaning, one_part_of_speech in zip(meanings, part_of_speech):
-            self.add(one_meaning, one_part_of_speech)
 
     def clone_model(self):
         new_model = QStandardItemModel(0, 2)

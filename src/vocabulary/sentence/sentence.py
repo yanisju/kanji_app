@@ -1,7 +1,7 @@
 from PyQt6.QtGui import QStandardItem
 
 from ..str_utils import *
-from .kanji_data import KanjiData
+from .kanji_data import KanjiDataList
 
 
 class Sentence():
@@ -24,7 +24,7 @@ class Sentence():
         A tuple containing the second word's kanji, reading, meaning, and position in the sentence, or None if there is no second word.
     attributes : tuple
         A tuple containing the sentence, translation, word1_data, and word2_data.
-    kanji_data : dict
+    kanji_data_list : dict
         A dictionary containing kanji as keys and their readings, meanings, and positions as values.
     position_kanji_sentence : dict
         A dictionary containing the positions of kanji in the sentence as keys and the corresponding kanji as values.
@@ -37,21 +37,21 @@ class Sentence():
             vocabulary: str,
             sentence: str,
             translation: str,
-            kanji_data: KanjiData,
+            kanji_data_list: KanjiDataList,
             word,
             word2=None):
         self.vocabulary = vocabulary
         self.word = word
         self.sentence = sentence
         self.translation = translation
-        self.kanji_data = kanji_data
-        self.kanji_data.bound_to_sentence(self)
+        self.kanji_data_list = kanji_data_list
+        self.kanji_data_list.bound_to_sentence(self)
         # Dict containg positions in text as keys and kanjis as values.
         self.position_kanji = {}
         self._update_position_kanji()
 
-        self.word1_data = kanji_data.get_kanji(word)
-        self.word2_data = kanji_data.get_kanji(word2)
+        self.word1_data = kanji_data_list.get_kanji(word)
+        self.word2_data = kanji_data_list.get_kanji(word2)
 
         self.attributes = (
             sentence,
@@ -93,11 +93,11 @@ class Sentence():
         self.attributes = attributes
 
         self.position_kanji = get_position_kanji_sentence(
-            self.sentence, self.kanji_data)
+            self.sentence, self.kanji_data_list)
 
     def _update_position_kanji(self):
         self.position_kanji = get_position_kanji_sentence(
-            self.sentence, self.kanji_data)
+            self.sentence, self.kanji_data_list)
 
     def clone(self):
         """
@@ -108,7 +108,7 @@ class Sentence():
         Sentence
             A new Sentence instance with the same attributes as the original.
         """
-        vocabulary, sentence, translation, kanji_data, word1_data, word2_data = self.vocabulary, self.sentence, self.translation, self.kanji_data, self.word1_data, self.word2_data
+        vocabulary, sentence, translation, kanji_data_list, word1_data, word2_data = self.vocabulary, self.sentence, self.translation, self.kanji_data_list, self.word1_data, self.word2_data
         if word1_data:
             word1, *_ = word1_data
         else:
@@ -117,7 +117,7 @@ class Sentence():
             word2, *_ = word2_data
         else:
             word2 = None
-        new_kanji_data = kanji_data.clone()
+        new_kanji_data = kanji_data_list.clone()
         new_sentence = Sentence(
             vocabulary,
             sentence,

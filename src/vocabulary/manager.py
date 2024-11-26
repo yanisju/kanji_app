@@ -4,6 +4,8 @@ from .sentence.manager import SentenceManager
 from .model.vocabulary import VocabularyModel
 from ..constants.exceptions import VocabularyAlreadyExists, VocabularyIsNotValid
 
+from src.anki import AnkiManager
+
 from .str_utils import is_word_romaji_kana_or_kanji
 
 class VocabularyManager:
@@ -24,7 +26,7 @@ class VocabularyManager:
         A model for managing sentences that are supposed to be added to Anki deck.
     """
 
-    def __init__(self, anki_manager):
+    def __init__(self, anki_manager: AnkiManager):
         self.data_retriever = DataRetriever("jpn", "eng", RetrieverMode.LOCAL)
 
         self.vocabularies = {}  # Dictionnary of vocabularies instance
@@ -34,7 +36,7 @@ class VocabularyManager:
 
         self.anki_manager = anki_manager
 
-    def add_word(self, word):
+    def add_word(self, word: str):
         """
         Adds a vocabulary word to the dictionary and to the vocabulary model.
 

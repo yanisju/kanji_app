@@ -107,15 +107,8 @@ class KanjiDataList(list):
 
         Args:
         -----
-        kanji_data : dict
-            A dictionary where kanji characters are keys and values are tuples of (reading, meaning, position).
         word : str
             The word composed solely of kanji characters to update in the dictionary.
-
-        Returns:
-        --------
-        dict
-            An updated and sorted dictionary with merged kanji data for the specified word.
 
         Raises:
         -------
@@ -129,7 +122,8 @@ class KanjiDataList(list):
         else:
             data_to_merge = []
             for kanji in kanjis:
-                data_to_merge.append(self.remove(kanji))
+                index = self.index(kanji)
+                data_to_merge.append(self.pop(index))
 
             new_reading, new_meaning = "", ""
             for data in data_to_merge:

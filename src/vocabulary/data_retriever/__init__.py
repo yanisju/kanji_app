@@ -3,13 +3,7 @@ from ..meaning.retriever import *
 from .http.sentence import *
 from .local.sentence import SentenceLocalRetriever
 
-from enum import Enum
-
-
-class RetrieverMode(Enum):
-    HTTP = 1
-    LOCAL = 2
-
+from ...constants import RetrieverMode
 
 class DataRetriever():
     """
@@ -59,12 +53,11 @@ class DataRetriever():
 
         if not is_word_in_list(
                 kanji_data,
-                word):  # Check if the word appears in the kanji data
-            if check_word_contains_kana(
-                    word):  # If the word contains kana, update the kanji data accordingly
+                word):  # Check if the word appears in the kanji data:
+            if check_word_contains_kana(word):  # If the word contains kana, update the kanji data accordingly
                 kanji_data.update_data_kanji_kana(word)
-            else:
-                kanji_data.update_data_only_kanji(word)
+            # else:
+            #     kanji_data.update_data_only_kanji(word)
 
         if is_word_in_list(
                 kanji_data,

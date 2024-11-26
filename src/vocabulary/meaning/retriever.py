@@ -78,11 +78,8 @@ def deserialize_json_meaning(json_meaning, word):
             word, json_meaning.get("data"))
 
 
-def get_meaning(word, quick_init):
-    if quick_init:
-        json_meaning = retrieve_json_meaning_quick_init(word)
-    else:
-        json_meaning = retrieve_json_meaning(word)
+def get_meaning(word):
+    json_meaning = retrieve_json_meaning(word)
     meanings, parts_of_speech = deserialize_json_meaning(json_meaning, word)
 
     return meanings, parts_of_speech

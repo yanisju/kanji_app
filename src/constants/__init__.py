@@ -1,10 +1,12 @@
 from enum import Enum
 
+class RetrieverMode(Enum):
+    HTTP = 1
+    LOCAL = 2
 
 class SentenceWidgetMode(Enum):
     VOCABULARY_SENTENCE = 1
     ADDED_SENTENCE = 2
-
 
 class KanjiDataComboBoxModelMode(Enum):
     FIRST_COMBO_BOX = 1
