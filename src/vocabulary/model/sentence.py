@@ -1,6 +1,7 @@
 from PyQt6.QtGui import QStandardItemModel
-import PyQt6.QtCore
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal, Qt
+
+from ..sentence.sentence import Sentence
 
 
 class SentenceModel(QStandardItemModel):
@@ -45,16 +46,16 @@ class SentenceModel(QStandardItemModel):
         """
         self.setHeaderData(
             0,
-            PyQt6.QtCore.Qt.Orientation.Horizontal,
+            Qt.Orientation.Horizontal,
             "Sentence")
         self.setHeaderData(
             1,
-            PyQt6.QtCore.Qt.Orientation.Horizontal,
+            Qt.Orientation.Horizontal,
             "Meaning")
-        self.setHeaderData(2, PyQt6.QtCore.Qt.Orientation.Horizontal, "Word 1")
-        self.setHeaderData(3, PyQt6.QtCore.Qt.Orientation.Horizontal, "Word 2")
+        self.setHeaderData(2, Qt.Orientation.Horizontal, "Word 1")
+        self.setHeaderData(3, Qt.Orientation.Horizontal, "Word 2")
 
-    def append_sentence(self, sentence):
+    def append_sentence(self, sentence: Sentence):
         """
         Adds a new sentence to the model.
 
@@ -69,7 +70,7 @@ class SentenceModel(QStandardItemModel):
         self.appendRow(sentence.standard_item)
         self.modified.emit()
 
-    def modify_row(self, sentence, row):
+    def modify_row(self, sentence: Sentence, row: int):
         """
         Modifies an existing sentence in the model at the specified row.
 

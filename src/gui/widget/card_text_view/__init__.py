@@ -49,7 +49,7 @@ class CardTextView(QTextEdit):
                                event,
                                len(self.sentence.attributes[0]),
                                self.sentence.position_kanji,
-                               self.sentence.kanji_data)
+                               self.sentence.kanji_data_list)
 
     def mouseDoubleClickEvent(self, mouse_event):
         if self.mode == CardTextViewMode.IS_MAIN_WINDOW and self.sentence is not None:

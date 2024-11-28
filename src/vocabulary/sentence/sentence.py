@@ -1,6 +1,6 @@
 from PyQt6.QtGui import QStandardItem
 
-from ..str_utils import *
+from ..str_utils import get_position_kanji_sentence
 from .kanji_data import KanjiDataList
 
 
@@ -34,20 +34,20 @@ class Sentence():
 
     def __init__(
             self,
-            vocabulary: str,
+            vocabulary,
             sentence: str,
             translation: str,
             kanji_data_list: KanjiDataList,
-            word,
-            word2=None):
+            word: str,
+            word2: str = None):
         self.vocabulary = vocabulary
         self.word = word
         self.sentence = sentence
         self.translation = translation
         self.kanji_data_list = kanji_data_list
         self.kanji_data_list.bound_to_sentence(self)
-        # Dict containg positions in text as keys and kanjis as values.
-        self.position_kanji = {}
+        
+        self.position_kanji = {} # Dict containg positions in text as keys and kanjis as values.
         self._update_position_kanji()
 
         self.word1_data = kanji_data_list.get_kanji(word)
@@ -60,11 +60,10 @@ class Sentence():
             self.word2_data)
 
         self.standard_item = None  # QStandardItem in order to be inserted in the model
-        # TODO: class does not contain standard item, but method return it
-        # directly
         self.compute_standard_item()
 
-    def compute_standard_item(self):
+    def compute_standard_item(self): # TODO: class does not contain standard item, but method return it
+        # directly
         """Update standard item to insert in Sentence model, based on current sentences attributes. """
         word1_kanji, word2_kanji = None, None
         if self.word1_data is not None:

@@ -96,6 +96,6 @@ class VocabularyManager:
     def generate_deck(self):
         self.anki_manager.generate_deck(self.sentence_added_to_deck)
 
-    def _change_vocabulary_model_item(self, word, standard_item):
+    def _change_vocabulary_model_item(self, word: str, standard_item):
         index = self.get_index_by_word(word)
         self.vocabulary_model.modify_row(index, standard_item)

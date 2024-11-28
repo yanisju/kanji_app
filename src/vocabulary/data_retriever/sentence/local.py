@@ -1,11 +1,12 @@
 import pandas as pd
 
+from . import SentenceRetriever
 
-class SentenceLocalRetriever():
+class SentenceLocalRetriever(SentenceRetriever):
     def __init__(self) -> None:
         pass
 
-    def get_sentences_local(self, word):
+    def get_sentences(self, word):
         filename = "data/sentences_data/eng_to_jpn"
         transcriptions_filename = "data/sentences_data/transcriptions"
 
@@ -45,7 +46,7 @@ def read_transcriptions(filename):
     return transcriptions
 
 
-def find_phrases_containing_word(data, transcriptions, search_word):
+def find_phrases_containing_word(data, transcriptions, search_word) -> list:
     filtered_data = data[data["Sentence"].str.contains(search_word, na=False)]
     unique_rows = filtered_data.drop_duplicates(subset=["Sentence"])
 

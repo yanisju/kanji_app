@@ -4,8 +4,17 @@ import time
 import random
 from math import ceil
 
+from . import SentenceRetriever
+
 from .. import check_word_contains_kana
 
+class SentenceHTTPRetriever(SentenceRetriever):
+    def __init__(self, lang_from, lang_to):
+        self.lang_from = lang_from
+        self.lang_to = lang_to
+
+    def get_sentences(self, word):
+        return get_sentences_http(word, self.lang_from, self.lang_to)
 
 def create_sentences_html_request(word, lang_from, lang_to, page=1):
     """ Create HTML request: fetch through Tatoeba website."""

@@ -77,11 +77,11 @@ class CardDialog(QDialog):
             sentence: Sentence,
             sentence_row: int):
         if hasattr(self, "sentence"):
-            self.sentence.kanji_data.model.itemChanged.disconnect()
+            self.sentence.kanji_data_list.model.itemChanged.disconnect()
         self.sentence = sentence.clone()
-        self.sentence.kanji_data.model.itemChanged.connect(self._sentence_attributes_changed)
-        self.sentence.kanji_data.model.itemChanged.connect(self._sentence_attributes_changed)
-        self.sentence.kanji_data.model.itemChanged.connect(self._sentence_attributes_changed)
+        self.sentence.kanji_data_list.model.itemChanged.connect(self._sentence_attributes_changed)
+        self.sentence.kanji_data_list.model.itemChanged.connect(self._sentence_attributes_changed)
+        self.sentence.kanji_data_list.model.itemChanged.connect(self._sentence_attributes_changed)
         self.sentence_row = sentence_row  # Row number in the view
         self.sentences_model = sentences_model
 

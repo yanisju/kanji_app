@@ -1,9 +1,7 @@
-from PyQt6.QtGui import QStandardItemModel, QStandardItem
 from ....str_utils import *
 
-import PyQt6.QtCore
-
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtGui import QStandardItemModel, QStandardItem
+from PyQt6.QtCore import Qt, pyqtSignal
 
 
 class KanjiDataModel(QStandardItemModel):
@@ -18,14 +16,14 @@ class KanjiDataModel(QStandardItemModel):
 
     def _configure(self):
         self.setColumnCount(3)
-        self.setHeaderData(0, PyQt6.QtCore.Qt.Orientation.Horizontal, "Kanji")
+        self.setHeaderData(0, Qt.Orientation.Horizontal, "Kanji")
         self.setHeaderData(
             1,
-            PyQt6.QtCore.Qt.Orientation.Horizontal,
+            Qt.Orientation.Horizontal,
             "Reading")
         self.setHeaderData(
             2,
-            PyQt6.QtCore.Qt.Orientation.Horizontal,
+            Qt.Orientation.Horizontal,
             "Meanings")
 
     def add_row(self, kanji):

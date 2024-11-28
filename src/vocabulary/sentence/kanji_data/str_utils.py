@@ -4,11 +4,6 @@ def check_char_is_kana(char):
     else:
         return False
 
-
-def is_word_in_dict(kanji_data: dict, word: str):
-    return word in kanji_data.keys()
-
-
 def find_kanjis_in_dict(kanjis_data: dict, kanji_to_find: str) -> tuple:
     """
     Finds and returns a tuple of kanji characters from a dictionary that matches a specific kanji string.

@@ -99,7 +99,7 @@ class VocabularyMeaning:
         self.standard_item_model.appendRow(
             [QStandardItem(meaning), QStandardItem(part_of_speech)])
 
-    def remove(self, index):
+    def remove(self, index: int):
         """
         Removes the meaning and part of speech at the specified index and updates the model.
 
