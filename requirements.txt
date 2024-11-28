@@ -5,3 +5,4 @@ PyQt6
 pandas
 pytest
 pytest-cov
+opencv-python

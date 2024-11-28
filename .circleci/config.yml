@@ -10,9 +10,6 @@ jobs:
       - checkout
       - python/install-packages
       - run:
-          name: Configure missing package
-          command: apt-get update && apt-get install libgl1
-      - run:
           name: Run tests
           command: pytest -v 
       - store_test_results:
