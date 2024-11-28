@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  python: circleci/python@2
+  python: circleci/python@3.0.0
 jobs:
   test-python:
     # Install dependencies and run tests
@@ -9,9 +9,10 @@ jobs:
     steps:
       - checkout
       - python/install-packages
+        pkg-manager = pip
       - run:
           name: Run tests
-          command: pytest
+          command: pytest -v 
       - store_test_results:
           path: junit.xml
 workflows:
